@@ -40,7 +40,9 @@ interactively without needing to leave the R environment.
 
 ## See also
 
-Other db-meta: [`cd()`](cd.md), [`pwd()`](pwd.md)
+Other db-meta:
+[`cd()`](https://usrbinr.github.io/motherduck/reference/cd.md),
+[`pwd()`](https://usrbinr.github.io/motherduck/reference/pwd.md)
 
 ## Examples
 

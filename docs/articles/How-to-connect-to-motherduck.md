@@ -21,7 +21,7 @@ your R enviorment with
 I recommend using `MOTHERDUCK_TOKEN` as your variable name.
 
 Once completed, you can simply use the
-[`connect_to_motherduck()`](../reference/connect_to_motherduck.md)
+[`connect_to_motherduck()`](https://usrbinr.github.io/motherduck/reference/connect_to_motherduck.md)
 function and pass through your token variable name and optional
 configuration options.
 
@@ -49,7 +49,7 @@ This will return a connection and print statement indicating if
 connection status.
 
 At any time you can validate your connection status with
-[`validate_md_connection_status()`](../reference/validate_md_connection_status.md)
+[`validate_md_connection_status()`](https://usrbinr.github.io/motherduck/reference/validate_md_connection_status.md)
 
 ``` r
 validate_md_connection_status(con_md)
@@ -104,9 +104,9 @@ default values
 
 To change these, simply edit the configuration options you want and then
 pass the list as an argument
-[`connect_to_motherduck()`](../reference/connect_to_motherduck.md) or
-[`duckdb()`](https://r.duckdb.org/reference/duckdb.html) if connecting
-locally
+[`connect_to_motherduck()`](https://usrbinr.github.io/motherduck/reference/connect_to_motherduck.md)
+or [`duckdb()`](https://r.duckdb.org/reference/duckdb.html) if
+connecting locally
 
 You can see the full list of duckdb configuration options
 [here](https://duckdb.org/docs/stable/configuration/overview.html) or

@@ -15,8 +15,8 @@ as [DBI](https://dbplyr.tidyverse.org/) and
 specific extensions or utilities that are aren’t readily accessible via
 this packages
 
-{md} pack simplifies these common database administration task with easy
-to understand syntax. {md} is built upon
+{motherduck} pack simplifies these common database administration task
+with easy to understand syntax. {motherduck} is built upon
 [DBI](https://dbplyr.tidyverse.org/) and returns a lazy DBI object so
 that you can further fully integrate your data with
 [dbplyr](https://dbplyr.tidyverse.org/)

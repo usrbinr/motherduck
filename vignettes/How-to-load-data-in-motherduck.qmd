@@ -11,7 +11,7 @@ vignette: >
 ```{r}
 #| label: setup
 #| echo: false
-#| warning: false
+#| warningf: alse
 #| message: false
 #| include: false
 
@@ -128,7 +128,7 @@ If we want to we can also navigate to your motherduck database with the `cd()` c
 cd(con_md,database = "contoso")
 ```
 
-I am now in motherduck based [contoso](github.com/usrbinr/contoso) database and any reference to schema or table would be relative to this database.
+I am now in motherduck based [contoso](https://usrbinr.github.io/contoso/) database and any reference to schema or table would be relative to this database.
 
 Let's verify that by list the all the tables in this database. We can do that with the `list_all_tables()` function.
 
@@ -398,49 +398,3 @@ Below are the list of configuration options available to be passed through to re
 #| include: false
 fs::file_delete("starwars.xlsx")
 ```
-
-:::: {.callout-note collapse="true"}
-## Configuration options
-
-::: panel-tabset
-## CSV
-
-```{r}
-#| label: config-csv
-#| echo: false
-#| warning: false
-#| message: false
-#| include: true
-config_csv |> 
-  gt::gt()
-
-```
-
-## Excel
-
-```{r}
-#| label: config-excel
-#| echo: false
-#| warning: false
-#| message: false
-#| include: true
-
-config_excel |> 
-  gt::gt()
-```
-
-## Parquet
-
-```{r}
-#| label: config-parquet
-#| echo: false
-#| warning: false
-#| message: false
-#| include: true
-
-
-config_parquet |> 
-  gt::gt()
-```
-:::
-::::

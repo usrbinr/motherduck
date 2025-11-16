@@ -94,8 +94,8 @@ validate_md_connection_status(con_md)
 > - From there you can use the
 >   `connect_to_motherduck("MOTHERDUCK_TOKEN")`
 >
-> - This will use the [DBI](https://dbi.r-dbi.org/) library to create a
->   connection to your mother duck instance
+> - This will use the DBI library to create a connection to your mother
+>   duck instance
 
 When connecting to motherduck there are a number of configuration
 options available, you can reference them via the
@@ -143,20 +143,6 @@ list_setting(con_md)
 
 Congratulations, you’ve set connected to your motherduck database from
 R!
-
-If you’re new to databases, it will be helpful to have a basic
-understanding of database management - don’t worry the basics are
-straight forward and won’t overwhelm you, below are a list of resources
-I found helpful.
-
-- [Posit solutions guide to working with
-  databases](https://solutions.posit.co/connections/db/)
-- [dbplyr package
-  page](https://dbplyr.tidyverse.org/articles/dbplyr.html)
-- [Motherduck how to
-  guide](https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/)
-- [duckdb documentation
-  guide](https://duckdb.org/docs/stable/sql/introduction)
 
 Please see the {motherduck} package down website to see additional
 documentation on how to use the functions and motherduck

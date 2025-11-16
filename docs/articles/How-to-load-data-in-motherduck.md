@@ -115,9 +115,9 @@ If we want to we can also navigate to your motherduck database with the
 cd(con_md,database = "contoso")
 ```
 
-I am now in motherduck based [contoso](github.com/usrbinr/contoso)
-database and any reference to schema or table would be relative to this
-database.
+I am now in motherduck based
+[contoso](https://usrbinr.github.io/contoso/) database and any reference
+to schema or table would be relative to this database.
 
 Let’s verify that by list the all the tables in this database. We can do
 that with the [`list_all_tables()`](../reference/list_all_tables.md)
@@ -379,16 +379,6 @@ read_excel(
 
 Below are the list of configuration options available to be passed
 through to respective read\_\* functions.
-
-> **Configuration options**
->
-> - [CSV](#tabset-1-1)
-> - [Excel](#tabset-1-2)
-> - [Parquet](#tabset-1-3)
->
-> &nbsp;
->
-> - 
 
 [^1]: Use
     [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)

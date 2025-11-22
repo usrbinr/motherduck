@@ -1,4 +1,104 @@
 url: https://usrbinr.github.io/motherduck/
+
 template:
   bootstrap: 5
+  
+navbar:
+  right:
+    - text: "GitHub"
+      href: "https://github.com/usrbinr"
+      icon: "fab fa-github"
+    - text: "Bluesky"
+      href: "https://bsky.app/profile/usrbinr.bsky.social"
+      icon: "fab fa-bluesky"
 
+
+reference:
+
+  - title: "Connection & Session Management"
+    contents:
+      - connect_to_motherduck
+      - cd
+      - pwd
+      - validate_con
+      - validate_md_connection_status
+      - show_current_user
+      - show_motherduck_token
+      - launch_ui
+
+  - title: "Database Management"
+    contents:
+      - create_database
+      - delete_database
+      - list_all_databases
+      - upload_database_to_md
+      - validate_and_print_database_loction
+
+  - title: "Schema Management"
+    contents:
+      - create_schema
+      - delete_schema
+      - list_current_schemas
+      - alter_table_schema
+      - copy_tables_to_new_location
+      - delete_and_create_schema
+
+  - title: "Table Management"
+    contents:
+      - create_table
+      - delete_table
+      - list_all_tables
+      - list_current_tables
+      # adjust to real function name if needed:
+      #- summary.tbl_lazy
+
+  - title: "File Import (CSV, Excel, Parquet)"
+    contents:
+      - read_csv
+      - read_excel
+      - config_csv
+      - config_excel
+      - config_parquet
+
+  - title: "Configuration & Settings"
+    contents:
+      - config_db
+      - list_setting
+      - list_fns
+
+  - title: "Extensions"
+    contents:
+      - install_extensions
+      - load_extensions
+      - list_extensions
+      - validate_extension_install_status
+      - validate_extension_load_status
+
+  - title: "MotherDuck User & Account Management"
+    contents:
+      - create_md_user
+      - delete_md_user
+      - list_md_active_accounts
+      - list_md_user_instance
+      - configure_md_user_settings
+
+  - title: "MotherDuck Tokens"
+    contents:
+      - create_md_access_token
+      - delete_md_access_token
+      - list_md_user_tokens
+
+  - title: "MotherDuck Shares"
+    contents:
+      - create_if_not_exists_share
+      - create_or_replace_share
+      - drop_share
+      - describe_share
+      - list_shares
+      - list_owned_shares
+      - list_shared_with_me_shares
+
+  - title: "Utilities"
+    contents:
+      - validate_and_print_database_loction
+      - summary

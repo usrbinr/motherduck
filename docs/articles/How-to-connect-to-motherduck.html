@@ -68,9 +68,7 @@
 
 
 
-    <section class="level2"><h2 id="lets-see-the-package-in-action">Lets see the package in action<a class="anchor" aria-label="anchor" href="#lets-see-the-package-in-action"></a>
-</h2>
-<section class="level3"><h3 id="create-a-duckdb-instance-and-connect-to-your-motherduck-account">Create a duckdb instance and Connect to your motherduck account<a class="anchor" aria-label="anchor" href="#create-a-duckdb-instance-and-connect-to-your-motherduck-account"></a>
+    <section class="level3"><h3 id="create-a-duckdb-instance-and-connect-to-your-motherduck-account">Create a duckdb instance and connect to your motherduck account<a class="anchor" aria-label="anchor" href="#create-a-duckdb-instance-and-connect-to-your-motherduck-account"></a>
 </h3>
 <p>When creating a duckdb database, you have three options</p>
 <ol type="1">
@@ -82,9 +80,8 @@
 <p>To create options 1 or 2 you can simply use either the <a href="https://duckdb.org/" class="external-link">duckdb</a> or the <a href="https://duckplyr.tidyverse.org/index.html" class="external-link">duckplyr</a> packages.</p>
 <p>To use option 3, you will need to create a motherudck account and generate an access token. Once created, save your access token to an your R enviorment with <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code>. I recommend using <code>MOTHERDUCK_TOKEN</code> as your variable name.</p>
 <p>Once completed, you can simply use the <code><a href="../reference/connect_to_motherduck.html">connect_to_motherduck()</a></code> function and pass through your token variable name and optional configuration options.</p>
-<div>
 <blockquote>
-<p><strong>Whats the difference between Motherduck and Duckdb?</strong></p>
+<h3 id="whats-the-difference-between-motherduck-and-duckdb">Whats the difference between Motherduck and Duckdb?</h3>
 <ul>
 <li><p>Duckdb is a database that you can deploy and run either temporary or permanently in your computer. If you run it via your local computer, it is only available on your computer</p></li>
 <li><p>Motherduck is a cloud based deployment of duckdb which means you can save your data in the cloud or access it locally</p></li>
@@ -92,7 +89,6 @@
 <li><p>It is more of a question if you want you data to be access only locally on your computer or if you want to be able to access it remotely via the cloud</p></li>
 </ul>
 </blockquote>
-</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con_md</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_to_motherduck.html">connect_to_motherduck</a></span><span class="op">(</span><span class="st">"MOTHERDUCK_TOKEN"</span><span class="op">)</span></span></code></pre></div>
@@ -103,70 +99,44 @@
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/validate_md_connection_status.html">validate_md_connection_status</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div>
-<blockquote>
-<p><strong>how to create a motherduck account and access token?</strong></p>
+</section><section class="level3"><h3 id="how-to-create-a-motherduck-account-and-access-token">How to create a motherduck account and access token?<a class="anchor" aria-label="anchor" href="#how-to-create-a-motherduck-account-and-access-token"></a>
+</h3>
 <ol type="1">
 <li>Go to <a href="https://motherduck.com/" class="external-link">motherduck</a> and create an account, free options are available</li>
 <li>Go to your user name in the top right, click settings then click access tokens</li>
 <li>Click create token and then name your token and copy the token code</li>
 <li>You will need this token to access your account</li>
 <li>If you want to access it via R then simplest way is to save your access code as a variable in your r environment</li>
-<li>Simply leverage the <a href="https://usethis.r-lib.org/" class="external-link">usethis</a> function <code>edit_r_environ()</code> to set your access code to a variable and save it – this is one time activity</li>
-<li>To check if your correctly saved your variable then you can use the Sys.getenv(“var_name”) with “var_name” the named you assigned your access token to</li>
+<li>Simply leverage the <a href="https://usethis.r-lib.org/" class="external-link">usethis</a> function <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> to set your access code to a variable and save it – this is one time activity</li>
+<li>To check if you have correctly saved your variable then you can use the Sys.getenv(“var_name”) with substituting “var_name” with your access token name</li>
 <li>Going forward, if you want to access your token you don’t need to re-type the access token, simply remember your variable name</li>
-</ol>
-<ul>
-<li><p>First you will need a motherduck account, which has both free and paid tiers</p></li>
-<li><p>Once you’ve created an account, simply, go to your settings and click ‘Access Tokens’ under your ‘Integrations’</p></li>
-<li><p>Keep this secure and safe as this lets you connect to your online database to read or write data</p></li>
-<li>
-<p>Open R and use the <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> function to put your motherduck token as a variable in your enviornment profile</p>
-<ul>
-<li>MOTHERDUCK_TOKEN=‘tokenID’</li>
-</ul>
-</li>
-<li><p>From there you can use the <code>connect_to_motherduck("MOTHERDUCK_TOKEN")</code></p></li>
-<li><p>This will use the DBI library to create a connection to your mother duck instance</p></li>
-</ul>
-</blockquote>
-</div>
-<p>When connecting to motherduck there are a number of configuration options available, you can reference them via the <code>motherduck::db_config</code> which will pull a list of options and their default values</p>
-<p>To change these, simply edit the configuration options you want and then pass the list as an argument <code><a href="../reference/connect_to_motherduck.html">connect_to_motherduck()</a></code> or <code><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb()</a></code> if connecting locally</p>
-<p>You can see the full list of duckdb configuration options <a href="https://duckdb.org/docs/stable/configuration/overview.html" class="external-link">here</a> or alternatively you can use <code>list_settings()</code> to see your current configuration options.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode r code-annotation-code code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a>config <span class="ot">&lt;-</span> config_db</span>
-<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a>config<span class="sc">$</span>allow_community_extensions <span class="ot">&lt;-</span> <span class="st">"true"</span></span>
-<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-3-6" class="code-annotation-target"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a>con_md <span class="ot">&lt;-</span> <span class="fu">connect_to_motherduck</span>(<span class="st">"MOTHERDUCK_TOKEN"</span>,<span class="at">config =</span> config)</span><div class="code-annotation-gutter-bg"></div>
-<div class="code-annotation-gutter"></div></code></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="1" data-code-annotation="1">Access the default configuration options via the built in list</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="4" data-code-annotation="2">change the options you want, ensure you leverage duckdb syntax</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="6" data-code-annotation="3">pass the modtified list to config option in the function</span>
-</dd>
-</dl>
-</div>
-</div>
-<p>At any time you can see what configuration arguments are for your connection with <code>motherduck::list_settings()</code>.</p>
+</ol></section><section class="level3"><h3 id="how-to-configure-our-connection">How to configure our connection?<a class="anchor" aria-label="anchor" href="#how-to-configure-our-connection"></a>
+</h3>
+<p>When connecting to motherduck there are a number of configuration options available, you can reference them via the <code><a href="../reference/config_db.html">motherduck::config_db</a></code> which will pull a list of options and their default values</p>
+<p>To change these, simply edit the configuration options you want and then pass the list as an argument <code><a href="../reference/connect_to_motherduck.html">connect_to_motherduck()</a></code> or <code><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb::duckdb()</a></code> if connecting locally</p>
+<p>You can see the full list of duckdb configuration options <a href="https://duckdb.org/docs/stable/configuration/overview.html" class="external-link">here</a> or alternatively you can use <code><a href="../reference/list_setting.html">list_setting()</a></code> to see your current configuration options.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">motherduck</span><span class="fu">::</span><span class="va"><a href="../reference/config_db.html">config_db</a></span> </span>
+<span></span>
+<span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">allow_community_extensions</span> <span class="op">&lt;-</span> <span class="st">"true"</span> </span>
+<span></span>
+<span><span class="va">con_md</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_to_motherduck.html">connect_to_motherduck</a></span><span class="op">(</span><span class="st">"MOTHERDUCK_TOKEN"</span>,config <span class="op">=</span> <span class="va">config</span><span class="op">)</span> </span></code></pre></div>
+</div>
+<ul>
+<li>Access the default configuration options via the built in list</li>
+<li>Change the options you want, ensure you leverage duckdb syntax</li>
+<li>Pass the modtified list to config option in the function</li>
+</ul>
+<p>At any time you can see what configuration arguments are for your connection with <code><a href="../reference/list_setting.html">list_setting()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_setting.html">list_setting</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Congratulations, you’ve set connected to your motherduck database from R!</p>
 <p>Please see the {motherduck} package down website to see additional documentation on how to use the functions and motherduck</p>
-</section></section><script id="quarto-html-after-body" type="application/javascript">
+</section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);

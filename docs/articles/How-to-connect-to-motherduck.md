@@ -1,8 +1,6 @@
 # How to connect to motherduck
 
-## Lets see the package in action
-
-### Create a duckdb instance and Connect to your motherduck account
+### Create a duckdb instance and connect to your motherduck account
 
 When creating a duckdb database, you have three options
 
@@ -25,7 +23,7 @@ Once completed, you can simply use the
 function and pass through your token variable name and optional
 configuration options.
 
-> **Whats the difference between Motherduck and Duckdb?**
+> ### Whats the difference between Motherduck and Duckdb?
 >
 > - Duckdb is a database that you can deploy and run either temporary or
 >   permanently in your computer. If you run it via your local computer,
@@ -55,87 +53,61 @@ At any time you can validate your connection status with
 validate_md_connection_status(con_md)
 ```
 
-> **how to create a motherduck account and access token?**
->
-> 1.  Go to [motherduck](https://motherduck.com/) and create an account,
->     free options are available
-> 2.  Go to your user name in the top right, click settings then click
->     access tokens
-> 3.  Click create token and then name your token and copy the token
->     code
-> 4.  You will need this token to access your account
-> 5.  If you want to access it via R then simplest way is to save your
->     access code as a variable in your r environment
-> 6.  Simply leverage the [usethis](https://usethis.r-lib.org/) function
->     `edit_r_environ()` to set your access code to a variable and save
->     it – this is one time activity
-> 7.  To check if your correctly saved your variable then you can use
->     the Sys.getenv(“var_name”) with “var_name” the named you assigned
->     your access token to
-> 8.  Going forward, if you want to access your token you don’t need to
->     re-type the access token, simply remember your variable name
->
-> - First you will need a motherduck account, which has both free and
->   paid tiers
->
-> - Once you’ve created an account, simply, go to your settings and
->   click ‘Access Tokens’ under your ‘Integrations’
->
-> - Keep this secure and safe as this lets you connect to your online
->   database to read or write data
->
-> - Open R and use the
->   [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
->   function to put your motherduck token as a variable in your
->   enviornment profile
->
->   - MOTHERDUCK_TOKEN=‘tokenID’
->
-> - From there you can use the
->   `connect_to_motherduck("MOTHERDUCK_TOKEN")`
->
-> - This will use the DBI library to create a connection to your mother
->   duck instance
+### How to create a motherduck account and access token?
+
+1.  Go to [motherduck](https://motherduck.com/) and create an account,
+    free options are available
+2.  Go to your user name in the top right, click settings then click
+    access tokens
+3.  Click create token and then name your token and copy the token code
+4.  You will need this token to access your account
+5.  If you want to access it via R then simplest way is to save your
+    access code as a variable in your r environment
+6.  Simply leverage the [usethis](https://usethis.r-lib.org/) function
+    [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
+    to set your access code to a variable and save it – this is one time
+    activity
+7.  To check if you have correctly saved your variable then you can use
+    the Sys.getenv(“var_name”) with substituting “var_name” with your
+    access token name
+8.  Going forward, if you want to access your token you don’t need to
+    re-type the access token, simply remember your variable name
+
+### How to configure our connection?
 
 When connecting to motherduck there are a number of configuration
 options available, you can reference them via the
-`motherduck::db_config` which will pull a list of options and their
-default values
+[`motherduck::config_db`](https://usrbinr.github.io/motherduck/reference/config_db.md)
+which will pull a list of options and their default values
 
 To change these, simply edit the configuration options you want and then
 pass the list as an argument
 [`connect_to_motherduck()`](https://usrbinr.github.io/motherduck/reference/connect_to_motherduck.md)
-or [`duckdb()`](https://r.duckdb.org/reference/duckdb.html) if
+or [`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html) if
 connecting locally
 
 You can see the full list of duckdb configuration options
 [here](https://duckdb.org/docs/stable/configuration/overview.html) or
-alternatively you can use `list_settings()` to see your current
-configuration options.
+alternatively you can use
+[`list_setting()`](https://usrbinr.github.io/motherduck/reference/list_setting.md)
+to see your current configuration options.
 
 ``` r
-1config <- config_db
+config <- motherduck::config_db 
 
 
-2config$allow_community_extensions <- "true"
+config$allow_community_extensions <- "true" 
 
-3con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN",config = config)
+con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN",config = config) 
 ```
 
-- 1:
-
-  Access the default configuration options via the built in list
-
-- 2:
-
-  change the options you want, ensure you leverage duckdb syntax
-
-- 3:
-
-  pass the modtified list to config option in the function
+- Access the default configuration options via the built in list
+- Change the options you want, ensure you leverage duckdb syntax
+- Pass the modtified list to config option in the function
 
 At any time you can see what configuration arguments are for your
-connection with `motherduck::list_settings()`.
+connection with
+[`list_setting()`](https://usrbinr.github.io/motherduck/reference/list_setting.md).
 
 ``` r
 list_setting(con_md)

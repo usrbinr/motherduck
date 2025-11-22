@@ -85,7 +85,7 @@
 <li>This is the name of the actual table or view that holds your data</li>
 <li>Table can be a physical table of data that persists whereas a view is a stored procedures that queries underlying tables when needed</li>
 </ul>
-<p>To save or reference data, you need to either fully qualify the name with <code>database_name.schema_name.table_name</code> or you need to be “in” your database and schema and reference the table name.</p>
+<p>To save or reference data, you need to either fully qualify the name with “database_name.schema_name.table_name” or you need to be “in” your database and schema and reference the table name.</p>
 <p>If you uploaded data without creating a table or schema first then duckdb will assign “temp” and “main” as the default names for your database and schema respectively.</p>
 <div id="nte-md">
 <blockquote>
@@ -105,7 +105,8 @@
 <li>access token</li>
 <li>motherduck extension for duckdb</li>
 </ul>
-<p>The <code><a href="../reference/connect_to_motherduck.html">connect_to_motherduck()</a></code> function will take your access token that is your environment file<a class="footnote-ref" role="doc-noteref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Use &lt;code&gt;&lt;a href="https://usethis.r-lib.org/reference/edit.html" class="external-link"&gt;usethis::edit_r_environ()&lt;/a&gt;&lt;/code&gt; to save your access token to a variable name&lt;/p&gt;'><sup>1</sup></a>, install and load the extensions and then finally connect to your motherduck instance.</p>
+<p>The <code><a href="../reference/connect_to_motherduck.html">connect_to_motherduck()</a></code> function will take your access token that is your environment file, install and load the extensions and then finally connect to your motherduck instance.</p>
+<p>Use <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> to save your access token to a variable name</p>
 <div id="cau-con">
 <blockquote>
 <p><strong>Caution 1: connect-to-motherduck</strong></p>
@@ -115,78 +116,53 @@
 </blockquote>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode r code-annotation-code code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-1-1" class="code-annotation-target"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a>con_md <span class="ot">&lt;-</span> <span class="fu">connect_to_motherduck</span>(<span class="at">motherduck_token =</span> <span class="st">"MOTHERDUCK_TOKEN"</span>)</span><div class="code-annotation-gutter-bg"></div>
-<div class="code-annotation-gutter"></div></code></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="1" data-code-annotation="1">Pass your token name from your R environment file</span>
-</dd>
-</dl>
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">con_md</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_to_motherduck.html">connect_to_motherduck</a></span><span class="op">(</span>motherduck_token <span class="op">=</span> <span class="st">"MOTHERDUCK_TOKEN"</span><span class="op">)</span> </span></code></pre></div>
 </div>
-</div>
+<ul>
+<li>Pass your token name from your R environment file</li>
+</ul>
 <p>You will get a message that prints out that actions the package took and information about your connection</p>
 <p>Before uploading new data, it can be helpful to check “where” you are in your database</p>
-<p>You can do this with the <code><a href="../reference/pwd.html">pwd()</a></code><a class="footnote-ref" role="doc-noteref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Naming convention is inspired by linux commands&lt;/p&gt;"><sup>2</sup></a> function that will print out the current database &amp; schema that you are in.</p>
+<p>You can do this with the <code><a href="../reference/pwd.html">pwd()</a></code> function that will print out the current database &amp; schema that you are in.</p>
 <p>This would be the default location that you save your database unless you clarified a different database and schema.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pwd.html">pwd</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>By default, you will be in your local duckdb database even though you are connected to motherduck</p>
 <p>See <a href="#cau-con" class="quarto-xref">Caution 1</a> to understand why we start in a local database vs. motherduck</p>
 <p>If we want to we can also navigate to your motherduck database with the <code><a href="../reference/cd.html">cd()</a></code> command</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cd.html">cd</a></span><span class="op">(</span><span class="va">con_md</span>,database <span class="op">=</span> <span class="st">"contoso"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>I am now in motherduck based <a href="https://usrbinr.github.io/contoso/" class="external-link">contoso</a> database and any reference to schema or table would be relative to this database.</p>
 <p>Let’s verify that by list the all the tables in this database. We can do that with the <code><a href="../reference/list_all_tables.html">list_all_tables()</a></code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_all_tables.html">list_all_tables</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Now that we knwo how to navigate to our various databaes, lets finally load data somee existing data into a new database and schema. <code><a href="../reference/create_table.html">create_table()</a></code> function will create a new database / schema and save then load the data into a table.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode r code-annotation-code code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span>diamonds <span class="sc">|&gt;</span></span>
-<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">create_table</span>(</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">.con =</span> con_md</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>        ,<span class="at">database_name =</span> <span class="st">"vignette"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4" onclick="event.preventDefault();" href="">4</a><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>        ,<span class="at">schema_name =</span> <span class="st">"raw"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="5" onclick="event.preventDefault();" href="">5</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>        ,<span class="at">table_name =</span> <span class="st">"diamonds"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6" onclick="event.preventDefault();" href="">6</a><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>        ,<span class="at">write_type=</span><span class="st">"overwrite"</span></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>        )</span><div class="code-annotation-gutter-bg"></div>
-<div class="code-annotation-gutter"></div></code></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="1" data-code-annotation="1">Pass your data into the function</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">List your motherduck connection</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3">database name (either new or existing)</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="4">schema name (either new or existing)</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="5">5</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="5">table name</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="6">6</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="6">Either overwrite or append the data</span>
-</dd>
-</dl>
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html" class="external-link">diamonds</a></span> <span class="op">|&gt;</span>  </span>
+<span>    <span class="fu"><a href="../reference/create_table.html">create_table</a></span><span class="op">(</span></span>
+<span>        .con <span class="op">=</span> <span class="va">con_md</span> </span>
+<span>        ,database_name <span class="op">=</span> <span class="st">"vignette"</span> </span>
+<span>        ,schema_name <span class="op">=</span> <span class="st">"raw"</span> </span>
+<span>        ,table_name <span class="op">=</span> <span class="st">"diamonds"</span> </span>
+<span>        ,write_type<span class="op">=</span><span class="st">"overwrite"</span>  </span>
+<span>        <span class="op">)</span></span></code></pre></div>
 </div>
-</div>
+<ul>
+<li>Pass your data into the function</li>
+<li>List your motherduck connection</li>
+<li>database name (either new or existing)</li>
+<li>schema name (either new or existing)</li>
+<li>table name</li>
+<li>Either overwrite or append the data</li>
+</ul>
 <p>Notice that we don’t assign this object to anything, this just silently writes our data to our database and prints a message confirming the performed actions as well as some summary of catalogs, schemas, tables and shares that you haves access</p>
 <p>To validate the data is in our database, we can do the following:</p>
 <p>We can validate if we have successfully saved the table in our database by running <code><a href="../reference/list_all_tables.html">list_all_tables()</a></code>.</p>
@@ -195,47 +171,36 @@
 </h2>
 <p>Let’s say we want to filter and summarize this table and save it to our database with a new table name – no problem, we can repeat the steps and this time we will upload a DBI object instead of tibble.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode r code-annotation-code code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>id_name <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">Id</span>(<span class="st">"vignette"</span>,<span class="st">"raw"</span>,<span class="st">"diamonds"</span>)</span>
-<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>diamonds_summary_tbl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">tbl</span>(con_md,id_name) <span class="sc">|&gt;</span></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">.by=</span><span class="fu">c</span>(color,cut,clarity)</span>
-<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>        ,<span class="at">mean_price=</span><span class="fu">mean</span>(price,<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-6-10" class="code-annotation-target"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>diamonds_summary_tbl <span class="sc">|&gt;</span></span>
-<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">create_table</span>(   </span>
-<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.con =</span> con_md</span>
-<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">database_name =</span> <span class="st">"vignette"</span></span>
-<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">schema_name =</span> <span class="st">"raw"</span></span>
-<span id="annotated-cell-6-15"><a href="#annotated-cell-6-15" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">table_name =</span> <span class="st">"diamonds_summary"</span> </span>
-<span id="annotated-cell-6-16"><a href="#annotated-cell-6-16" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">write_type =</span> <span class="st">"overwrite"</span></span>
-<span id="annotated-cell-6-17"><a href="#annotated-cell-6-17" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div>
-<div class="code-annotation-gutter"></div></code></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="1" data-code-annotation="1">You can directly call the full name or if you are already in your database / schema you can just call the table</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="2">Perform your additional cleaning, transformation, or summarization steps</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="10" data-code-annotation="3">Pass the DBI object to create_table and it will still save the table!</span>
-</dd>
-</dl>
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">id_name</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/Id.html" class="external-link">Id</a></span><span class="op">(</span><span class="st">"vignette"</span>,<span class="st">"raw"</span>,<span class="st">"diamonds"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">diamonds_summary_tbl</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con_md</span>,<span class="va">id_name</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>        .by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">color</span>,<span class="va">cut</span>,<span class="va">clarity</span><span class="op">)</span></span>
+<span>        ,mean_price<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">price</span>,na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">diamonds_summary_tbl</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="../reference/create_table.html">create_table</a></span><span class="op">(</span>   </span>
+<span>    .con <span class="op">=</span> <span class="va">con_md</span></span>
+<span>    ,database_name <span class="op">=</span> <span class="st">"vignette"</span></span>
+<span>    ,schema_name <span class="op">=</span> <span class="st">"raw"</span></span>
+<span>    ,table_name <span class="op">=</span> <span class="st">"diamonds_summary"</span> </span>
+<span>    ,write_type <span class="op">=</span> <span class="st">"overwrite"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
+<ul>
+<li>You can directly call the full name or if you are already in your database / schema you can just call the table</li>
+<li>Perform your additional cleaning, transformation, or summarization steps</li>
+<li>Pass the DBI object to create_table and it will still save the table!</li>
+</ul>
 <p>While its the same syntax, <code><a href="../reference/create_table.html">create_table()</a></code> will work with an R object, duckplyr or DBI object to save that table into your database.</p>
 </section><section class="level2"><h2 id="create-new-schema">Create new schema<a class="anchor" aria-label="anchor" href="#create-new-schema"></a>
 </h2>
 <p>Let’s say we want to organize these existing tables into a different schema, we can do this by first creating a new schema and then moving that table or alternatively loading a table directly with a new schema and table.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="fu"><a href="../reference/create_schema.html">create_schema</a></span><span class="op">(</span></span>
 <span>        .con<span class="op">=</span><span class="va">con_md</span></span>
 <span>        ,database_name <span class="op">=</span> <span class="st">"vignette"</span></span>
@@ -244,7 +209,7 @@
 </div>
 <p>This will create a new schema if it doesn’t exist but won’t load any data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_current_schemas.html">list_current_schemas</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div>
@@ -253,9 +218,9 @@
 <p>When you create a database it will have a default schema “main”, so even though we only created “raw” and “curated” schemas we see three schemas due to the default (that you can’t delete)</p>
 </blockquote>
 </div>
-<p>We can copy one of a series of tables to our new schema with <code>copy_tables_to_new_location</code>. This accepts a tibble or DBI object of objects with table_catalog,table_schema, table_name headers and will copy them into your new location.</p>
+<p>We can copy one of a series of tables to our new schema with <code><a href="../reference/copy_tables_to_new_location.html">copy_tables_to_new_location()</a></code>. This accepts a tibble or DBI object of objects with table_catalog, table_schema, table_name headers and will copy them into your new location.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_all_tables.html">list_all_tables</a></span><span class="op">(</span><span class="va">con_md</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">table_catalog</span><span class="op">==</span><span class="st">"vignette"</span></span>
@@ -273,86 +238,54 @@
 <p>Sometimes we need to delete databases, schemas or tables.</p>
 <p>Be careful when you do this as its irreversible – there is no CTRL+Z to undo this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/delete_schema.html">delete_schema</a></span><span class="op">(</span><span class="va">con_md</span>,database_name <span class="op">=</span> <span class="st">"vignette"</span>,schema_name <span class="op">=</span> <span class="st">"curated"</span>,cascade <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="how-to-load-data-directly-into-motherduck">How to load data directly into motherduck<a class="anchor" aria-label="anchor" href="#how-to-load-data-directly-into-motherduck"></a>
 </h2>
-<p>For csv files we can leverage the existing duckdb function <code><a href="https://r.duckdb.org/reference/deprecated.html" class="external-link">duckdb::read_csv_duckdb()</a></code> to directly read the a csv file or a series of csv files<a class="footnote-ref" role="doc-noteref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;as long as they have the same header structure&lt;/p&gt;"><sup>3</sup></a> into your duckdb or motherduck database</p>
+<p>For csv files we can leverage the existing duckdb function <code><a href="https://r.duckdb.org/reference/deprecated.html" class="external-link">duckdb::read_csv_duckdb()</a></code> to directly read the a csv file or a series of csv files into your duckdb or motherduck database</p>
 <p>This will read the files from their source location directly into your database without loading the files into memory which is helpful when you are dealing with larger than memory data.</p>
-<p>Underneath the hood the duckdb function is using the <code>read_csv_auto</code> and you can pass the configuration options directly through the the read_csv function if you need configuration.</p>
+<p>Underneath the hood the duckdb function is using the “read_csv_auto” and you can pass the configuration options directly through the the read_csv function if you need configuration.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">mtcars</span>,<span class="st">"mtcars.csv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># cd(schema = "raw")</span></span>
 <span></span>
-<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_read_csv.html" class="external-link">duckdb_read_csv</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con_md</span>,files <span class="op">=</span> <span class="st">"mtcars.csv"</span>,name <span class="op">=</span> <span class="st">"mtcars"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/read_csv.html">read_csv</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con_md</span>,file_path <span class="op">=</span>  <span class="st">"mtcars.csv"</span>,to_table_name <span class="op">=</span> <span class="st">"mtcars"</span>,header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>For or excel, parquet or httpfs file formats, we can leverage md read_excel_duckdb, read_parquet_duckdb() or read_httpfs_duckdb() form the <code>md</code> package.</p>
-<p>Similar to the <code>read_csv_auto</code> function, these leverage underlying duckdb extensions to read these diffrent file formatas.</p>
-<p>You can view the default configuration tables with the motherduck::config_* family of tables</p>
+<p>For or excel, parquet or httpfs file formats, we can leverage <code><a href="../reference/read_excel.html">read_excel()</a></code>.</p>
+<p>Similar to the <code><a href="../reference/read_csv.html">read_csv()</a></code> function, this code leverage underlying duckdb extensions to read these different file formats.</p>
+<p>You can view the default configuration tables with the <code><a href="../reference/config_csv.html">motherduck::config_csv</a></code> and <code><a href="../reference/config_excel.html">motherduck::config_excel</a></code> family of reference tables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode r code-annotation-code code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-12-1" class="code-annotation-target"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a>openxlsx<span class="sc">::</span><span class="fu">write.xlsx</span>(dplyr<span class="sc">::</span>starwars,<span class="st">"starwars.xlsx"</span>)</span>
-<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-12-5" class="code-annotation-target"><a href="#annotated-cell-12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">.con=</span>con_md</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-12-6" class="code-annotation-target"><a href="#annotated-cell-12-6" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">to_database_name =</span> <span class="st">"vignette"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="4" onclick="event.preventDefault();" href="">4</a><span id="annotated-cell-12-7" class="code-annotation-target"><a href="#annotated-cell-12-7" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">to_schema_name =</span> <span class="st">"main"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="5" onclick="event.preventDefault();" href="">5</a><span id="annotated-cell-12-8" class="code-annotation-target"><a href="#annotated-cell-12-8" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">to_table_name =</span> <span class="st">"starwars"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="6" onclick="event.preventDefault();" href="">6</a><span id="annotated-cell-12-9" class="code-annotation-target"><a href="#annotated-cell-12-9" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">file_path =</span> <span class="st">"starwars.xlsx"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="7" onclick="event.preventDefault();" href="">7</a><span id="annotated-cell-12-10" class="code-annotation-target"><a href="#annotated-cell-12-10" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">header =</span> <span class="cn">TRUE</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="8" onclick="event.preventDefault();" href="">8</a><span id="annotated-cell-12-11" class="code-annotation-target"><a href="#annotated-cell-12-11" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">sheet =</span> <span class="st">"Sheet 1"</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="9" onclick="event.preventDefault();" href="">9</a><span id="annotated-cell-12-12" class="code-annotation-target"><a href="#annotated-cell-12-12" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">all_varchar  =</span> <span class="cn">TRUE</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="10" onclick="event.preventDefault();" href="">10</a><span id="annotated-cell-12-13" class="code-annotation-target"><a href="#annotated-cell-12-13" aria-hidden="true" tabindex="-1"></a>    ,<span class="at">write_type =</span> <span class="st">"overwrite"</span></span>
-<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div>
-<div class="code-annotation-gutter"></div></code></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="1" data-code-annotation="1">Create a excel file</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="5" data-code-annotation="2">Pass through our connection</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="6" data-code-annotation="3">Select the database we want the table to be saved in</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="7" data-code-annotation="4">Select the schema we want the table to be saved in</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="5">5</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="8" data-code-annotation="5">Select the table name</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="6">6</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="9" data-code-annotation="6">Select the filepath to the excel file<br></span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="7">7</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="10" data-code-annotation="7">Clarify if we want the first line to be used as headers</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="8">8</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="11" data-code-annotation="8">Clarify the sheet name to read</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="9">9</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="12" data-code-annotation="9">Clarify if all columns types be read in as characters</span>
-</dd>
-<dt data-target-cell="annotated-cell-12" data-target-annotation="10">10</dt>
-<dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="13" data-code-annotation="10">Select if we should overwrite to an existing table or append</span>
-</dd>
-</dl>
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">openxlsx</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">write.xlsx</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/starwars.html" class="external-link">starwars</a></span>,<span class="st">"starwars.xlsx"</span><span class="op">)</span> </span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/read_excel.html">read_excel</a></span><span class="op">(</span></span>
+<span>    .con<span class="op">=</span><span class="va">con_md</span> </span>
+<span>    ,to_database_name <span class="op">=</span> <span class="st">"vignette"</span> </span>
+<span>    ,to_schema_name <span class="op">=</span> <span class="st">"main"</span> </span>
+<span>    ,to_table_name <span class="op">=</span> <span class="st">"starwars"</span> </span>
+<span>    ,file_path <span class="op">=</span> <span class="st">"starwars.xlsx"</span> </span>
+<span>    ,header <span class="op">=</span> <span class="cn">TRUE</span> </span>
+<span>    ,sheet <span class="op">=</span> <span class="st">"Sheet 1"</span> </span>
+<span>    ,all_varchar  <span class="op">=</span> <span class="cn">TRUE</span> </span>
+<span>    ,write_type <span class="op">=</span> <span class="st">"overwrite"</span>  </span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
+<ul>
+<li>Create a excel file</li>
+<li>Pass through our connection</li>
+<li>Select the database we want the table to be saved in</li>
+<li>Select the schema we want the table to be saved in</li>
+<li>Select the table name</li>
+<li>Select the filepath to the excel file</li>
+<li>Clarify if we want the first line to be used as headers</li>
+<li>Clarify the sheet name to read</li>
+<li>Clarify if all columns types be read in as characters</li>
+<li>Select if we should overwrite to an existing table or append</li>
+</ul>
 <p>Below are the list of configuration options available to be passed through to respective read_* functions.</p>
 </section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

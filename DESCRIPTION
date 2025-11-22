@@ -1,6 +1,6 @@
 Package: motherduck
 Type: Package
-Title: Collection of Utilities to Manage a "Motherduck" Database
+Title: Collection of Utilities to Manage a Motherduck Database
 Version: 0.2.0
 Authors@R: c(
     person(
@@ -9,10 +9,10 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Collection of database utilities for "Motherduck" database
+Description: Collection of database utilities for Motherduck database
     This provides utilities and metadata function support to simplify the management, connection,
     uploading and management of a Motherduck database platform.
-    This package requires an account www.motherduck.com to apply its functions.
+    This package requires an account Motherduck account to maximize its functions.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -23,7 +23,7 @@ things you will need to load data into a database:
   a stored procedures that queries underlying tables when needed
 
 To save or reference data, you need to either fully qualify the name
-with `database_name.schema_name.table_name` or you need to be “in” your
+with “database_name.schema_name.table_name” or you need to be “in” your
 database and schema and reference the table name.
 
 If you uploaded data without creating a table or schema first then
@@ -63,9 +63,13 @@ you will need:
 
 The
 [`connect_to_motherduck()`](https://usrbinr.github.io/motherduck/reference/connect_to_motherduck.md)
-function will take your access token that is your environment file[^1],
+function will take your access token that is your environment file,
 install and load the extensions and then finally connect to your
 motherduck instance.
+
+Use
+[`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
+to save your access token to a variable name
 
 > **Caution 1: connect-to-motherduck**
 >
@@ -81,12 +85,10 @@ motherduck instance.
 > command
 
 ``` r
-1con_md <- connect_to_motherduck(motherduck_token = "MOTHERDUCK_TOKEN")
+con_md <- connect_to_motherduck(motherduck_token = "MOTHERDUCK_TOKEN") 
 ```
 
-- 1:
-
-  Pass your token name from your R environment file
+- Pass your token name from your R environment file
 
 You will get a message that prints out that actions the package took and
 information about your connection
@@ -95,7 +97,7 @@ Before uploading new data, it can be helpful to check “where” you are in
 your database
 
 You can do this with the
-[`pwd()`](https://usrbinr.github.io/motherduck/reference/pwd.md)[^2]
+[`pwd()`](https://usrbinr.github.io/motherduck/reference/pwd.md)
 function that will print out the current database & schema that you are
 in.
 
@@ -139,39 +141,22 @@ function will create a new database / schema and save then load the data
 into a table.
 
 ``` r
-1ggplot2::diamonds |>
+ggplot2::diamonds |>  
     create_table(
-2        .con = con_md
-3        ,database_name = "vignette"
-4        ,schema_name = "raw"
-5        ,table_name = "diamonds"
-6        ,write_type="overwrite"
+        .con = con_md 
+        ,database_name = "vignette" 
+        ,schema_name = "raw" 
+        ,table_name = "diamonds" 
+        ,write_type="overwrite"  
         )
 ```
 
-- 1:
-
-  Pass your data into the function
-
-- 2:
-
-  List your motherduck connection
-
-- 3:
-
-  database name (either new or existing)
-
-- 4:
-
-  schema name (either new or existing)
-
-- 5:
-
-  table name
-
-- 6:
-
-  Either overwrite or append the data
+- Pass your data into the function
+- List your motherduck connection
+- database name (either new or existing)
+- schema name (either new or existing)
+- table name
+- Either overwrite or append the data
 
 Notice that we don’t assign this object to anything, this just silently
 writes our data to our database and prints a message confirming the
@@ -196,16 +181,16 @@ database with a new table name – no problem, we can repeat the steps and
 this time we will upload a DBI object instead of tibble.
 
 ``` r
-1id_name <- DBI::Id("vignette","raw","diamonds")
+id_name <- DBI::Id("vignette","raw","diamonds") 
 
-2diamonds_summary_tbl <- dplyr::tbl(con_md,id_name) |>
+diamonds_summary_tbl <- dplyr::tbl(con_md,id_name) |>  
     dplyr::summarise(
         .by=c(color,cut,clarity)
         ,mean_price=mean(price,na.rm=TRUE)
     )
 
 
-3diamonds_summary_tbl |>
+diamonds_summary_tbl |> 
     create_table(   
     .con = con_md
     ,database_name = "vignette"
@@ -215,19 +200,11 @@ this time we will upload a DBI object instead of tibble.
 )
 ```
 
-- 1:
-
-  You can directly call the full name or if you are already in your
+- You can directly call the full name or if you are already in your
   database / schema you can just call the table
-
-- 2:
-
-  Perform your additional cleaning, transformation, or summarization
+- Perform your additional cleaning, transformation, or summarization
   steps
-
-- 3:
-
-  Pass the DBI object to create_table and it will still save the table!
+- Pass the DBI object to create_table and it will still save the table!
 
 While its the same syntax,
 [`create_table()`](https://usrbinr.github.io/motherduck/reference/create_table.md)
@@ -263,9 +240,10 @@ list_current_schemas(con_md)
 > schemas due to the default (that you can’t delete)
 
 We can copy one of a series of tables to our new schema with
-`copy_tables_to_new_location`. This accepts a tibble or DBI object of
-objects with table_catalog,table_schema, table_name headers and will
-copy them into your new location.
+[`copy_tables_to_new_location()`](https://usrbinr.github.io/motherduck/reference/copy_tables_to_new_location.md).
+This accepts a tibble or DBI object of objects with table_catalog,
+table_schema, table_name headers and will copy them into your new
+location.
 
 ``` r
 list_all_tables(con_md) |> 
@@ -299,14 +277,14 @@ delete_schema(con_md,database_name = "vignette",schema_name = "curated",cascade 
 
 For csv files we can leverage the existing duckdb function
 [`duckdb::read_csv_duckdb()`](https://r.duckdb.org/reference/deprecated.html)
-to directly read the a csv file or a series of csv files[^3] into your
+to directly read the a csv file or a series of csv files into your
 duckdb or motherduck database
 
 This will read the files from their source location directly into your
 database without loading the files into memory which is helpful when you
 are dealing with larger than memory data.
 
-Underneath the hood the duckdb function is using the `read_csv_auto` and
+Underneath the hood the duckdb function is using the “read_csv_auto” and
 you can pass the configuration options directly through the the read_csv
 function if you need configuration.
 
@@ -315,83 +293,50 @@ write.csv(mtcars,"mtcars.csv")
 
 # cd(schema = "raw")
 
-duckdb::duckdb_read_csv(conn = con_md,files = "mtcars.csv",name = "mtcars")
+read_csv(con = con_md,file_path =  "mtcars.csv",to_table_name = "mtcars",header = TRUE)
 ```
 
-For or excel, parquet or httpfs file formats, we can leverage md
-read_excel_duckdb, read_parquet_duckdb() or read_httpfs_duckdb() form
-the `md` package.
+For or excel, parquet or httpfs file formats, we can leverage
+[`read_excel()`](https://usrbinr.github.io/motherduck/reference/read_excel.md).
 
-Similar to the `read_csv_auto` function, these leverage underlying
-duckdb extensions to read these diffrent file formatas.
+Similar to the
+[`read_csv()`](https://usrbinr.github.io/motherduck/reference/read_csv.md)
+function, this code leverage underlying duckdb extensions to read these
+different file formats.
 
 You can view the default configuration tables with the
-motherduck::config\_\* family of tables
+[`motherduck::config_csv`](https://usrbinr.github.io/motherduck/reference/config_csv.md)
+and
+[`motherduck::config_excel`](https://usrbinr.github.io/motherduck/reference/config_excel.md)
+family of reference tables.
 
 ``` r
-1openxlsx::write.xlsx(dplyr::starwars,"starwars.xlsx")
+openxlsx::write.xlsx(dplyr::starwars,"starwars.xlsx") 
 
 
 read_excel(
-2    .con=con_md
-3    ,to_database_name = "vignette"
-4    ,to_schema_name = "main"
-5    ,to_table_name = "starwars"
-6    ,file_path = "starwars.xlsx"
-7    ,header = TRUE
-8    ,sheet = "Sheet 1"
-9    ,all_varchar  = TRUE
-10    ,write_type = "overwrite"
+    .con=con_md 
+    ,to_database_name = "vignette" 
+    ,to_schema_name = "main" 
+    ,to_table_name = "starwars" 
+    ,file_path = "starwars.xlsx" 
+    ,header = TRUE 
+    ,sheet = "Sheet 1" 
+    ,all_varchar  = TRUE 
+    ,write_type = "overwrite"  
 )
 ```
 
-- 1:
-
-  Create a excel file
-
-- 2:
-
-  Pass through our connection
-
-- 3:
-
-  Select the database we want the table to be saved in
-
-- 4:
-
-  Select the schema we want the table to be saved in
-
-- 5:
-
-  Select the table name
-
-- 6:
-
-  Select the filepath to the excel file  
-
-- 7:
-
-  Clarify if we want the first line to be used as headers
-
-- 8:
-
-  Clarify the sheet name to read
-
-- 9:
-
-  Clarify if all columns types be read in as characters
-
-- 10:
-
-  Select if we should overwrite to an existing table or append
+- Create a excel file
+- Pass through our connection
+- Select the database we want the table to be saved in
+- Select the schema we want the table to be saved in
+- Select the table name
+- Select the filepath to the excel file
+- Clarify if we want the first line to be used as headers
+- Clarify the sheet name to read
+- Clarify if all columns types be read in as characters
+- Select if we should overwrite to an existing table or append
 
 Below are the list of configuration options available to be passed
 through to respective read\_\* functions.
-
-[^1]: Use
-    [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
-    to save your access token to a variable name
-
-[^2]: Naming convention is inspired by linux commands
-
-[^3]: as long as they have the same header structure

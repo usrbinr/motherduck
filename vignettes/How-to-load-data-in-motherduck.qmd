@@ -13,7 +13,6 @@ vignette: >
 ```{r}
 #| label: dynamic-yml
 #| echo: false
-#| eval: true
 #| warning: false
 #| message: false
 #| include: true
@@ -89,7 +88,6 @@ Check which database you are "in" with the `pwd()` command and then use `cd()` t
 
 ```{r}
 #| label: connect
-#| eval: true
 #| echo: true
 #| warning: true
 #| message: true
@@ -107,7 +105,6 @@ You can do this with the `pwd()` function that will print out the current databa
 ```{r}
 #| label: pwd
 #| echo: true
-#| eval: false
 
 motherduck::pwd(con_md)
 
@@ -124,7 +121,6 @@ To access your motherduck database, you will need to use `cd()` and reference th
 ```{r}
 #| label: cd
 #| echo: true
-#| eval: true
 
 motherduck::cd(con_md,database = "contoso")
 
@@ -151,7 +147,6 @@ list_current_schemas(con_md)
 ```{r}
 #| label: list-all-hidden
 #| echo: false
-#| eval: true
 #| warning: false
 #| message: false
 #| include: true
@@ -281,7 +276,6 @@ This accepts a tibble or DBI object of objects with table_catalog, table_schema,
 ```{r}
 #| label: copy-table-to-location
 #| echo: true
-#| eval: false
 #| warning: false
 #| message: true
 #| include: true

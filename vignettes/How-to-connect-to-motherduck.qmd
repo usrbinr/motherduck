@@ -129,7 +129,6 @@ You can see the full list of duckdb configuration options [here](https://duckdb.
 
 config <- motherduck::config_db 
 
-
 config$allow_community_extensions <- "true" 
 
 con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN",config = config) 

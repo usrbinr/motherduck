@@ -1,5 +1,3 @@
-# Motherduck
-
 ![](reference/figures/md_logo.png)
 
 ## Overview

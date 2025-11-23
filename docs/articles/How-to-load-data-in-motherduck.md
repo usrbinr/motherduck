@@ -77,21 +77,6 @@ for more information
 con_md <- motherduck::connect_to_motherduck(motherduck_token = "MOTHERDUCK_TOKEN") 
 ```
 
-    ── Extension Load & Install Report ─────────────────────────────────────────────
-
-    Installed and loaded 1 extension: motherduck
-
-    Use `list_extensions()` to list extensions, status and their descriptions
-
-    Use `install_extensions()` to install new duckdb extensions
-
-    See <https://duckdb.org/docs/stable/extensions/overview.html> for more
-    information
-
-    ── Connection Status Report: ──
-
-    ✔ You are connected to MotherDuck
-
 You will get a message that prints out that actions the package took and
 information about your connection
 
@@ -125,30 +110,6 @@ to as well as summarizes your shares
 ``` r
 motherduck::cd(con_md,database = "contoso")
 ```
-
-    ── Status: ─────────────────────────────────────────────────────────────────────
-
-    ── User Report: ──
-
-    • User Name: "alejandro_hagan"
-
-    • Role: "duckdb"
-
-    ── Catalog Report: ──
-
-    • Current Database: "contoso"
-
-    • Current Schema: "main"
-
-    • # Total Catalogs you have access to: 13
-
-    • # Total Tables you have access to: 61
-
-    • # Total Shares you have access to: 2
-
-    • # Tables in this catalog you have access to: 33
-
-    • # Tables in this catalog & schema you have access to: 0
 
 We am now in motherduck database that hosts the data behind the
 [contoso](https://usrbinr.github.io/contoso/) package.

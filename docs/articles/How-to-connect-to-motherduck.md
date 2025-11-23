@@ -95,7 +95,6 @@ to see your current configuration options.
 ``` r
 config <- motherduck::config_db 
 
-
 config$allow_community_extensions <- "true" 
 
 con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN",config = config) 

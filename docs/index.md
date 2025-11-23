@@ -13,28 +13,13 @@ Database management is incredibly easy in R with fantastic packages such
 as [DBI](https://dbplyr.tidyverse.org/) and
 [dbplyr](https://dbplyr.tidyverse.org/), however some databases have
 specific extensions or utilities that are aren’t readily accessible via
-this packages
+these packages
 
-{motherduck} pack simplifies these common database administration task
-with easy to understand syntax. {motherduck} is built upon
+{motherduck} package simplifies these common database administration
+task with easy to understand syntax. {motherduck} is built upon
 [DBI](https://dbplyr.tidyverse.org/) and returns a lazy DBI object so
 that you can further fully integrate your data with
 [dbplyr](https://dbplyr.tidyverse.org/)
-
-## Future ambition
-
-Eventually, I’ll use the learning from this package to create a meta DB
-utilities package so that regardless if you’re in snowflake, DuckDB,
-Redshift, etc you will have generalized functions that work across your
-database types
-
-This is very much work in progress – I’ll eventually transition to the
-[R7](https://rconsortium.github.io/S7/articles/S7.html) object system
-but just want to get some usage first before deciding on the
-architecture and structure.
-
-Please create an issue if you have any comments or requests or reach out
-if you have any feedback.
 
 ## What do I need to use this?
 

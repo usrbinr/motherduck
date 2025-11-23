@@ -1,5 +1,10 @@
-# Motherduck
 
+
+<!-- badges: start --> <!-- badges: start --> [![CRAN
+status](https://www.r-pkg.org/badges/version/motherduck?svg=1.png)](https://CRAN.R-project.org/package=motherduck)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/usrbinr/motherduck/HEAD)
+[![](https://cranlogs.r-pkg.org/badges/motherduck.png)](https://cran.r-project.org/package=motherduck)
+<!-- badges: end -->
 
 ![](man/figures/md_logo.png)
 

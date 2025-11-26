@@ -24,7 +24,7 @@ such as the share name, type of object shared, and privileges granted.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 owned_tbl <- list_owned_shares(con)
 print(owned_tbl)
 }

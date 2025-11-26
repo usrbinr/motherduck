@@ -25,7 +25,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # List all available extensions
 #' list_extensions(con)
@@ -84,7 +84,7 @@ list_extensions <- function(.con){
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # Print CLI report
 #' validate_extension_load_status(con, extension_names = c("excel", "arrow"), return_type = "msg")
@@ -236,7 +236,7 @@ validate_extension_load_status <- function(.con,extension_names,return_type="msg
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # Print CLI report
 #' validate_extension_install_status(con, extension_names = c("arrow", "excel"), return_type = "msg")
@@ -376,7 +376,7 @@ validate_extension_install_status <- function(.con,extension_names,return_type="
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # Install the 'motherduck' extension
 #' install_extensions(con, "motherduck")
@@ -408,7 +408,6 @@ install_extensions <- function(.con,extension_names){
 
  ext_lst$valid_ext <- extension_names[extension_names%in%valid_ext_vec ]
 
-  # install packages
 
  # validate_extension_install_status(.con,ext_lst$valid_ext,return_type = "arg")
 
@@ -485,7 +484,7 @@ install_extensions <- function(.con,extension_names){
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # Install and load the 'motherduck' extension
 #' load_extensions(con, "motherduck")
@@ -518,7 +517,6 @@ load_extensions <- function(.con,extension_names){
 
   ext_lst$valid_ext <- extension_names[extension_names%in%valid_ext_vec ]
 
-  # install packages
 
   # validate_extension_install_status(.con,ext_lst$valid_ext,return_type = "arg")
 
@@ -597,7 +595,7 @@ load_extensions <- function(.con,extension_names){
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' show_motherduck_token(con)
 #' DBI::dbDisconnect(con)
 #' }
@@ -645,7 +643,7 @@ show_motherduck_token <- function(.con){
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' pwd(con)
 #' }
 #'
@@ -708,7 +706,7 @@ pwd <- function(.con){
 #' @examples
 #' \dontrun{
 #' # Connect to MotherDuck
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # List available databases
 #' list_databases(con)
@@ -801,7 +799,7 @@ cd <- function(.con,database_name,schema_name){
 #' library(duckdb)
 #' library(dplyr)
 #'
-#' con <- dbConnect(duckdb::duckdb())
+#' con <- dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' dbWriteTable(con, "mtcars", mtcars)
 #'
 #' tbl_obj <- tbl(con, "mtcars")
@@ -858,7 +856,7 @@ summary.tbl_lazy <- function(object, ...){
 #' @examples
 #' \dontrun{
 #' # Connect to DuckDB
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # List all database settings
 #' list_setting(con)
@@ -906,7 +904,7 @@ list_setting <- function(.con){
 #' @examples
 #' \dontrun{
 #' # Connect to MotherDuck
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # List shares
 #' list_shares(con)
@@ -968,7 +966,7 @@ list_shares <- function(.con){
 #' @examples
 #' \dontrun{
 #' # Connect to DuckDB
-#' con_db <- DBI::dbConnect(duckdb::duckdb())
+#' con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #'
 #' # Launch the DuckDB UI
 #' launch_ui(con_db)

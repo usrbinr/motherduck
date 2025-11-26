@@ -20,6 +20,7 @@
 #'
 #' @param return Character scalar, one of `"msg"` or `"arg"`. Default: `"msg"`.
 #' @family db-api
+#' @return a tibble
 #' @examples
 #' \dontrun{
 #' # Using an existing connection
@@ -1059,7 +1060,7 @@ validate_flock_size <- function(flock_size){
 #' @family db-manage
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' create_or_replace_share(
 #'   .con = con,
 #'   share_name = "analytics_share",
@@ -1155,7 +1156,8 @@ create_or_replace_share <- function(.con,
 #'
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+#' 
 #' create_if_not_exists_share(
 #'   .con = con,
 #'   share_name = "analytics_share",
@@ -1245,7 +1247,7 @@ create_if_not_exists_share <- function(.con,
 #' @family db-manage
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' share_info <- describe_share(con, "analytics.sales_share")
 #' print(share_info)
 #' }
@@ -1354,7 +1356,7 @@ drop_share <- function(.con, share_name) {
 #' @family db-manage
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' owned_tbl <- list_owned_shares(con)
 #' print(owned_tbl)
 #' }
@@ -1392,7 +1394,7 @@ list_owned_shares <- function(.con) {
 #' @family db-manage
 #' @examples
 #' \dontrun{
-#' con <- DBI::dbConnect(duckdb::duckdb())
+#' con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 #' shared_tbl <- list_shared_with_me_shares(con)
 #' print(shared_tbl)
 #' }

@@ -14,6 +14,9 @@ MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.
 
 \item{return}{Character scalar, one of \code{"msg"} or \code{"arg"}. Default: \code{"msg"}.}
 }
+\value{
+a tibble
+}
 \description{
 Return or print the current database user for a MotherDuck / DuckDB connection.
 }

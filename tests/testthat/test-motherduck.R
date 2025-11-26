@@ -365,14 +365,15 @@ describe("read_csv",{
 
   it("successfully reads a csv and copies table to database",{
 
+    file_name <- tempfile()
+    
     mtcars |>
-      write.csv("mtcars.csv")
-
+      write.csv(file_name)
+    
     con_db <- DBI::dbConnect(duckdb::duckdb())
 
-    read_csv(.con = con_db,to_database_name = "memory",to_schema_name = "main",to_table_name = "mtcars_csv",file_path = "mtcars.csv",write_type = "overwrite")
+    read_csv(.con = con_db,to_database_name = "memory",to_schema_name = "main",to_table_name = "mtcars_csv",file_path = file_name,write_type = "overwrite")
 
-    file.remove("mtcars.csv")
     list_of_tables <- list_all_tables(con_db) |> dplyr::collect()
 
     testthat::expect_true(all(list_of_tables[["table_name"]] %in% "mtcars_csv"))
@@ -393,14 +394,16 @@ describe("read_csv",{
 
     it("successfully reads a excel and copies table to database",{
 
+      
+      file_name <- tempfile()
+      
       mtcars |>
-        openxlsx::write.xlsx("mtcars.xlsx")
+        openxlsx::write.xlsx(file_name)
 
       con_db <- DBI::dbConnect(duckdb::duckdb())
 
-      read_excel(.con = con_db,to_database_name = "memory",to_schema_name = "main",to_table_name = "mtcars_excel",file_path = "mtcars.xlsx",write_type = "overwrite")
+      read_excel(.con = con_db,to_database_name = "memory",to_schema_name = "main",to_table_name = "mtcars_excel",file_path = file_name,write_type = "overwrite")
 
-      file.remove("mtcars.xlsx")
       list_of_tables <- list_all_tables(con_db) |> dplyr::collect()
 
       testthat::expect_true(all(list_of_tables[["table_name"]] %in% "mtcars_excel"))

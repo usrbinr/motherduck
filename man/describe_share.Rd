@@ -26,7 +26,7 @@ The result is returned as a tibble for easy inspection and manipulation in R.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 share_info <- describe_share(con, "analytics.sales_share")
 print(share_info)
 }

@@ -1,13 +1,7 @@
 ---
-title: "How to connect to motherduck"
-subtitle: "Guide to creating a motherduck account, service token and establishing a local connection"
 author: "Alejandro Hagan"
 format: html
 eval: false
-vignette: >
-  %\VignetteIndexEntry{How to connect to motherduck}
-  %\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
 ---
 
 

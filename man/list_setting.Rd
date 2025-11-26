@@ -27,7 +27,7 @@ their names, current values, and default values.
 \examples{
 \dontrun{
 # Connect to DuckDB
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List all database settings
 list_setting(con)

@@ -178,6 +178,7 @@ read_excel <- function(
 
     if(valid_md){
     #need this to be create if not exists and then use
+    
     DBI::dbExecute(conn = .con,glue::glue_sql("CREATE DATABASE IF NOT EXISTS {`to_database_name`}; USE {`to_database_name`};",.con=.con))
     }
 

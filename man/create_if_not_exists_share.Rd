@@ -45,7 +45,8 @@ After creation, the current user is displayed for confirmation.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
 create_if_not_exists_share(
   .con = con,
   share_name = "analytics_share",

@@ -1,25 +1,21 @@
 Package: motherduck
 Type: Package
-Title: Collection of Utilities to Manage a Motherduck Database
+Title: Utilities for Managing a 'Motherduck' Database
 Version: 0.2.0
-Authors@R: c(
+Authors@R: 
     person(
       "Alejandro", "Hagan",
       email = "alejandro.hagan@outlook.com",
       role = c("aut", "cre")
     )
-  )
-Description: Collection of database utilities for Motherduck database
-    This provides utilities and metadata function support to simplify the management, connection,
-    uploading and management of a Motherduck database platform.
-    This package requires an account Motherduck account to maximize its functions.
+Description: Provides helper functions, metadata utilities, and workflows for 
+    administering and managing databases on the 'Motherduck' cloud platform. 
+    Some features require a 'Motherduck' account (<https://motherduck.com/>).
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-VignetteBuilder:
-    quarto
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+LazyData: true
 Imports:
     DBI,
     assertthat,
@@ -34,17 +30,13 @@ Imports:
     rlang,
     janitor,
     tibble
-Suggests: 
+Suggests:
     testthat (>= 3.0.0),
     quarto,
-    openxlsx,
-    knitr,
     contoso,
-    fansi,
-    fs,
-    ggplot2,
-    gt
+    openxlsx
 Config/testthat/edition: 3
-Depends: 
+Depends:
     R (>= 3.5)
 URL: https://usrbinr.github.io/motherduck/
+Config/Needs/website: rmarkdown

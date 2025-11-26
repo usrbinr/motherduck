@@ -25,7 +25,7 @@ The result is returned as a tidy tibble for easy manipulation in R.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 shared_tbl <- list_shared_with_me_shares(con)
 print(shared_tbl)
 }

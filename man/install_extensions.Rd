@@ -30,7 +30,7 @@ automatically load extensions after installing.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Install the 'motherduck' extension
 install_extensions(con, "motherduck")

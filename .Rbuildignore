@@ -12,3 +12,4 @@
 ^vignettes/.quarto
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^vignettes/articles$

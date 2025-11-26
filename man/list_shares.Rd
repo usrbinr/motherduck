@@ -27,7 +27,7 @@ available shares within an authenticated MotherDuck session.
 \examples{
 \dontrun{
 # Connect to MotherDuck
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List shares
 list_shares(con)

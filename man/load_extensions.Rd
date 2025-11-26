@@ -30,7 +30,7 @@ listing all available extensions and installing additional DuckDB extensions.
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Install and load the 'motherduck' extension
 load_extensions(con, "motherduck")

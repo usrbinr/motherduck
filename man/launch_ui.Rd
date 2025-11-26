@@ -35,7 +35,7 @@ interactively without needing to leave the R environment.
 \examples{
 \dontrun{
 # Connect to DuckDB
-con_db <- DBI::dbConnect(duckdb::duckdb())
+con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Launch the DuckDB UI
 launch_ui(con_db)

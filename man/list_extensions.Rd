@@ -33,7 +33,7 @@ This is useful for determining which extensions can be installed or loaded using
 }
 \examples{
 \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List all available extensions
 list_extensions(con)

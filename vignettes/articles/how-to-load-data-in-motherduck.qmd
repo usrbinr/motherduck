@@ -4,10 +4,6 @@ subtitle: "Upload, organize and move your data in motherduck"
 format: html
 author: Alejandro Hagan
 eval: false
-vignette: >
-  %\VignetteIndexEntry{How to load data into motherduck}
-  %\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r}
@@ -152,7 +148,7 @@ list_current_schemas(con_md)
 #| include: true
 
 
-  motherduck::list_current_schemas(con_md) |> 
+motherduck::list_current_schemas(con_md) |> 
     gt::gt() |>
     gt::tab_options(
       ,ihtml.active = TRUE

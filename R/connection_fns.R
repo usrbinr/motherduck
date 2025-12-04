@@ -161,13 +161,15 @@ connect_to_motherduck <- function(motherduck_token="MOTHERDUCK_TOKEN",db_path=NU
         cli::cli_end()
     }
 
-
+   
     ## allows for user to either directly input their token if not available
 
     if(nchar(Sys.getenv(motherduck_token))>1){
 
     motherduck_token_code <- Sys.getenv(motherduck_token)
 
+    }else if(nchar(motherduck_token)>20){
+        motherduck_token_code <- motherduck_token
     }else{
         cli_msg()
     }

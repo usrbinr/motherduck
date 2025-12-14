@@ -151,6 +151,7 @@ create_schema <- function(.con,database_name,schema_name){
 #' @keywords internal
 create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,write_type="overwrite"){
 
+
     # Validate write_type
     write_type <- rlang::arg_match(write_type,values = c("overwrite","append"))
 
@@ -160,6 +161,7 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
     md_con_indicator <- validate_md_connection_status(.con,return_type="arg")
     )
 
+    Sys.sleep(1)
 
     if(rlang::is_missing(database_name)){
 
@@ -176,7 +178,10 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
       )
     }
 
+    
     database_name <- DBI::dbQuoteIdentifier(conn = .con,x = database_name)
+    
+    Sys.sleep(1)
 #
     if(md_con_indicator){
 
@@ -196,7 +201,7 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
 
     }
 
-
+    Sys.sleep(1)
 
     # Add audit fields
     out <- .data |>

@@ -13,3 +13,4 @@
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
 ^vignettes/articles$
+test.R

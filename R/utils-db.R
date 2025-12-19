@@ -161,7 +161,6 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
     md_con_indicator <- validate_md_connection_status(.con,return_type="arg")
     )
 
-    Sys.sleep(1)
 
     if(rlang::is_missing(database_name)){
 
@@ -178,30 +177,6 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
       )
     }
 
-    
-    database_name <- DBI::dbQuoteIdentifier(conn = .con,x = database_name)
-    
-    Sys.sleep(1)
-#
-    if(md_con_indicator){
-
-#         # Create and connect to the database
-        DBI::dbExecute(.con, glue::glue_sql("CREATE DATABASE IF NOT EXISTS {database_name}; USE {database_name};", .con = .con))
-
-    }
-
-    # # Create schema
-    Sys.sleep(1)
-
-    schema_name <- DBI::dbQuoteIdentifier(conn = .con,x=schema_name)
-
-    if(md_con_indicator){
-
-    DBI::dbExecute(.con, glue::glue_sql("CREATE SCHEMA IF NOT EXISTS {schema_name}; USE {schema_name};", .con = .con))
-
-    }
-
-    Sys.sleep(1)
 
     # Add audit fields
     out <- .data |>
@@ -214,7 +189,7 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
 
     # Use DBI::Id to ensure schema is used explicitly
 
-    table_id <- DBI::Id(table = table_name)
+    table_id <- DBI::Id(database_name=database_name,schema_name=schema_name,table = table_name)
 
     # Write table
     if (write_type == "overwrite") {
@@ -293,17 +268,6 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
 
   }
 
-  if(md_con_indicator){
-    # Create and connect to the database
-    DBI::dbExecute(.con, glue::glue_sql("CREATE DATABASE IF NOT EXISTS {`database_name`};USE {`database_name`};", .con = .con))
-  }
-
-  Sys.sleep(1)
-  # Create schema
-  if(md_con_indicator){
-  DBI::dbExecute(.con, glue::glue_sql("CREATE SCHEMA IF NOT EXISTS {`schema_name`}; USE {`schema_name`};", .con = .con))
-}
-
   date_vec <- Sys.Date()
   time_vec <- format(Sys.time(), "%H:%M:%S  %Z",tz = Sys.timezone())
 
@@ -316,14 +280,14 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
     dbplyr::remote_query()
 
 
-  table_name_id <- DBI::dbQuoteIdentifier(.con,table_name)
+  table_id <- DBI::Id(database_name=database_name,schema_name=schema_name,table = table_name)
 
   # Write table
   if (write_type == "overwrite") {
 
     DBI::dbExecute(.con, glue::glue_sql("DROP TABLE IF EXISTS {table_name_id};",.con = .con))
 
-    Sys.sleep(1)
+    Sys.sleep(5)
 
     DBI::dbExecute(.con,glue::glue_sql("CREATE TABLE IF NOT EXISTS {table_name_id} AS ",query_plan,.con = .con))
 
@@ -1139,11 +1103,100 @@ convert_table_to_sql_id <- function(x) {
 
 
 
+#' @title Check if a Database Exists
+#' @name validate_database_exists
+#'
+#' @description
+#' Checks whether a database with the specified name exists on the current connection.
+#'
+#' @details
+#' This function queries the available databases for the connection using
+#' `motherduck::list_all_databases()` and performs an exact match check.
+#' Returns `TRUE` if the database exists, `FALSE` otherwise.
+#'
+#' @param .con A valid `DBI` connection (DuckDB / MotherDuck).
+#' @param database_name A string specifying the database name to check.
+#'
+#' @return
+#' Logical `TRUE` if the database exists, `FALSE` otherwise.
+#'
+#' @examples
+#' \dontrun{
+#' con <- DBI::dbConnect(duckdb::duckdb())
+#' validate_database_exists(con, "test_db")
+#' }
+#'
+#' @export
+validate_database_exists <- function(.con,database_name){
+  
+ 
+  
+  db_vec <-  motherduck::list_all_databases(.con) |>
+    dplyr::collect() |> 
+    dplyr::pull(database_name) 
+  
+  
+  if(any(database_name %in% db_vec)){
+    
+    return(TRUE)
+    
+  }
+  
+  return(FALSE)
+  
+  
+}
+
+
+#' @title Check if a Schema Exists in a Database
+#' @name validate_database_schema_exists
+#'
+#' @description
+#' Checks whether a schema with the specified name exists within a given database.
+#'
+#' @details
+#' This function queries all tables in the connection using
+#' `motherduck::list_all_tables()`, filters by `table_catalog` (database),
+#' and performs an exact match on the schema name.
+#'
+#' @param .con A valid `DBI` connection (DuckDB / MotherDuck).
+#' @param database_name The database name to check.
+#' @param schema_name The schema name to check within the database.
+#'
+#' @return
+#' Logical `TRUE` if the schema exists, `FALSE` otherwise.
+#'
+#' @examples
+#' \dontrun{
+#' con <- DBI::dbConnect(duckdb::duckdb())
+#' validate_database_schema_exists(con, "test_db", "main")
+#' }
+#'
+#' @family db-validate
+#' @export
+validate_database_schema_exists <- function(.con,database_name,schema_name){
+  
+  
+  db_vec <-  motherduck::list_all_tables(.con) |>
+    dplyr::collect() |>
+    dplyr::filter(table_catalog %in% database_name) |> 
+    dplyr::pull(table_schema) 
+  
+  
+  if(any(schema_name %in% db_vec)){
+    
+    return(TRUE)
+    
+  }
+  
+  return(FALSE)
+  
+}
 
 
 
 utils::globalVariables(
-  c("table_catalog", "table_schema", "table_name","current_database")
+  c("table_catalog", "table_schema", "table_name","current_database","db_vec")
 )
 
 

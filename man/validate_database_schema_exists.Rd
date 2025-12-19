@@ -31,4 +31,4 @@ validate_database_schema_exists(con, "test_db", "main")
 }
 
 }
-\concept{db-validate}
+\keyword{internal}

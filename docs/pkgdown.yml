@@ -2,9 +2,9 @@ pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  How-to-connect-to-motherduck: How-to-connect-to-motherduck.html
-  How-to-load-data-in-motherduck: How-to-load-data-in-motherduck.html
-last_built: 2025-11-23T22:17Z
+  articles/how-to-connect-to-motherduck: how-to-connect-to-motherduck.html
+  articles/how-to-load-data-in-motherduck: how-to-load-data-in-motherduck.html
+last_built: 2025-12-19T23:13Z
 urls:
   reference: https://usrbinr.github.io/motherduck/reference
   article: https://usrbinr.github.io/motherduck/articles

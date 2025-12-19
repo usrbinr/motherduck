@@ -29,3 +29,4 @@ validate_database_exists(con, "test_db")
 }
 
 }
+\keyword{internal}

@@ -176,6 +176,23 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
       schema_name <- pwd(.con)[["current_schema"]]
       )
     }
+    
+    # validate database exists 
+    
+    if(!validate_database_exists(.con=.con,database_name = database_name)){
+      
+      cli::cli_abort("Database {.val database_name} does not exists")
+      
+    }
+    
+    # validate schemas exists 
+    
+    if(!validate_database_schema_exists(.con=.con,database_name = database_name,schema_name = schema_name)){
+      
+      cli::cli_abort("Schema {.vaal schema_name} does not exist in {.val database_name}")
+      
+    }
+    
 
 
     # Add audit fields
@@ -267,7 +284,25 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
     )
 
   }
+  
+ 
+  # validate database exists 
+  
+  if(!validate_database_exists(.con=.con,database_name = database_name)){
+    
+    cli::cli_abort("Database {.val database_name} does not exists")
+    
+  }
+  
+  # validate schemas exists 
+  
+  if(!validate_database_schema_exists(.con=.con,database_name = database_name,schema_name = schema_name)){
+    
+    cli::cli_abort("Schema {.vaal schema_name} does not exist in {.val database_name}")
+    
+  }
 
+  # assign time stamps for upload
   date_vec <- Sys.Date()
   time_vec <- format(Sys.time(), "%H:%M:%S  %Z",tz = Sys.timezone())
 
@@ -1119,7 +1154,7 @@ convert_table_to_sql_id <- function(x) {
 #'
 #' @return
 #' Logical `TRUE` if the database exists, `FALSE` otherwise.
-#'
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' con <- DBI::dbConnect(duckdb::duckdb())
@@ -1172,7 +1207,7 @@ validate_database_exists <- function(.con,database_name){
 #' validate_database_schema_exists(con, "test_db", "main")
 #' }
 #'
-#' @family db-validate
+#' @keywords internal
 #' @export
 validate_database_schema_exists <- function(.con,database_name,schema_name){
   

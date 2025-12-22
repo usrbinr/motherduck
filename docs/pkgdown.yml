@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/how-to-connect-to-motherduck: how-to-connect-to-motherduck.html
   articles/how-to-load-data-in-motherduck: how-to-load-data-in-motherduck.html
-last_built: 2025-12-19T23:13Z
+last_built: 2025-12-22T14:27Z
 urls:
   reference: https://usrbinr.github.io/motherduck/reference
   article: https://usrbinr.github.io/motherduck/articles

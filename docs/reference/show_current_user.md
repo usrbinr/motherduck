@@ -25,6 +25,10 @@ show_current_user(.con, motherduck_token, return = "msg")
 
   Character scalar, one of `"msg"` or `"arg"`. Default: `"msg"`.
 
+## Value
+
+a tibble
+
 ## Details
 
 This helper queries the active DB connection for the current user (via

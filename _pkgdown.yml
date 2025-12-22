@@ -101,4 +101,7 @@ reference:
   - title: "Utilities"
     contents:
       - validate_and_print_database_loction
+      - validate_database_exists
+      - validate_database_schema_exists
+      - show_information_schema
       - summary

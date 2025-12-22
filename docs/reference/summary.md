@@ -46,7 +46,7 @@ library(DBI)
 library(duckdb)
 library(dplyr)
 
-con <- dbConnect(duckdb::duckdb())
+con <- dbConnect(duckdb::duckdb(dbdir = tempfile()))
 dbWriteTable(con, "mtcars", mtcars)
 
 tbl_obj <- tbl(con, "mtcars")

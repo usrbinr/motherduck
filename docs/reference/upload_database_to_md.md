@@ -63,7 +63,7 @@ Other db-manage:
 
 ``` r
 if (FALSE) { # \dontrun{
-con_db <- DBI::dbConnect(duckdb::duckdb())
+con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 create_table(.con=con_db,.data=mtcars,database_name="memory",schema_name="main",table_name="mtcars")
 con_md <- connect_to_motherduck()
 

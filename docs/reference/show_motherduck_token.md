@@ -41,7 +41,7 @@ Other db-con:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 show_motherduck_token(con)
 DBI::dbDisconnect(con)
 } # }

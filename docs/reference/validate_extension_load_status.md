@@ -65,7 +65,7 @@ Other db-con:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Print CLI report
 validate_extension_load_status(con, extension_names = c("excel", "arrow"), return_type = "msg")

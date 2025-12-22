@@ -4,6 +4,8 @@
 <url><loc>https://usrbinr.github.io/motherduck/LICENSE.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/articles/How-to-connect-to-motherduck.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/articles/How-to-load-data-in-motherduck.html</loc></url>
+<url><loc>https://usrbinr.github.io/motherduck/articles/how-to-connect-to-motherduck.html</loc></url>
+<url><loc>https://usrbinr.github.io/motherduck/articles/how-to-load-data-in-motherduck.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/articles/index.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/authors.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/index.html</loc></url>
@@ -60,11 +62,14 @@
 <url><loc>https://usrbinr.github.io/motherduck/reference/read_csv.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/read_excel.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/show_current_user.html</loc></url>
+<url><loc>https://usrbinr.github.io/motherduck/reference/show_information_schema.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/show_motherduck_token.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/summary.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/upload_database_to_md.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/validate_and_print_database_loction.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/validate_con.html</loc></url>
+<url><loc>https://usrbinr.github.io/motherduck/reference/validate_database_exists.html</loc></url>
+<url><loc>https://usrbinr.github.io/motherduck/reference/validate_database_schema_exists.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/validate_extension_install_status.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/validate_extension_load_status.html</loc></url>
 <url><loc>https://usrbinr.github.io/motherduck/reference/validate_md_connection_status.html</loc></url>

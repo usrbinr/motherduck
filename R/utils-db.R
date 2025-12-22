@@ -264,6 +264,7 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
 create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,write_type="overwrite"){
 
 
+  
   # Validate write_type
   write_type <- rlang::arg_match(write_type,values = c("overwrite","append"))
 
@@ -298,7 +299,7 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
   
   if(!validate_database_schema_exists(.con=.con,database_name = database_name,schema_name = schema_name)){
     
-    cli::cli_abort("Schema {.vaal schema_name} does not exist in {.val database_name}")
+    cli::cli_abort("Schema {.val schema_name} does not exist in {.val database_name}")
     
   }
 
@@ -320,15 +321,15 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
   # Write table
   if (write_type == "overwrite") {
 
-    DBI::dbExecute(.con, glue::glue_sql("DROP TABLE IF EXISTS {table_name_id};",.con = .con))
+    DBI::dbExecute(.con, glue::glue_sql("DROP TABLE IF EXISTS {dbQuoteIdentifier(.con,table_id)};",.con = .con))
 
     Sys.sleep(5)
 
-    DBI::dbExecute(.con,glue::glue_sql("CREATE TABLE IF NOT EXISTS {table_name_id} AS ",query_plan,.con = .con))
+    DBI::dbExecute(.con,glue::glue_sql("CREATE TABLE IF NOT EXISTS {dbQuoteIdentifier(.con,table_id)} AS ",query_plan,.con = .con))
 
   } else if (write_type == "append") {
 
-    DBI::dbExecute(.con,glue::glue_sql("INSERT INTO {table_name_id} ",query_plan,.con = .con))
+    DBI::dbExecute(.con,glue::glue_sql("INSERT INTO {dbQuoteIdentifier(.con,table_id)} ",query_plan,.con = .con))
 
   }
 
@@ -1154,7 +1155,6 @@ convert_table_to_sql_id <- function(x) {
 #'
 #' @return
 #' Logical `TRUE` if the database exists, `FALSE` otherwise.
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #' con <- DBI::dbConnect(duckdb::duckdb())
@@ -1166,9 +1166,8 @@ validate_database_exists <- function(.con,database_name){
   
  
   
-  db_vec <-  motherduck::list_all_databases(.con) |>
-    dplyr::collect() |> 
-    dplyr::pull(database_name) 
+  db_vec <-  show_information_schema(.con) |>
+    dplyr::pull(catalog_name) 
   
   
   if(any(database_name %in% db_vec)){
@@ -1207,15 +1206,13 @@ validate_database_exists <- function(.con,database_name){
 #' validate_database_schema_exists(con, "test_db", "main")
 #' }
 #'
-#' @keywords internal
 #' @export
 validate_database_schema_exists <- function(.con,database_name,schema_name){
   
   
-  db_vec <-  motherduck::list_all_tables(.con) |>
-    dplyr::collect() |>
-    dplyr::filter(table_catalog %in% database_name) |> 
-    dplyr::pull(table_schema) 
+  db_vec <-  show_information_schema(.con) |> 
+    dplyr::filter(catalog_name %in% database_name) |> 
+    dplyr::pull(schema_name) 
   
   
   if(any(schema_name %in% db_vec)){
@@ -1229,6 +1226,57 @@ validate_database_schema_exists <- function(.con,database_name,schema_name){
 }
 
 
+
+
+#' Show Information Schema Schemas
+#'
+#' @description
+#' List all schemas available in the connected database.
+#'
+#' This function queries the `information_schema.schemata` view to return
+#' metadata about schemas that exist in the database associated with the
+#' provided DBI connection. It is intended for inspection and debugging
+#' purposes and does not modify database state.
+#'
+#' @inheritParams validate_con
+#' @returns A tibble with one row per schema. Columns typically include
+#'   catalog name, schema name, schema owner, and other database-specific
+#'   metadata as defined by the SQL information schema.
+#'
+#' @details
+#' The structure and contents of the returned tibble depend on the database
+#' backend. Databases may expose additional or fewer columns in
+#' `information_schema.schemata`.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(DBI)
+#' con <- dbConnect(duckdb::duckdb())
+#'
+#' show_information_schema(con)
+#'
+#' dbDisconnect(con, shutdown = TRUE)
+#' }
+show_information_schema <- function(.con){
+  
+  
+  validate_con(.con)
+  
+  out <- DBI::dbGetQuery(
+    .con
+    ,dplyr::sql("
+    SELECT *
+    FROM information_schema.schemata
+              ")
+  ) |> 
+    tibble::as_tibble()
+  
+  return(out)
+  
+  
+}
 
 utils::globalVariables(
   c("table_catalog", "table_schema", "table_name","current_database","db_vec")

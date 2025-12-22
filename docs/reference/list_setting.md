@@ -45,7 +45,7 @@ Other db-list:
 ``` r
 if (FALSE) { # \dontrun{
 # Connect to DuckDB
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List all database settings
 list_setting(con)

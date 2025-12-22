@@ -54,7 +54,7 @@ Other db-manage:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 share_info <- describe_share(con, "analytics.sales_share")
 print(share_info)
 } # }

@@ -55,7 +55,7 @@ Other db-list:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List all available extensions
 list_extensions(con)

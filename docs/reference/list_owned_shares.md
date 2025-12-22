@@ -50,7 +50,7 @@ Other db-manage:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 owned_tbl <- list_owned_shares(con)
 print(owned_tbl)
 } # }

@@ -1,4 +1,6 @@
 ---
+title: "How to connect to motherduck"
+subtitle: "Connect to your motherduck account from your local server" 
 author: "Alejandro Hagan"
 format: html
 eval: false

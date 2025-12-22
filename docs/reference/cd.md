@@ -55,7 +55,7 @@ Other db-meta:
 ``` r
 if (FALSE) { # \dontrun{
 # Connect to MotherDuck
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # List available databases
 list_databases(con)

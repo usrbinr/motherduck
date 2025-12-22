@@ -169,6 +169,12 @@ con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN")
 
 - [`validate_and_print_database_loction()`](https://usrbinr.github.io/motherduck/reference/validate_and_print_database_loction.md)
   : validate and Pprint your database location
+- [`validate_database_exists()`](https://usrbinr.github.io/motherduck/reference/validate_database_exists.md)
+  : Check if a Database Exists
+- [`validate_database_schema_exists()`](https://usrbinr.github.io/motherduck/reference/validate_database_schema_exists.md)
+  : Check if a Schema Exists in a Database
+- [`show_information_schema()`](https://usrbinr.github.io/motherduck/reference/show_information_schema.md)
+  : Show Information Schema Schemas
 - [`summary(`*`<tbl_lazy>`*`)`](https://usrbinr.github.io/motherduck/reference/summary.md)
   : Summarize a Lazy DBI Table
 
@@ -177,6 +183,6 @@ con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN")
 ### All vignettes
 
 - [How to connect to
-  motherduck](https://usrbinr.github.io/motherduck/articles/How-to-connect-to-motherduck.md):
+  motherduck](https://usrbinr.github.io/motherduck/articles/how-to-connect-to-motherduck.md):
 - [How to load data into
-  motherduck](https://usrbinr.github.io/motherduck/articles/How-to-load-data-in-motherduck.md):
+  motherduck](https://usrbinr.github.io/motherduck/articles/how-to-load-data-in-motherduck.md):

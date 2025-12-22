@@ -136,5 +136,11 @@
 
 - [`validate_and_print_database_loction()`](https://usrbinr.github.io/motherduck/reference/validate_and_print_database_loction.md)
   : validate and Pprint your database location
+- [`validate_database_exists()`](https://usrbinr.github.io/motherduck/reference/validate_database_exists.md)
+  : Check if a Database Exists
+- [`validate_database_schema_exists()`](https://usrbinr.github.io/motherduck/reference/validate_database_schema_exists.md)
+  : Check if a Schema Exists in a Database
+- [`show_information_schema()`](https://usrbinr.github.io/motherduck/reference/show_information_schema.md)
+  : Show Information Schema Schemas
 - [`summary(`*`<tbl_lazy>`*`)`](https://usrbinr.github.io/motherduck/reference/summary.md)
   : Summarize a Lazy DBI Table

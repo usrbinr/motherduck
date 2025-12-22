@@ -31,4 +31,3 @@ validate_database_schema_exists(con, "test_db", "main")
 }
 
 }
-\keyword{internal}

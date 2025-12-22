@@ -50,7 +50,7 @@ Other db-meta:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 pwd(con)
 } # }
 ```

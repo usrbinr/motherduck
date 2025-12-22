@@ -49,7 +49,7 @@ Other db-meta:
 ``` r
 if (FALSE) { # \dontrun{
 # Connect to DuckDB
-con_db <- DBI::dbConnect(duckdb::duckdb())
+con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Launch the DuckDB UI
 launch_ui(con_db)

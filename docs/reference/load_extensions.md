@@ -52,7 +52,7 @@ Other db-con:
 
 ``` r
 if (FALSE) { # \dontrun{
-con <- DBI::dbConnect(duckdb::duckdb())
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
 
 # Install and load the 'motherduck' extension
 load_extensions(con, "motherduck")

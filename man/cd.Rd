@@ -4,7 +4,7 @@
 \alias{cd}
 \title{Change Active Database and Schema}
 \usage{
-cd(.con, database_name, schema_name)
+cd(.con, database_name, schema_name, silent = FALSE)
 }
 \arguments{
 \item{.con}{A valid \code{DBI} connection (DuckDB / MotherDuck).}
@@ -15,6 +15,8 @@ Must be one of the available databases returned by \code{\link[=list_all_databas
 \item{schema_name}{(Optional) A character string specifying the schema
 to switch to within the given database. Must be one of the available
 schemas returned by \code{\link[=list_current_schemas]{list_current_schemas()}}.}
+
+\item{silent}{to print message or not, default is FALSE}
 }
 \value{
 Invisibly returns a message summarizing the new connection context.

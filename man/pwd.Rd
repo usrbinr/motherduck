@@ -4,10 +4,12 @@
 \alias{pwd}
 \title{Print Current MotherDuck Database Context}
 \usage{
-pwd(.con)
+pwd(.con, silent = FALSE)
 }
 \arguments{
 \item{.con}{A valid \code{DBI} connection (DuckDB / MotherDuck).}
+
+\item{silent}{to print message or not, default is FALSE}
 }
 \value{
 A tibble with columns:

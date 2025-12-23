@@ -632,7 +632,7 @@ show_motherduck_token <- function(.con){
 #' will be executed.
 #'
 #' @inheritParams validate_con
-#'
+#' @param silent to print message or not, default is FALSE
 #' @returns
 #' A tibble with columns:
 #' \describe{
@@ -650,7 +650,7 @@ show_motherduck_token <- function(.con){
 #' @family db-meta
 #'
 #' @export
-pwd <- function(.con){
+pwd <- function(.con,silent=FALSE){
 
   validate_con(.con)
 
@@ -668,7 +668,11 @@ pwd <- function(.con){
 
   out <- dplyr::bind_cols(database_tbl,schema_tbl)
 
+  if(!silent){
+    
   cli::cli_alert("Current role: {.envvar {role_vec}}")
+  
+    }
 
   return(out)
 }
@@ -697,7 +701,7 @@ pwd <- function(.con){
 #' @param schema_name (Optional) A character string specifying the schema
 #'   to switch to within the given database. Must be one of the available
 #'   schemas returned by [list_current_schemas()].
-#'
+#' @param silent to print message or not, default is FALSE
 #' @returns
 #' Invisibly returns a message summarizing the new connection context.
 #' Side effects include printing CLI headers showing the current user
@@ -720,7 +724,7 @@ pwd <- function(.con){
 #'
 #' @family db-meta
 #' @export
-cd <- function(.con,database_name,schema_name){
+cd <- function(.con,database_name,schema_name,silent=FALSE){
 
   validate_con(.con)
 
@@ -759,10 +763,16 @@ cd <- function(.con,database_name,schema_name){
                    ")
     }
   }
+  
+  if(!silent){
+    
+    cli::cli_h1("Status:")
+    cli_show_user(.con)
+    cli_show_db(.con)    
+    
+    
+  }
 
-  cli::cli_h1("Status:")
-  cli_show_user(.con)
-  cli_show_db(.con)
 
 
 }

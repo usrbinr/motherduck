@@ -70,7 +70,7 @@ Later on we will show examples of how to read data from a source files in csv or
 
 First let us connect to our motherduck database
 
-See the [How to connect to motherduck vignette](https://usrbinr.github.io/motherduck/articles/How-to-connect-to-motherduck.html) for more information
+See the [How to connect to motherduck vignette](How-to-connect-to-motherduck.qmd) for more information
 
 ::: {#cau-con .callout-caution collapse="true"}
 ## connect-to-motherduck

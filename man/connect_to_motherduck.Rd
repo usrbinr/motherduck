@@ -4,16 +4,9 @@
 \alias{connect_to_motherduck}
 \title{Create connection to motherduck}
 \usage{
-connect_to_motherduck(
-  motherduck_token = "MOTHERDUCK_TOKEN",
-  db_path = NULL,
-  config
-)
+connect_to_motherduck(db_path = NULL, config)
 }
 \arguments{
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
-
 \item{db_path}{Character, optional. Path to a DuckDB database file or directory to use. If
 \code{NULL}, a temporary file is used.}
 
@@ -29,28 +22,32 @@ The function handles token validation, database file creation, extension loading
 \verb{PRAGMA MD_CONNECT} to authenticate the connection.
 }
 \details{
-This function provides a convenient interface for connecting to MotherDuck. It allows you to:
+This function provides a convenient interface for connecting to MotherDuck. It:
 \itemize{
-\item Use a token stored in an environment variable or supply the token directly.
-\item Optionally specify a persistent DuckDB database file or directory via \code{db_path}.
-\item Optionally Provide custom DuckDB configuration options via \code{config}.
-\item Automatically load the MotherDuck extension if not already loaded.
+\item Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable.
+\item Optionally specifies a persistent DuckDB database file or directory via \code{db_path}.
+\item Optionally provides custom DuckDB configuration options via \code{config}.
+\item Automatically loads the MotherDuck extension if not already loaded.
 }
+
+You must set the \code{MOTHERDUCK_TOKEN} environment variable in your \code{.Renviron} file
+before calling this function. Use \code{usethis::edit_r_environ()} to edit your
+\code{.Renviron} file.
 
 If \code{db_path} is not supplied, a temporary DuckDB database file will be created in the session's
 temporary directory. Use \code{config} to pass any DuckDB-specific options (e.g., memory limits or
 extensions).
+
+MotherDuck currently supports DuckDB versions 1.3.0 through 1.4.4. This function
+will warn if you're using an untested version.
 }
 \examples{
 \dontrun{
 # Connect using a token stored in your .Renviron
 con <- connect_to_motherduck()
 
-# Connect with a direct token
-con <- connect_to_motherduck(motherduck_token = "MY_DIRECT_TOKEN")
-
 # Connect and specify a persistent database file
-con <- connect_to_motherduck( )
+con <- connect_to_motherduck(db_path = "~/my_database.duckdb")
 }
 
 }

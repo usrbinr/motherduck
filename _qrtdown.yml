@@ -1,0 +1,21 @@
+url: https://usrbinr.github.io/motherduck/
+template:
+  theme: cosmo
+  code_overflow: wrap
+navbar:
+  title: motherduck 0.2.1
+  left:
+  - text: Get started
+    href: vignettes/articles/how-to-connect-to-motherduck.qmd
+  - text: Reference
+    href: reference.qmd
+  - text: Articles
+    href: articles.qmd
+  - text: Changelog
+    href: NEWS.md
+  right:
+  - icon: github
+    href: https://github.com/usrbinr/motherduck
+    aria-label: Source code
+reference: []
+articles: []

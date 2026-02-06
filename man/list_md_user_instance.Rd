@@ -4,14 +4,11 @@
 \alias{list_md_user_instance}
 \title{List a MotherDuck user's instance settings}
 \usage{
-list_md_user_instance(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+list_md_user_instance(user_name)
 }
 \arguments{
 \item{user_name}{A character string specifying the MotherDuck user name whose
 tokens should be listed.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble with two columns:
@@ -27,16 +24,16 @@ MotherDuck user, returning the results as a tidy tibble.
 \details{
 This function calls the MotherDuck REST API endpoint
 \verb{https://api.motherduck.com/v1/users/\{user_name\}/instances} to fetch
-information about the user’s active DuckDB instances and their configuration
+information about the user's active DuckDB instances and their configuration
 parameters.
 
-The current authenticated user is displayed with \code{\link[=show_current_user]{show_current_user()}} for
-verification.
+Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable for
+authorization.
 }
 \examples{
 \dontrun{
 # List instance settings for a specific user
-instance_tbl <- list_md_user_instance(user_name ="Bob Smith")
+instance_tbl <- list_md_user_instance(user_name = "bob_smith")
 }
 
 }

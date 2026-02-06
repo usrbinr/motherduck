@@ -4,14 +4,11 @@
 \alias{list_md_user_tokens}
 \title{List a MotherDuck user's tokens}
 \usage{
-list_md_user_tokens(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+list_md_user_tokens(user_name)
 }
 \arguments{
 \item{user_name}{A character string specifying the MotherDuck user name whose
 tokens should be listed.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble with two columns:
@@ -29,11 +26,8 @@ This function queries the MotherDuck REST API endpoint
 \verb{https://api.motherduck.com/v1/users/\{user_name\}/tokens} to list the tokens
 available for the specified user.
 
-It uses the provided or environment-resolved \code{motherduck_token} for
-authorization. If \code{motherduck_token} is not explicitly provided, the function
-attempts to resolve it from the \code{MOTHERDUCK_TOKEN} environment variable
-The current authenticated user is displayed via \code{\link[=show_current_user]{show_current_user()}} for
-verification.
+Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable for
+authorization.
 }
 \examples{
 \dontrun{

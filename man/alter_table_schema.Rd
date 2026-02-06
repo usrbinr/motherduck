@@ -4,18 +4,22 @@
 \alias{alter_table_schema}
 \title{Move Tables from One Schema to Another}
 \usage{
-alter_table_schema(.con, from_table_names, new_schema)
+alter_table_schema(.con, table_names, from_schema, new_schema, silent = FALSE)
 }
 \arguments{
 \item{.con}{A valid \code{DBI} connection (DuckDB / MotherDuck).}
 
-\item{from_table_names}{Character vector of table names to move.}
+\item{table_names}{Character vector of table names to move.}
+
+\item{from_schema}{Source schema name (where the tables currently reside).}
 
 \item{new_schema}{Target schema name (where the tables will be moved).}
+
+\item{silent}{Logical; if \code{TRUE}, suppress CLI output. Default is \code{FALSE}.}
 }
 \value{
-Invisibly returns a character vector of fully-qualified table names moved.
-Side effects: creates \code{new_schema} if needed and alters table schemas.
+Invisibly returns \code{NULL}.
+Side effects: creates \code{new_schema} if needed and moves tables.
 }
 \description{
 Moves one or more tables from an existing schema to a new (target) schema
@@ -26,7 +30,7 @@ it is created first.
 \itemize{
 \item Ensures \code{new_schema} exists (\verb{CREATE SCHEMA IF NOT EXISTS}).
 \item For each table in \code{table_names}, runs:
-\verb{ALTER TABLE old_schema.table SET SCHEMA new_schema}.
+\verb{ALTER TABLE from_schema.table SET SCHEMA new_schema}.
 \item Table and schema identifiers are safely quoted with \code{glue::glue_sql()}.
 }
 }

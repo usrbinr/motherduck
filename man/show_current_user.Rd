@@ -4,13 +4,10 @@
 \alias{show_current_user}
 \title{Show current database user}
 \usage{
-show_current_user(.con, motherduck_token, return = "msg")
+show_current_user(.con, return = "msg")
 }
 \arguments{
 \item{.con}{A valid \code{DBI} connection (DuckDB / MotherDuck).}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 
 \item{return}{Character scalar, one of \code{"msg"} or \code{"arg"}. Default: \code{"msg"}.}
 }
@@ -22,10 +19,7 @@ Return or print the current database user for a MotherDuck / DuckDB connection.
 }
 \details{
 This helper queries the active DB connection for the current user (via
-\verb{SELECT current_user}). You may either provide an existing DBI connection
-via \code{.con} or provide a \code{motherduck_token} and let the function open a
-short-lived connection for you. When the function opens a connection it
-will close it before returning.
+\verb{SELECT current_user}).
 
 The function supports two output modes:
 \itemize{
@@ -37,11 +31,8 @@ invisibly (useful for interactive use),
 \examples{
 \dontrun{
 # Using an existing connection
-con <- connect_to_motherduck("my_token")
+con <- connect_to_motherduck()
 show_current_user(.con = con, return = "msg")
-
-# Let the function open a connection from a token
-tbl <- show_current_user(motherduck_token = "my_token", return = "arg")
 }
 
 }

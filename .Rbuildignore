@@ -14,3 +14,15 @@
 ^cran-comments\.md$
 ^vignettes/articles$
 test.R
+
+# qrtdown
+^\.quarto$
+^_quarto\.yml$
+^_qrtdown\.yml$
+^reference\.qmd$
+^articles\.qmd$
+^citation\.qmd$
+^index\.qmd$
+^llms\.txt$
+^CLAUDE\.md$
+^\.claude$

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Alejandro Hagan">
+<meta name="dcterms.date" content="2026-02-03">
 
-<title>motherduck</title>
+<title>How to connect to motherduck – motherduck</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,24 +60,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1df8dc4b7b671d1cc69a36271deb873.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1df8dc4b7b671d1cc69a36271deb873.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,16 +109,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">motherduck 0.2.1</span>
     </a>
   </div>
@@ -127,19 +129,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./vignettes/articles/how-to-connect-to-motherduck.html"> 
+    <a class="nav-link active" href="../../vignettes/articles/how-to-connect-to-motherduck.html" aria-current="page"> 
 <span class="menu-text">Get started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./reference.html"> 
+    <a class="nav-link" href="../../reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./articles.html"> 
+    <a class="nav-link" href="../../articles.html"> 
 <span class="menu-text">Articles</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./NEWS.html"> 
+    <a class="nav-link" href="../../NEWS.html"> 
 <span class="menu-text">Changelog</span></a>
   </li>  
 </ul>
@@ -160,20 +162,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#create-a-duckdb-instance-and-connect-to-your-motherduck-account" id="toc-create-a-duckdb-instance-and-connect-to-your-motherduck-account" class="nav-link active" data-scroll-target="#create-a-duckdb-instance-and-connect-to-your-motherduck-account">Create a duckdb instance and connect to your motherduck account</a></li>
+  <li><a href="#how-to-create-a-motherduck-account-and-access-token" id="toc-how-to-create-a-motherduck-account-and-access-token" class="nav-link" data-scroll-target="#how-to-create-a-motherduck-account-and-access-token">How to create a motherduck account and access token?</a></li>
+  <li><a href="#how-to-configure-our-connection" id="toc-how-to-configure-our-connection" class="nav-link" data-scroll-target="#how-to-configure-our-connection">How to configure our connection?</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">motherduck</h1>
+<h1 class="title">How to connect to motherduck</h1>
+<p class="subtitle lead">Connect to your motherduck account from your local server</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Alejandro Hagan </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026-02-03</p>
+    </div>
+  </div>
   
     
   </div>
@@ -183,24 +208,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><!-- badges: start --> <!-- badges: start --> <a href="https://CRAN.R-project.org/package=motherduck"><img src="https://www.r-pkg.org/badges/version/motherduck?svg=1.png" class="img-fluid" alt="CRAN status"></a> <a href="https://mybinder.org/v2/gh/usrbinr/motherduck/HEAD"><img src="https://mybinder.org/badge_logo.svg" class="img-fluid" alt="Binder"></a> <a href="https://cran.r-project.org/package=motherduck"><img src="https://cranlogs.r-pkg.org/badges/motherduck.png" class="img-fluid"></a> <!-- badges: end --></p>
-<p><img src="man/figures/md_logo.png" class="img-fluid"></p>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This is a collection of utilities to help with the management, administration and navigation of <a href="https://duckdb.org/">duckdb</a> database either locally on your computer or in the cloud via <a href="https://motherduck.com/">motherduck</a></p>
-<p>Database management is incredibly easy in R with fantastic packages such as <a href="https://dbplyr.tidyverse.org/">DBI</a> and <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, however some databases have specific extensions or utilities that are aren’t readily accessible via these packages</p>
-<p>{motherduck} package simplifies these common database administration task with easy to understand syntax. {motherduck} is built upon <a href="https://dbplyr.tidyverse.org/">DBI</a> and returns a lazy DBI object so that you can further fully integrate your data with <a href="https://dbplyr.tidyverse.org/">dbplyr</a></p>
-</section>
-<section id="what-do-i-need-to-use-this" class="level2">
-<h2 class="anchored" data-anchor-id="what-do-i-need-to-use-this">What do I need to use this?</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+</div>
+</div>
+<section id="create-a-duckdb-instance-and-connect-to-your-motherduck-account" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-duckdb-instance-and-connect-to-your-motherduck-account">Create a duckdb instance and connect to your motherduck account</h3>
+<p>When creating a duckdb database, you have three options</p>
+<ol type="1">
+<li>A in-memory based instance that exists in your local computer</li>
+<li>A file based instance that exists in your local computer</li>
+<li>A cloud-based instance through <a href="https://motherduck.com/">motherduck</a></li>
+</ol>
+<p>To create options 1 or 2 you can simply use either the <a href="https://duckdb.org/">duckdb</a> or the <a href="https://duckplyr.tidyverse.org/index.html">duckplyr</a> packages</p>
+<p>To use option 3, you will need to create a motherduck account and generate an access token. Once created, save your access token to an your R enviorment with <code>usethis::edit_r_environ()</code>. I recommend using <code>MOTHERDUCK_TOKEN</code> as your variable name</p>
+<p>Once completed, you can simply use the <code>connect_to_motherduck()</code> function and pass through your token variable name and optional configuration options</p>
+<blockquote class="blockquote">
+<h3 id="whats-the-difference-between-motherduck-and-duckdb" class="anchored">Whats the difference between Motherduck and Duckdb?</h3>
 <ul>
-<li><a href="https://duckdb.org/">duckdb</a> R package installed on your computer</li>
-<li>A <a href="https://motherduck.com/">motherduck</a> account</li>
-<li>A motherduck access token which you you can be saved to your R environment file with <code>usethis::edit_r_environ()</code></li>
+<li><p>Duckdb is a database that you can deploy and run either temporary or permanently in your computer. If you run it via your local computer, it is only available on your computer</p></li>
+<li><p>Motherduck is a cloud based deployment of duckdb which means you can save your data in the cloud and access your data from any computer</p></li>
+<li><p>Most core functions in this package work for both motherduck or duckdb database</p></li>
+<li><p>It is more of a question if you want you data to be access only locally on your computer or if you want to be able to access it remotely via the cloud and benefit from cloud based resources (eg. scale, computer, permissions, etc)</p></li>
 </ul>
+</blockquote>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>con_md <span class="ot">&lt;-</span> <span class="fu">connect_to_motherduck</span>(<span class="st">"MOTHERDUCK_TOKEN"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>This will return a connection and print statement indicating if connection status.</p>
+<p>At any time you can validate your connection status with <code>validate_md_connection_status()</code></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">validate_md_connection_status</span>(con_md)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="how-to-create-a-motherduck-account-and-access-token" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-create-a-motherduck-account-and-access-token">How to create a motherduck account and access token?</h3>
+<ol type="1">
+<li>Go to <a href="https://motherduck.com/">motherduck</a> and create an account, there are free options are available</li>
+<li>Go to your user name in the top right, click settings then click access tokens</li>
+<li>Click create token, then name your token and copy the token code</li>
+<li>You will need this token in your R environment to access your account</li>
+<li>To save this token in your R environment, simply leverage the <a href="https://usethis.r-lib.org/">usethis</a> function <code>usethis::edit_r_environ()</code> to assign and save this (one time effort)</li>
+<li>To check if you have correctly saved your variable then you can use the <code>Sys.getenv()</code> and insert your variable name to print your token</li>
+<li>Going forward, if you want to access your token you don’t need to re-type the access token, simply remember your variable name</li>
+</ol>
+</section>
+<section id="how-to-configure-our-connection" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-configure-our-connection">How to configure our connection?</h3>
+<p>When connecting to motherduck there are a number of configuration options available, you can reference them via the <code>motherduck::config_db</code> which will pull a list of options and their default values</p>
+<p>To change these, simply edit the configuration options you want and then pass the list as an argument <code>connect_to_motherduck()</code> or <code>duckdb::duckdb()</code> if connecting locally</p>
+<p>You can see the full list of duckdb configuration options <a href="https://duckdb.org/docs/stable/configuration/overview.html">here</a> or alternatively you can use <code>list_setting()</code> to see your current configuration options.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>config <span class="ot">&lt;-</span> motherduck<span class="sc">::</span>config_db </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>config<span class="sc">$</span>allow_community_extensions <span class="ot">&lt;-</span> <span class="st">"true"</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>con_md <span class="ot">&lt;-</span> <span class="fu">connect_to_motherduck</span>(<span class="st">"MOTHERDUCK_TOKEN"</span>,<span class="at">config =</span> config) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Access the default configuration options via the built in list</li>
+<li>Change the options you want, ensure you leverage duckdb syntax</li>
+<li>Pass the modtified list to config option in the function</li>
+<li>Ensure you use duckdb arguments not R (eg. “true” vs “TRUE”)</li>
+</ul>
+<p>At any time you can see what your current configuration arguments are for your connection with <code>list_setting()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list_setting</span>(con_md)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Congratulations, you’ve set connected to your motherduck database from R!</p>
 
 
 </section>

@@ -1,16 +1,18 @@
 Package: motherduck
 Type: Package
 Title: Utilities for Managing a 'Motherduck' Database
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person(
       "Alejandro", "Hagan",
       email = "alejandro.hagan@outlook.com",
       role = c("aut", "cre")
     )
-Description: Provides helper functions, metadata utilities, and workflows for 
-    administering and managing databases on the 'Motherduck' cloud platform. 
-    Some features require a 'Motherduck' account (<https://motherduck.com/>).
+Description: Provides helper functions, metadata utilities, and workflows for
+    administering and managing 'DuckDB' databases on the 'MotherDuck' cloud platform.
+    Some features require a 'MotherDuck' account (<https://motherduck.com/>).
+    Note: Windows is not supported; use 'WSL' (Windows Subsystem for Linux) instead
+    (<https://motherduck.com/docs/integrations/language-apis-and-drivers/r/>).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -22,7 +24,7 @@ Imports:
     cli,
     dbplyr,
     dplyr,
-    duckdb (>= 1.4.1),
+    duckdb (>= 1.3.0),
     glue,
     purrr,
     stringr,
@@ -37,6 +39,6 @@ Suggests:
     openxlsx
 Config/testthat/edition: 3
 Depends:
-    R (>= 3.5)
+    R (>= 4.1.0)
 URL: https://usrbinr.github.io/motherduck/
 Config/Needs/website: rmarkdown

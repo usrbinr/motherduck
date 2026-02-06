@@ -6,7 +6,6 @@
 \usage{
 configure_md_user_settings(
   user_name,
-  motherduck_token = "MOTHERDUCK_TOKEN",
   token_type = "read_write",
   instance_size = "pulse",
   flock_size = 0
@@ -14,9 +13,6 @@ configure_md_user_settings(
 }
 \arguments{
 \item{user_name}{Character. The username of the MotherDuck user to configure.}
-
-\item{motherduck_token}{Character. The admin user's MotherDuck token or environment variable name
-(default: \code{"MOTHERDUCK_TOKEN"}).}
 
 \item{token_type}{Character. The type of access token for the user; must be
 \code{"read_write"} or \code{"read_scaling"} (default: \code{"read_write"}).}
@@ -42,14 +38,15 @@ MotherDuck API. It ensures that:
 \item \code{token_type} is valid using \code{validate_token_type()}.
 \item \code{instance_size} is valid using \code{validate_instance_size()}.
 \item \code{flock_size} is a valid integer using \code{validate_flock_size()}.
-The API response is returned as a tibble for easy inspection.
 }
+
+Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable for
+authorization.
 }
 \examples{
 \dontrun{
 configure_md_user_settings(
   user_name = "alice",
-  motherduck_token = "MOTHERDUCK_TOKEN",
   token_type = "read_write",
   instance_size = "pulse",
   flock_size = 10

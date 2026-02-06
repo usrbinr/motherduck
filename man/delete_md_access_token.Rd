@@ -4,20 +4,13 @@
 \alias{delete_md_access_token}
 \title{Delete a MotherDuck user's access token}
 \usage{
-delete_md_access_token(
-  user_name,
-  token_name,
-  motherduck_token = "MOTHERDUCK_TOKEN"
-)
+delete_md_access_token(user_name, token_name)
 }
 \arguments{
 \item{user_name}{A character string specifying the MotherDuck user name whose
 tokens should be listed.}
 
 \item{token_name}{Character. The name of the access token to delete.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble summarizing the API response, typically including the username and
@@ -25,21 +18,23 @@ deletion status of the token.
 }
 \description{
 Deletes a specific access token for a given MotherDuck user using the REST API.
-This operation requires administrative privileges and a valid API token.
+This operation requires administrative privileges.
 }
 \details{
 This function calls the MotherDuck REST API endpoint
 \verb{https://api.motherduck.com/v1/users/\{user_name\}/tokens/\{token_name\}}
 using a \code{DELETE} request to remove the specified token.
-The authenticated user must have sufficient permissions to perform token management.
+
+Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable for
+authorization. The authenticated user must have sufficient permissions
+to perform token management.
 }
 \examples{
 \dontrun{
 # Delete a token named "temp_token" for user "alejandro_hagan"
 delete_md_access_token(
   user_name = "alejandro_hagan",
-  token_name = "temp_token",
-  motherduck_token = "MOTHERDUCK_TOKEN"
+  token_name = "temp_token"
 )
 }
 

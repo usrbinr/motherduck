@@ -4,14 +4,11 @@
 \alias{create_md_user}
 \title{Create a new MotherDuck user}
 \usage{
-create_md_user(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+create_md_user(user_name)
 }
 \arguments{
 \item{user_name}{A character string specifying the MotherDuck user name whose
 tokens should be listed.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble summarizing the API response, typically containing the newly created
@@ -19,20 +16,19 @@ username and associated metadata.
 }
 \description{
 Sends a \code{POST} request to the MotherDuck REST API to create a new user
-within your organization. This operation requires administrative privileges
-and a valid access token.
+within your organization. This operation requires administrative privileges.
 }
 \details{
 This function calls the
 \href{https://motherduck.com/docs/sql-reference/rest-api/users-create/}{MotherDuck Users API}
 endpoint to create a new user under the authenticated account.
-The provided token must belong to a user with permissions to manage
-organization-level accounts.
+The token from the \code{MOTHERDUCK_TOKEN} environment variable must belong to
+a user with permissions to manage organization-level accounts.
 }
 \examples{
 \dontrun{
-# Create a new user in MotherDuck using an admin token stored in an environment variable
-create_md_user("test_20250913", "MOTHERDUCK_TOKEN")
+# Create a new user in MotherDuck
+create_md_user("new_user_name")
 }
 
 }

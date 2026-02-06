@@ -733,15 +733,15 @@ cd <- function(.con,database_name,schema_name,silent=FALSE){
 
   if(any(database_name %in% database_valid_vec)){
 
-    DBI::dbExecute(.con,glue::glue("USE {database_name};"))
+    DBI::dbExecute(.con, glue::glue("USE {database_name};"))
 
   }else{
 
-    cli::cli_abort("
-                   {.pkg {database}} is not valid,
-                   Use {.fn list_all_databases} to list valid databases.
-                   Valid databases are: {.val {database_valid_vec}}
-                   ")
+    cli::cli_abort(c(
+      "{.val {database_name}} is not a valid database.",
+      "i" = "Use {.fn list_all_databases} to list valid databases.",
+      "i" = "Valid databases are: {.val {database_valid_vec}}"
+    ))
   }
 
   if(!missing(schema_name)){

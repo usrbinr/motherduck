@@ -123,13 +123,13 @@ read_excel <- function(
         header_vec <- ''
     }
 
-    # empty as varcar
+    # empty as varchar
 
     if(!missing(empty_as_varchar)){
 
         assertthat::assert_that(is.logical(empty_as_varchar))
 
-        empty_as_varchar <- if (header) "true" else "false"
+        empty_as_varchar <- if (empty_as_varchar) "true" else "false"
 
         empty_as_varchar_vec <- ",empty_as_varchar={empty_as_varchar}"
 

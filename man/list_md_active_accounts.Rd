@@ -4,11 +4,7 @@
 \alias{list_md_active_accounts}
 \title{List active MotherDuck accounts}
 \usage{
-list_md_active_accounts(motherduck_token = "MOTHERDUCK_TOKEN")
-}
-\arguments{
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
+list_md_active_accounts()
 }
 \value{
 A tibble with two columns:
@@ -23,9 +19,8 @@ user, returning the results as a tidy tibble.
 }
 \details{
 This function queries the MotherDuck REST API endpoint
-(\verb{https://api.motherduck.com/v1/active_accounts}) using the provided or
-environment-resolved authentication token.
-The current user name is also displayed via \code{\link[=show_current_user]{show_current_user()}}.
+(\verb{https://api.motherduck.com/v1/active_accounts}) using the token from
+the \code{MOTHERDUCK_TOKEN} environment variable.
 }
 \examples{
 \dontrun{

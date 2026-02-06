@@ -1,17 +1,13 @@
 #' @title Show current database user
 #' @name show_current_user
 #' @inheritParams validate_con
-#' @inheritParams connect_to_motherduck
 #'
 #' @description
 #' Return or print the current database user for a MotherDuck / DuckDB connection.
 #'
 #' @details
 #' This helper queries the active DB connection for the current user (via
-#' `SELECT current_user`). You may either provide an existing DBI connection
-#' via `.con` or provide a `motherduck_token` and let the function open a
-#' short-lived connection for you. When the function opens a connection it
-#' will close it before returning.
+#' `SELECT current_user`).
 #'
 #' The function supports two output modes:
 #' * `"msg"` — prints a small informative message and returns the result
@@ -24,51 +20,33 @@
 #' @examples
 #' \dontrun{
 #' # Using an existing connection
-#' con <- connect_to_motherduck("my_token")
+#' con <- connect_to_motherduck()
 #' show_current_user(.con = con, return = "msg")
-#'
-#' # Let the function open a connection from a token
-#' tbl <- show_current_user(motherduck_token = "my_token", return = "arg")
 #' }
 #'
 #' @export
 
-show_current_user <- function(.con,motherduck_token,return="msg"){
-
-    return_valid_vec <- c("msg","arg")
+show_current_user <- function(.con, return = "msg") {
 
     rlang::arg_match(
-        return
-        ,values = c("msg","arg")
-        ,multiple = FALSE
-        ,error_arg ="return"
+        return,
+        values = c("msg", "arg"),
+        multiple = FALSE,
+        error_arg = "return"
     )
 
-    if(!missing(.con)){
+    validate_con(.con)
 
-      validate_md_connection_status(.con)
+    current_user_tbl <- DBI::dbGetQuery(.con, "select current_user") |>
+        tibble::as_tibble()
 
+    if (return == "msg") {
+        cli::cli_alert("FYI Your current user name is {cli::col_br_red(current_user_tbl$current_user)}")
+        return(invisible(current_user_tbl))
     }
 
-    if(!missing(motherduck_token)){
-
-    .con <-   connect_to_motherduck(motherduck_token=motherduck_token)
-
-    }
-
-    current_user_tbl <- DBI::dbGetQuery(.con,"select current_user") |>
-    tibble::as_tibble()
-
-    if(return=="msg"){
-
-    cli::cli_alert("FYI Your current user name is {cli::col_br_red(current_user_tbl$current_user)}")
-
-    }
-
-    if(return=="arg"){
-
-    return(current_user_tbl)
-
+    if (return == "arg") {
+        return(current_user_tbl)
     }
 
 }
@@ -152,42 +130,38 @@ check_resp_status_and_tidy_response <- function(resp,json_response,column_name1,
 
 
 
-#' @title Validate MotherDuck token from environment
-#' @name validate_motherduck_token_env
+#' @title Get MotherDuck token from environment
+#' @name get_motherduck_token
 #'
 #' @description
-#' Internal helper that retrieves and validates the MotherDuck authentication
-#' token from the system environment.
+#' Internal helper that retrieves the MotherDuck authentication token from
+#' the `MOTHERDUCK_TOKEN` environment variable.
 #'
 #' @details
-#' This function checks whether an environment variable (default:
-#' `"MOTHERDUCK_TOKEN"`) exists and contains a non-empty value.
-#' If so, the value of that environment variable is returned.
-#' Otherwise, the original `motherduck_token` argument is returned unchanged.
-#'
-#' @param motherduck_token A character scalar giving the name of the environment
-#'   variable that stores the MotherDuck token. Defaults to `"MOTHERDUCK_TOKEN"`.
+#' Users must set the `MOTHERDUCK_TOKEN` environment variable in their
+#' `.Renviron` file or system environment. This function will error with
+#' a helpful message if the token is not set.
 #'
 #' @return
-#' A character string representing the resolved MotherDuck token.
+#' A character string containing the MotherDuck token.
 #'
 #' @keywords internal
 #' @noRd
-validate_motherduck_token_env <- function(motherduck_token="MOTHERDUCK_TOKEN"){
+get_motherduck_token <- function() {
 
-    assertthat::assert_that(
-        is.character(motherduck_token)
-    )
+    token <- Sys.getenv("MOTHERDUCK_TOKEN")
 
-    motherduck_token_env <- Sys.getenv(motherduck_token)
-
-
-    # If the environment variable is not empty, override 'motherduck_token' with its value
-    if (!nchar(motherduck_token_env) == 0) {
-        motherduck_token = motherduck_token_env
+    if (nchar(token) == 0) {
+        cli::cli_abort(c(
+            "MotherDuck token not found.",
+            "i" = "Set {.envvar MOTHERDUCK_TOKEN} in your {.file ~/.Renviron} file.",
+            "i" = "Get your token from {.url https://app.motherduck.com} > Settings > Access Tokens.",
+            "i" = "Use {.fn usethis::edit_r_environ} to edit your {.file ~/.Renviron} file.",
+            "i" = "Add: {.code MOTHERDUCK_TOKEN=your_token_here}"
+        ))
     }
 
-    return(motherduck_token)
+    return(token)
 }
 
 
@@ -203,12 +177,8 @@ validate_motherduck_token_env <- function(motherduck_token="MOTHERDUCK_TOKEN"){
 #'
 #' @details
 #' This function queries the MotherDuck REST API endpoint
-#' (`https://api.motherduck.com/v1/active_accounts`) using the provided or
-#' environment-resolved authentication token.
-
-#' The current user name is also displayed via [show_current_user()].
-#'
-#' @inheritParams connect_to_motherduck
+#' (`https://api.motherduck.com/v1/active_accounts`) using the token from
+#' the `MOTHERDUCK_TOKEN` environment variable.
 #'
 #' @return
 #' A tibble with two columns:
@@ -224,33 +194,30 @@ validate_motherduck_token_env <- function(motherduck_token="MOTHERDUCK_TOKEN"){
 #'
 #' @export
 
-list_md_active_accounts <- function(motherduck_token="MOTHERDUCK_TOKEN"){
+list_md_active_accounts <- function() {
 
     # https://motherduck.com/docs/sql-reference/rest-api/ducklings-get-duckling-config-for-user/
 
-    motherduck_token_env=validate_motherduck_token_env(motherduck_token)
-
-    show_current_user(motherduck_token = motherduck_token)
+    token <- get_motherduck_token()
 
     # Make a GET request to the MotherDuck API to retrieve active accounts
     resp <- httr2::request("https://api.motherduck.com/v1/active_accounts") |>
         httr2::req_headers(
-            "Accept" = "application/json",  # Request JSON response
-            "Authorization" = paste("Bearer", motherduck_token_env)  # Add auth token to header
+            "Accept" = "application/json",
+            "Authorization" = paste("Bearer", token)
         ) |>
         httr2::req_error(is_error = function(resp) FALSE) |>
-        httr2::req_perform()  # Perform the HTTP request
+        httr2::req_perform()
 
     # Parse the JSON response body
     json_response <- httr2::resp_body_json(resp)
 
     out <- check_resp_status_and_tidy_response(
-        resp = resp
-        ,json_response = json_response
-        ,column_name1 = "account_settings"
-        ,column_name2 = "account_values"
-        )
-
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "account_settings",
+        column_name2 = "account_values"
+    )
 
     return(out)
 }
@@ -270,15 +237,11 @@ list_md_active_accounts <- function(motherduck_token="MOTHERDUCK_TOKEN"){
 #' `https://api.motherduck.com/v1/users/{user_name}/tokens` to list the tokens
 #' available for the specified user.
 #'
-#' It uses the provided or environment-resolved `motherduck_token` for
-#' authorization. If `motherduck_token` is not explicitly provided, the function
-#' attempts to resolve it from the `MOTHERDUCK_TOKEN` environment variable
-#' The current authenticated user is displayed via [show_current_user()] for
-#' verification.
+#' Uses the token from the `MOTHERDUCK_TOKEN` environment variable for
+#' authorization.
 #'
 #' @param user_name A character string specifying the MotherDuck user name whose
 #'   tokens should be listed.
-#' @inheritParams connect_to_motherduck
 #'
 #' @return
 #' A tibble with two columns:
@@ -295,34 +258,32 @@ list_md_active_accounts <- function(motherduck_token="MOTHERDUCK_TOKEN"){
 #' @family db-api
 #'
 #' @export
-list_md_user_tokens <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN"){
+list_md_user_tokens <- function(user_name) {
 
+    # https://motherduck.com/docs/sql-reference/rest-api/users-list-tokens/
 
-    #https://motherduck.com/docs/sql-reference/rest-api/users-list-tokens/
+    assertthat::assert_that(is.character(user_name), length(user_name) == 1)
 
-    # test
-    # user_name="alejandro_hagan"
-    # motherduck_token="MOTHERDUCK_TOKEN"
+    token <- get_motherduck_token()
 
-    show_current_user(motherduck_token = motherduck_token,return = "msg")
-
-    motherduck_token <- validate_motherduck_token_env(motherduck_token)
-
-    resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/",user_name,"/tokens")) |>
+    resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/", user_name, "/tokens")) |>
         httr2::req_headers(
             "Accept" = "application/json",
-            "Authorization" = paste("Bearer",motherduck_token)
+            "Authorization" = paste("Bearer", token)
         ) |>
         httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform()
 
-    # Parse the response JSON
     json_response <- httr2::resp_body_json(resp)
 
-    out <- check_resp_status_and_tidy_response(resp,json_response,column_name1 = "token_settings",column_name2="token_values")
+    out <- check_resp_status_and_tidy_response(
+        resp,
+        json_response,
+        column_name1 = "token_settings",
+        column_name2 = "token_values"
+    )
 
     return(out)
-
 }
 
 
@@ -336,12 +297,11 @@ list_md_user_tokens <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN"){
 #' @details
 #' This function calls the MotherDuck REST API endpoint
 #' `https://api.motherduck.com/v1/users/{user_name}/instances` to fetch
-#' information about the user’s active DuckDB instances and their configuration
+#' information about the user's active DuckDB instances and their configuration
 #' parameters.
 #'
-#' The current authenticated user is displayed with [show_current_user()] for
-#' verification.
-
+#' Uses the token from the `MOTHERDUCK_TOKEN` environment variable for
+#' authorization.
 #'
 #' @inheritParams list_md_user_tokens
 #' @return
@@ -352,36 +312,38 @@ list_md_user_tokens <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN"){
 #' @examples
 #' \dontrun{
 #' # List instance settings for a specific user
-#' instance_tbl <- list_md_user_instance(user_name ="Bob Smith")
+#' instance_tbl <- list_md_user_instance(user_name = "bob_smith")
 #' }
 #'
 #' @family db-api
 #'
 #' @export
-list_md_user_instance <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN"){
+list_md_user_instance <- function(user_name) {
 
-    #https://motherduck.com/docs/sql-reference/rest-api/ducklings-get-duckling-config-for-user/
+    # https://motherduck.com/docs/sql-reference/rest-api/ducklings-get-duckling-config-for-user/
 
-    # user_name <- "alejandro_hagan"
-    motherduck_token_env <- validate_motherduck_token_env(motherduck_token)
+    assertthat::assert_that(is.character(user_name), length(user_name) == 1)
 
-    show_current_user(motherduck_token_env)
+    token <- get_motherduck_token()
 
-    resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/",user_name,"/instances")) |>
+    resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/", user_name, "/instances")) |>
         httr2::req_headers(
             "Accept" = "application/json",
-            "Authorization" = paste("Bearer", motherduck_token)
+            "Authorization" = paste("Bearer", token)
         ) |>
         httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform()
 
-    # Parse JSON response
     json_response <- httr2::resp_body_json(resp)
 
-    out <- check_resp_status_and_tidy_response(resp = resp,json_response = json_response,column_name1 = "instance_desc",column_name2 = "instance_values")
+    out <- check_resp_status_and_tidy_response(
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "instance_desc",
+        column_name2 = "instance_values"
+    )
 
     return(out)
-
 }
 
 #' @title Delete a MotherDuck user
@@ -390,16 +352,16 @@ list_md_user_instance <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN")
 #'
 #' @description
 #' Sends a `DELETE` request to the MotherDuck REST API to permanently remove a user
-#' from your organization. This operation requires administrative privileges and a
-#' valid MotherDuck access token.
+#' from your organization. This operation requires administrative privileges.
 #'
 #' @inheritParams list_md_user_tokens
 #'
 #' @details
 #' This function calls the
 #' [MotherDuck Users API](https://motherduck.com/docs/sql-reference/rest-api/users-delete/)
-#' endpoint to delete the specified user. The authenticated user (associated with the
-#' provided token) must have sufficient permissions to perform user management actions.
+#' endpoint to delete the specified user. The authenticated user (via the
+#' `MOTHERDUCK_TOKEN` environment variable) must have sufficient permissions
+#' to perform user management actions.
 #'
 #' @return
 #' A tibble summarizing the API response, including the username and deletion status.
@@ -408,44 +370,36 @@ list_md_user_instance <- function(user_name,motherduck_token="MOTHERDUCK_TOKEN")
 #'
 #' @examples
 #' \dontrun{
-#' # Delete a user named "bob_smith" using an admin token stored in an environment variable
-#' delete_md_user("bob_smith", "MOTHERDUCK_TOKEN")
+#' # Delete a user named "bob_smith"
+#' delete_md_user("bob_smith")
 #' }
 #'
 #' @export
-delete_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
-  # Validate inputs
-  assertthat::assert_that(is.character(user_name), length(user_name) == 1)
-  assertthat::assert_that(is.character(motherduck_token), length(motherduck_token) == 1)
+delete_md_user <- function(user_name) {
 
-  # Resolve environment token if needed
-  motherduck_token_env <- validate_motherduck_token_env(motherduck_token)
+    assertthat::assert_that(is.character(user_name), length(user_name) == 1)
 
-  # Optionally show the current user (informative only)
-  show_current_user(motherduck_token = motherduck_token_env, return = "msg")
+    token <- get_motherduck_token()
 
-  # Build and send DELETE request
-  resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/", user_name)) |>
-    httr2::req_method("DELETE") |>
-    httr2::req_headers(
-      Accept = "application/json",
-      Authorization = paste("Bearer", motherduck_token_env)
-    ) |>
-    httr2::req_error(is_error = function(resp) FALSE) |>
-    httr2::req_perform()
+    resp <- httr2::request(paste0("https://api.motherduck.com/v1/users/", user_name)) |>
+        httr2::req_method("DELETE") |>
+        httr2::req_headers(
+            Accept = "application/json",
+            Authorization = paste("Bearer", token)
+        ) |>
+        httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_perform()
 
-  # Parse JSON response
-  json_response <- httr2::resp_body_json(resp)
+    json_response <- httr2::resp_body_json(resp)
 
-  # Tidy up output
-  out <- check_resp_status_and_tidy_response(
-    resp = resp,
-    json_response = json_response,
-    column_name1 = "username",
-    column_name2 = "value"
-  )
+    out <- check_resp_status_and_tidy_response(
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "username",
+        column_name2 = "value"
+    )
 
-  return(out)
+    return(out)
 }
 
 
@@ -459,15 +413,15 @@ delete_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
 #'
 #' @description
 #' Sends a `POST` request to the MotherDuck REST API to create a new user
-#' within your organization. This operation requires administrative privileges
-#' and a valid access token.
+#' within your organization. This operation requires administrative privileges.
 #'
 #' @details
 #' This function calls the
 #' [MotherDuck Users API](https://motherduck.com/docs/sql-reference/rest-api/users-create/)
 #' endpoint to create a new user under the authenticated account.
-#' The provided token must belong to a user with permissions to manage
-#' organization-level accounts.
+#' The token from the `MOTHERDUCK_TOKEN` environment variable must belong to
+#' a user with permissions to manage organization-level accounts.
+#'
 #' @inheritParams list_md_user_tokens
 #' @return
 #' A tibble summarizing the API response, typically containing the newly created
@@ -477,50 +431,43 @@ delete_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
 #'
 #' @examples
 #' \dontrun{
-#' # Create a new user in MotherDuck using an admin token stored in an environment variable
-#' create_md_user("test_20250913", "MOTHERDUCK_TOKEN")
+#' # Create a new user in MotherDuck
+#' create_md_user("new_user_name")
 #' }
 #'
 #' @export
 
-create_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
-  # Validate inputs
-  assertthat::assert_that(
-    is.character(user_name),
-    length(user_name) == 1,
-    !is.na(user_name)
-  )
+create_md_user <- function(user_name) {
 
-  # Resolve environment token if needed
-  motherduck_token_env <- validate_motherduck_token_env(motherduck_token)
+    assertthat::assert_that(
+        is.character(user_name),
+        length(user_name) == 1,
+        !is.na(user_name)
+    )
 
-  # Optionally show current user (for logging)
-  show_current_user(motherduck_token = motherduck_token_env, return = "msg")
+    token <- get_motherduck_token()
 
-  # Build and send POST request
-  resp <- httr2::request("https://api.motherduck.com/v1/users") |>
-    httr2::req_method("POST") |>
-    httr2::req_headers(
-      "Content-Type" = "application/json",
-      "Accept" = "application/json",
-      "Authorization" = paste("Bearer", motherduck_token_env)
-    ) |>
-    httr2::req_body_json(list(username = user_name)) |>
-    httr2::req_error(is_error = function(resp) FALSE) |>
-    httr2::req_perform()
+    resp <- httr2::request("https://api.motherduck.com/v1/users") |>
+        httr2::req_method("POST") |>
+        httr2::req_headers(
+            "Content-Type" = "application/json",
+            "Accept" = "application/json",
+            "Authorization" = paste("Bearer", token)
+        ) |>
+        httr2::req_body_json(list(username = user_name)) |>
+        httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_perform()
 
-  # Parse JSON response
-  json_response <- httr2::resp_body_json(resp)
+    json_response <- httr2::resp_body_json(resp)
 
-  # Clean up and return output
-  out <- check_resp_status_and_tidy_response(
-    resp = resp,
-    json_response = json_response,
-    column_name1 = "username",
-    column_name2 = "value"
-  )
+    out <- check_resp_status_and_tidy_response(
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "username",
+        column_name2 = "value"
+    )
 
-  return(out)
+    return(out)
 }
 
 
@@ -535,11 +482,12 @@ create_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
 #' @description
 #' Creates a new access token for a specified MotherDuck user using the REST API.
 #' Tokens can be configured with a specific type, name, and expiration time.
+#'
 #' @inheritParams list_md_user_tokens
 #' @param token_type Character. The type of token to create. Must be one of:
 #'   `"read_write"` or `"read_scaling"`.
 #' @param token_name Character. A descriptive name for the token.
-#' @param token_expiration_number Numeric. The duration of the token’s validity,
+#' @param token_expiration_number Numeric. The duration of the token's validity,
 #'   in the units specified by `token_expiration_unit`. Minimum value is 300 seconds.
 #' @param token_expiration_unit Character. The unit of time for the token expiration.
 #'   One of `"seconds"`, `"minutes"`, `"days"`, `"weeks"`, `"months"`, `"years"`, or `"never"`.
@@ -547,9 +495,11 @@ create_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
 #' @details
 #' This function calls the MotherDuck REST API endpoint
 #' `https://api.motherduck.com/v1/users/{user_name}/tokens` to create a new token
-#' for the specified user. The token’s time-to-live (TTL) is calculated in seconds
+#' for the specified user. The token's time-to-live (TTL) is calculated in seconds
 #' from `token_expiration_number` and `token_expiration_unit`.
-#' The authenticated user must have administrative privileges to create tokens.
+#'
+#' Uses the token from the `MOTHERDUCK_TOKEN` environment variable for
+#' authorization. The authenticated user must have administrative privileges.
 #'
 #' @return
 #' A tibble containing the API response, including the username and the token
@@ -565,84 +515,62 @@ create_md_user <- function(user_name, motherduck_token = "MOTHERDUCK_TOKEN") {
 #'   token_type = "read_write",
 #'   token_name = "temp_token",
 #'   token_expiration_number = 1,
-#'   token_expiration_unit = "hours",
-#'   motherduck_token = "MOTHERDUCK_TOKEN"
+#'   token_expiration_unit = "hours"
 #' )
 #' }
 #'
 #' @export
-create_md_access_token <- function(user_name,token_type,token_name,token_expiration_number,token_expiration_unit,motherduck_token="MOTHERDUCK_TOKEN"){
-
-
+create_md_access_token <- function(user_name, token_type, token_name, token_expiration_number, token_expiration_unit) {
 
     valid_token_type_vec <- c("read_write", "read_scaling")
 
-
     rlang::arg_match(
-        token_type
-        ,valid_token_type_vec
-        ,multiple = FALSE
-        ,error_arg = cli::format_error("Please select {.or {valid_token_type_vec}} instead of {token_type}")
+        token_type,
+        valid_token_type_vec,
+        multiple = FALSE,
+        error_arg = "token_type"
     )
-
-    seconds_vec <- convert_to_seconds(number = token_expiration_number,units = token_expiration_unit)
-
-    # Replace these with your actual values
-    validate_motherduck_token_env <- validate_motherduck_token_env(motherduck_token="MOTHERDUCK_TOKEN")
 
     assertthat::assert_that(
-        is.character(user_name)
-        ,is.character(token_name)
+        is.character(user_name),
+        length(user_name) == 1,
+        is.character(token_name),
+        length(token_name) == 1
     )
 
-    active_accounts_tbl <- list_md_active_accounts(motherduck_token = motherduck_token)
+    seconds_vec <- convert_to_seconds(number = token_expiration_number, units = token_expiration_unit)
 
+    token <- get_motherduck_token()
 
-    # account_values_vec <- active_accounts_tbl |>
-    #     dplyr::filter(
-    #         account_settings=="accounts.username"
-    #     ) |> pull(account_values)
-    #
-    #
-    # assertthat::assert_that(
-    #     any(user_name %in% account_values_vec)
-    # )
+    url <- paste0("https://api.motherduck.com/v1/users/", user_name, "/tokens")
 
-    # Construct the URL
-    url <- paste0("https://api.motherduck.com/v1/users/",user_name,"/tokens")
-
-    # Create and send the request
     resp <- httr2::request(url) |>
         httr2::req_method("POST") |>
         httr2::req_headers(
             "Content-Type" = "application/json",
             "Accept" = "application/json",
-            "Authorization" = paste("Bearer",validate_motherduck_token_env)
+            "Authorization" = paste("Bearer", token)
         ) |>
         httr2::req_body_json(
             list(
-                ttl = seconds_vec
-                ,name = token_name
-                ,token_type = token_type
-                )
-            ) |>
+                ttl = seconds_vec,
+                name = token_name,
+                token_type = token_type
+            )
+        ) |>
         httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform()
 
-    # Parse the JSON response
     json_response <- httr2::resp_body_json(resp)
 
     out <- check_resp_status_and_tidy_response(
-        resp = resp
-        ,json_response =json_response
-        ,column_name1 = "username"
-        ,column_name2 = "value"
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "username",
+        column_name2 = "value"
     )
 
-
     return(out)
-
-
 }
 
 
@@ -657,7 +585,8 @@ create_md_access_token <- function(user_name,token_type,token_name,token_expirat
 #'
 #' @description
 #' Deletes a specific access token for a given MotherDuck user using the REST API.
-#' This operation requires administrative privileges and a valid API token.
+#' This operation requires administrative privileges.
+#'
 #' @inheritParams list_md_user_tokens
 #' @param token_name Character. The name of the access token to delete.
 #'
@@ -665,7 +594,10 @@ create_md_access_token <- function(user_name,token_type,token_name,token_expirat
 #' This function calls the MotherDuck REST API endpoint
 #' `https://api.motherduck.com/v1/users/{user_name}/tokens/{token_name}`
 #' using a `DELETE` request to remove the specified token.
-#' The authenticated user must have sufficient permissions to perform token management.
+#'
+#' Uses the token from the `MOTHERDUCK_TOKEN` environment variable for
+#' authorization. The authenticated user must have sufficient permissions
+#' to perform token management.
 #'
 #' @return
 #' A tibble summarizing the API response, typically including the username and
@@ -678,37 +610,43 @@ create_md_access_token <- function(user_name,token_type,token_name,token_expirat
 #' # Delete a token named "temp_token" for user "alejandro_hagan"
 #' delete_md_access_token(
 #'   user_name = "alejandro_hagan",
-#'   token_name = "temp_token",
-#'   motherduck_token = "MOTHERDUCK_TOKEN"
+#'   token_name = "temp_token"
 #' )
 #' }
 #'
 #' @export
-delete_md_access_token <- function(user_name,token_name,motherduck_token="MOTHERDUCK_TOKEN"){
+delete_md_access_token <- function(user_name, token_name) {
 
-    motherduck_token_env <- validate_motherduck_token_env(motherduck_token)
+    assertthat::assert_that(
+        is.character(user_name),
+        length(user_name) == 1,
+        is.character(token_name),
+        length(token_name) == 1
+    )
 
-    url <- paste0("https://api.motherduck.com/v1/users/", user_name, "/tokens/", motherduck_token_env)
+    token <- get_motherduck_token()
 
-    # Create the request
+    url <- paste0("https://api.motherduck.com/v1/users/", user_name, "/tokens/", token_name)
+
     resp <- httr2::request(url) |>
         httr2::req_method("DELETE") |>
         httr2::req_headers(
             "Accept" = "application/json",
-            "Authorization" = paste("Bearer", motherduck_token_env)
+            "Authorization" = paste("Bearer", token)
         ) |>
-        httr2::req_error(is_error = function(resp) FALSE) |>  # Optional: prevent automatic errors
+        httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform()
 
     json_response <- httr2::resp_body_json(resp)
 
     out <- check_resp_status_and_tidy_response(
-        resp = resp
-        ,json_response =json_response
-        ,column_name1 = "username"
-        ,column_name2 = "value"
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "username",
+        column_name2 = "value"
     )
 
+    return(out)
 }
 
 
@@ -728,8 +666,6 @@ delete_md_access_token <- function(user_name,token_name,motherduck_token="MOTHER
 #' to apply the changes for the specified user.
 #'
 #' @param user_name Character. The username of the MotherDuck user to configure.
-#' @param motherduck_token Character. The admin user's MotherDuck token or environment variable name
-#'   (default: `"MOTHERDUCK_TOKEN"`).
 #' @param token_type Character. The type of access token for the user; must be
 #'   `"read_write"` or `"read_scaling"` (default: `"read_write"`).
 #' @param instance_size Character. The instance size for the user; must be one of
@@ -743,7 +679,9 @@ delete_md_access_token <- function(user_name,token_name,motherduck_token="MOTHER
 #' - `token_type` is valid using `validate_token_type()`.
 #' - `instance_size` is valid using `validate_instance_size()`.
 #' - `flock_size` is a valid integer using `validate_flock_size()`.
-#' The API response is returned as a tibble for easy inspection.
+#'
+#' Uses the token from the `MOTHERDUCK_TOKEN` environment variable for
+#' authorization.
 #'
 #' @return
 #' A tibble containing the API response, including the updated settings for the user.
@@ -752,7 +690,6 @@ delete_md_access_token <- function(user_name,token_name,motherduck_token="MOTHER
 #' \dontrun{
 #' configure_md_user_settings(
 #'   user_name = "alice",
-#'   motherduck_token = "MOTHERDUCK_TOKEN",
 #'   token_type = "read_write",
 #'   instance_size = "pulse",
 #'   flock_size = 10
@@ -761,56 +698,55 @@ delete_md_access_token <- function(user_name,token_name,motherduck_token="MOTHER
 #'
 #' @export
 configure_md_user_settings <- function(
-        user_name
-        ,motherduck_token="MOTHERDUCK_TOKEN"
-        ,token_type="read_write"
-        ,instance_size="pulse"
-        ,flock_size=0
-        ){
+        user_name,
+        token_type = "read_write",
+        instance_size = "pulse",
+        flock_size = 0
+    ) {
 
     assertthat::assert_that(
-        is.character(user_name)
-        ,is.numeric(flock_size)
+        is.character(user_name),
+        length(user_name) == 1,
+        is.numeric(flock_size)
     )
 
-
     token_type_vec <- validate_token_type(token_type)
+    instance_size_vec <- validate_instance_size(instance_size)
+    flock_size_int <- validate_flock_size(flock_size)
 
-    motherduck_token_env <- validate_motherduck_token_env(motherduck_token)
+    token <- get_motherduck_token()
 
-    # URL
     url <- paste0("https://api.motherduck.com/v1/users/", user_name, "/instances")
 
-    # Request body
     body <- list(
         config = list(
             token_type_vec = list(
-                instance_size =instance_size
+                instance_size = instance_size_vec
             )
         )
     )
 
-    # Make the PUT request
     resp <- httr2::request(url) |>
         httr2::req_method("PUT") |>
         httr2::req_headers(
             "Content-Type" = "application/json",
             "Accept" = "application/json",
-            "Authorization" = paste("Bearer", motherduck_token_env)
+            "Authorization" = paste("Bearer", token)
         ) |>
         httr2::req_body_json(body) |>
-        httr2::req_error(is_error = function(resp) FALSE) |>  # Optional: handle errors manually
+        httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform()
-
 
     json_response <- httr2::resp_body_json(resp)
 
     out <- check_resp_status_and_tidy_response(
-        resp = resp
-        ,json_response =json_response
-        ,column_name1 = "username"
-        ,column_name2 = "value"
+        resp = resp,
+        json_response = json_response,
+        column_name1 = "username",
+        column_name2 = "value"
     )
+
+    return(out)
 }
 
 
@@ -1106,7 +1042,7 @@ create_or_replace_share <- function(.con,
 
     rlang::arg_match(
         update
-        ,values = valid_visibility_vec
+        ,values = valid_update_vec
         ,multiple = FALSE
         ,error_arg = "update"
     )
@@ -1202,7 +1138,7 @@ create_if_not_exists_share <- function(.con,
 
     rlang::arg_match(
         update
-        ,values = valid_visibility_vec
+        ,values = valid_update_vec
         ,multiple = FALSE
         ,error_arg = "update"
     )

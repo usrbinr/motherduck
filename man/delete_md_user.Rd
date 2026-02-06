@@ -4,33 +4,30 @@
 \alias{delete_md_user}
 \title{Delete a MotherDuck user}
 \usage{
-delete_md_user(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+delete_md_user(user_name)
 }
 \arguments{
 \item{user_name}{A character string specifying the MotherDuck user name whose
 tokens should be listed.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble summarizing the API response, including the username and deletion status.
 }
 \description{
 Sends a \code{DELETE} request to the MotherDuck REST API to permanently remove a user
-from your organization. This operation requires administrative privileges and a
-valid MotherDuck access token.
+from your organization. This operation requires administrative privileges.
 }
 \details{
 This function calls the
 \href{https://motherduck.com/docs/sql-reference/rest-api/users-delete/}{MotherDuck Users API}
-endpoint to delete the specified user. The authenticated user (associated with the
-provided token) must have sufficient permissions to perform user management actions.
+endpoint to delete the specified user. The authenticated user (via the
+\code{MOTHERDUCK_TOKEN} environment variable) must have sufficient permissions
+to perform user management actions.
 }
 \examples{
 \dontrun{
-# Delete a user named "bob_smith" using an admin token stored in an environment variable
-delete_md_user("bob_smith", "MOTHERDUCK_TOKEN")
+# Delete a user named "bob_smith"
+delete_md_user("bob_smith")
 }
 
 }

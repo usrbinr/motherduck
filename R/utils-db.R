@@ -187,9 +187,9 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
     
     # validate schemas exists 
     
-    if(!validate_database_schema_exists(.con=.con,database_name = database_name,schema_name = schema_name)){
-      
-      cli::cli_abort("Schema {.vaal schema_name} does not exist in {.val database_name}")
+    if(!validate_database_schema_exists(.con = .con, database_name = database_name, target_schema = schema_name)){
+
+      cli::cli_abort("Schema {.val {schema_name}} does not exist in {.val {database_name}}")
       
     }
     
@@ -297,9 +297,9 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
   
   # validate schemas exists 
   
-  if(!validate_database_schema_exists(.con=.con,database_name = database_name,schema_name = schema_name)){
-    
-    cli::cli_abort("Schema {.val schema_name} does not exist in {.val database_name}")
+  if(!validate_database_schema_exists(.con = .con, database_name = database_name, target_schema = schema_name)){
+
+    cli::cli_abort("Schema {.val {schema_name}} does not exist in {.val {database_name}}")
     
   }
 
@@ -476,43 +476,69 @@ create_database <- function(.con,database_name){
 #' @details
 #' - Ensures `new_schema` exists (`CREATE SCHEMA IF NOT EXISTS`).
 #' - For each table in `table_names`, runs:
-#'   `ALTER TABLE old_schema.table SET SCHEMA new_schema`.
+#'   `ALTER TABLE from_schema.table SET SCHEMA new_schema`.
 #' - Table and schema identifiers are safely quoted with `glue::glue_sql()`.
 #'
 #' @inheritParams validate_con
+#' @param table_names Character vector of table names to move.
+#' @param from_schema Source schema name (where the tables currently reside).
 #' @param new_schema Target schema name (where the tables will be moved).
-#' @param from_table_names Character vector of table names to move.
+#' @param silent Logical; if `TRUE`, suppress CLI output. Default is `FALSE`.
 #' @export
 #' @return
-#' Invisibly returns a character vector of fully-qualified table names moved.
-#' Side effects: creates `new_schema` if needed and alters table schemas.
+#' Invisibly returns `NULL`.
+#' Side effects: creates `new_schema` if needed and moves tables.
 #'
 #' @family db-manage
 #'
-alter_table_schema <- function(.con, from_table_names, new_schema) {
+alter_table_schema <- function(.con, table_names, from_schema, new_schema, silent = FALSE) {
 
-    schema_exists <- DBI::dbGetQuery(.con, glue::glue("SELECT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = '{new_schema}');"))
+    validate_con(.con)
+
+    assertthat::assert_that(
+        is.character(table_names),
+        length(table_names) >= 1,
+        is.character(from_schema),
+        length(from_schema) == 1,
+        is.character(new_schema),
+        length(new_schema) == 1
+    )
+
+    schema_exists <- DBI::dbGetQuery(
+        .con,
+        glue::glue_sql(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = {new_schema});",
+            .con = .con
+        )
+    )
 
     # If the schema doesn't exist, create it
-    if (!schema_exists$exists) {
-        DBI::dbExecute(.con, glue::glue("CREATE SCHEMA {`new_schema`};"))
-        cli::cli_alert_info("Schema {.val {new_schema}} did not exist. It has been created.")
+    if (!schema_exists[[1]]) {
+        DBI::dbExecute(.con, glue::glue_sql("CREATE SCHEMA {`new_schema`};", .con = .con))
+        if (!silent) {
+            cli::cli_alert_info("Schema {.val {new_schema}} did not exist. It has been created.")
+        }
     }
 
+    # Move each table
+    for (tbl_name in table_names) {
+        sql <- glue::glue_sql(
+            "ALTER TABLE {`from_schema`}.{`tbl_name`} SET SCHEMA {`new_schema`};",
+            .con = .con
+        )
+        DBI::dbExecute(.con, sql)
+    }
 
-    # Build SQL query to move the table
-    sql <- glue::glue("ALTER TABLE {`old_schema`}.{`table_name`} SET SCHEMA {`new_schema`};")
+    if (!silent) {
+        cli::cli_h1("Status:")
+        suppressMessages(validate_md_connection_status(.con))
+        cli_show_user(.con)
+        cli_show_db(.con)
+        cli::cli_h2("Action Report:")
+        cli::cli_li("Moved {.val {length(table_names)}} table{?s} from {.val {from_schema}} to {.val {new_schema}}")
+    }
 
-    # Execute the query to move the table
-    DBI::dbExecute(.con, sql)
-
-    cli::cli_h1("Status:")
-    validate_md_connection_status(.con)
-    cli_show_user(.con)
-    cli_show_db(.con)
-    cli::cli_h2("Action Report:")
-    cli::cli_li("Change {from_table_names} schema to {new_schema}")
-
+    invisible(NULL)
 }
 
 
@@ -1189,13 +1215,12 @@ validate_database_exists <- function(.con,database_name){
 #' Checks whether a schema with the specified name exists within a given database.
 #'
 #' @details
-#' This function queries all tables in the connection using
-#' `motherduck::list_all_tables()`, filters by `table_catalog` (database),
-#' and performs an exact match on the schema name.
+#' This function queries the information schema to check if the specified
+#' schema exists within the given database.
 #'
 #' @param .con A valid `DBI` connection (DuckDB / MotherDuck).
 #' @param database_name The database name to check.
-#' @param schema_name The schema name to check within the database.
+#' @param target_schema The schema name to check within the database.
 #'
 #' @return
 #' Logical `TRUE` if the schema exists, `FALSE` otherwise.
@@ -1203,26 +1228,23 @@ validate_database_exists <- function(.con,database_name){
 #' @examples
 #' \dontrun{
 #' con <- DBI::dbConnect(duckdb::duckdb())
-#' validate_database_schema_exists(con, "test_db", "main")
+#' validate_database_schema_exists(con, "memory", "main")
 #' }
 #'
 #' @export
-validate_database_schema_exists <- function(.con,database_name,schema_name){
-  
-  
-  db_vec <-  show_information_schema(.con) |> 
-    dplyr::filter(catalog_name %in% database_name) |> 
-    dplyr::pull(schema_name) 
-  
-  
-  if(any(schema_name %in% db_vec)){
-    
-    return(TRUE)
-    
-  }
-  
-  return(FALSE)
-  
+validate_database_schema_exists <- function(.con, database_name, target_schema) {
+
+    validate_con(.con)
+
+    schema_vec <- show_information_schema(.con) |>
+        dplyr::filter(catalog_name %in% database_name) |>
+        dplyr::pull("schema_name")
+
+    if (any(target_schema %in% schema_vec)) {
+        return(TRUE)
+    }
+
+    return(FALSE)
 }
 
 

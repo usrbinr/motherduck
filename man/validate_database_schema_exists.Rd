@@ -4,14 +4,14 @@
 \alias{validate_database_schema_exists}
 \title{Check if a Schema Exists in a Database}
 \usage{
-validate_database_schema_exists(.con, database_name, schema_name)
+validate_database_schema_exists(.con, database_name, target_schema)
 }
 \arguments{
 \item{.con}{A valid \code{DBI} connection (DuckDB / MotherDuck).}
 
 \item{database_name}{The database name to check.}
 
-\item{schema_name}{The schema name to check within the database.}
+\item{target_schema}{The schema name to check within the database.}
 }
 \value{
 Logical \code{TRUE} if the schema exists, \code{FALSE} otherwise.
@@ -20,14 +20,13 @@ Logical \code{TRUE} if the schema exists, \code{FALSE} otherwise.
 Checks whether a schema with the specified name exists within a given database.
 }
 \details{
-This function queries all tables in the connection using
-\code{motherduck::list_all_tables()}, filters by \code{table_catalog} (database),
-and performs an exact match on the schema name.
+This function queries the information schema to check if the specified
+schema exists within the given database.
 }
 \examples{
 \dontrun{
 con <- DBI::dbConnect(duckdb::duckdb())
-validate_database_schema_exists(con, "test_db", "main")
+validate_database_schema_exists(con, "memory", "main")
 }
 
 }

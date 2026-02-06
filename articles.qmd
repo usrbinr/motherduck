@@ -1,0 +1,11 @@
+---
+title: Articles
+toc: true
+---
+
+# motherduck Articles
+
+In-depth guides and tutorials for using the package.
+
+- [How to connect to motherduck](vignettes/articles/how-to-connect-to-motherduck.qmd)
+- [How to load data into motherduck](vignettes/articles/how-to-load-data-in-motherduck.qmd)

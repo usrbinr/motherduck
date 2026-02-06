@@ -93,6 +93,73 @@ validate_md_connection_status <- function(.con,return_type="msg"){
 
 }
 
+#' @title Check platform compatibility with MotherDuck
+#' @name check_platform
+#'
+#' @description
+#' Internal function that checks if the current platform supports MotherDuck.
+#' MotherDuck R extension is not available on Windows.
+#'
+#' @return Invisibly returns `TRUE` if platform is supported.
+#' @keywords internal
+#' @noRd
+check_platform <- function() {
+
+    if (.Platform$OS.type == "windows") {
+        cli::cli_abort(c(
+            "MotherDuck is not available on Windows.",
+            "i" = "The MotherDuck extension for R does not currently support Windows.",
+            "i" = "Use Windows Subsystem for Linux (WSL) as a workaround.",
+            "i" = "See: {.url https://motherduck.com/docs/integrations/language-apis-and-drivers/r/}"
+        ))
+    }
+
+    return(invisible(TRUE))
+}
+
+
+#' @title Check DuckDB version compatibility with MotherDuck
+#' @name check_duckdb_version
+#'
+#' @description
+#' Internal function that checks if the installed DuckDB version is compatible
+#' with MotherDuck and warns if it's outside the tested range.
+#'
+#' @details
+#' MotherDuck supports DuckDB versions 1.3.0 through 1.4.4 (as of early 2025).
+#' This function warns users if they're using an untested version.
+#'
+#' @return Invisibly returns `TRUE` if version is compatible, `FALSE` otherwise.
+#' @keywords internal
+#' @noRd
+check_duckdb_version <- function() {
+
+    duckdb_version <- utils::packageVersion("duckdb")
+    min_version <- package_version("1.3.0")
+    max_tested_version <- package_version("1.4.4")
+
+    if (duckdb_version < min_version) {
+        cli::cli_abort(c(
+            "DuckDB version {.val {duckdb_version}} is too old for MotherDuck.",
+            "i" = "MotherDuck requires DuckDB >= 1.3.0.",
+            "i" = "Update with: {.code install.packages('duckdb')}"
+        ))
+    }
+
+    if (duckdb_version > max_tested_version) {
+        cli::cli_warn(c(
+            "DuckDB version {.val {duckdb_version}} is newer than the tested version ({.val {max_tested_version}}).",
+            "i" = "MotherDuck may not be compatible with this version yet.",
+            "i" = "If you encounter issues, install a compatible version:",
+            "i" = "{.code install.packages('duckdb', repos = 'https://packagemanager.posit.co/cran/2024-12-01')}"
+        ))
+        return(invisible(FALSE))
+    }
+
+    return(invisible(TRUE))
+}
+
+
 #' @title Create connection to motherduck
 #' @name  connect_to_motherduck
 #'
@@ -102,18 +169,23 @@ validate_md_connection_status <- function(.con,return_type="msg"){
 #' `PRAGMA MD_CONNECT` to authenticate the connection.
 #'
 #' @details
-#' This function provides a convenient interface for connecting to MotherDuck. It allows you to:
-#' * Use a token stored in an environment variable or supply the token directly.
-#' * Optionally specify a persistent DuckDB database file or directory via `db_path`.
-#' * Optionally Provide custom DuckDB configuration options via `config`.
-#' * Automatically load the MotherDuck extension if not already loaded.
+#' This function provides a convenient interface for connecting to MotherDuck. It:
+#' * Uses the token from the `MOTHERDUCK_TOKEN` environment variable.
+#' * Optionally specifies a persistent DuckDB database file or directory via `db_path`.
+#' * Optionally provides custom DuckDB configuration options via `config`.
+#' * Automatically loads the MotherDuck extension if not already loaded.
+#'
+#' You must set the `MOTHERDUCK_TOKEN` environment variable in your `.Renviron` file
+#' before calling this function. Use `usethis::edit_r_environ()` to edit your
+#' `.Renviron` file.
 #'
 #' If `db_path` is not supplied, a temporary DuckDB database file will be created in the session's
 #' temporary directory. Use `config` to pass any DuckDB-specific options (e.g., memory limits or
 #' extensions).
 #'
-#' @param motherduck_token Character. Either the name of an environment variable containing your
-#'   MotherDuck access token (default `"MOTHERDUCK_TOKEN"`) or the token itself.
+#' MotherDuck currently supports DuckDB versions 1.3.0 through 1.4.4. This function
+#' will warn if you're using an untested version.
+#'
 #' @param db_path Character, optional. Path to a DuckDB database file or directory to use. If
 #'   `NULL`, a temporary file is used.
 #' @param config List, optional. A list of DuckDB configuration options to be passed to
@@ -126,107 +198,83 @@ validate_md_connection_status <- function(.con,return_type="msg"){
 #' # Connect using a token stored in your .Renviron
 #' con <- connect_to_motherduck()
 #'
-#' # Connect with a direct token
-#' con <- connect_to_motherduck(motherduck_token = "MY_DIRECT_TOKEN")
-#'
 #' # Connect and specify a persistent database file
-#' con <- connect_to_motherduck( )
+#' con <- connect_to_motherduck(db_path = "~/my_database.duckdb")
 #' }
 #'
 #' @export
-connect_to_motherduck <- function(motherduck_token="MOTHERDUCK_TOKEN",db_path=NULL,config){
+connect_to_motherduck <- function(db_path = NULL, config) {
 
-     # test
-     # motherduck_token="MOTHERDUCK_TOKEN"
+    # Check platform compatibility (Windows not supported)
+    check_platform()
 
+    # Check DuckDB version compatibility
+    check_duckdb_version()
 
-    #confirm config is a list
+    # Validate token exists in environment
+    token <- Sys.getenv("MOTHERDUCK_TOKEN")
 
-    if(!missing(config)){
+    if (nchar(token) == 0) {
+        cli::cli_abort(c(
+            "MotherDuck token not found.",
+            "i" = "Set {.envvar MOTHERDUCK_TOKEN} in your {.file ~/.Renviron} file.",
+            "i" = "Get your token from {.url https://app.motherduck.com} > Settings > Access Tokens.",
+            "i" = "Use {.fn usethis::edit_r_environ} to edit your {.file ~/.Renviron} file.",
+            "i" = "Add: {.code MOTHERDUCK_TOKEN=your_token_here}"
+        ))
+    }
+
+    # Confirm config is a list
+    if (!missing(config)) {
         assertthat::assert_that(is.list(config))
     }
 
-
-    cli_msg <- function() {
-        cli::cli_par()
-        cli::cli_h1("Motherduck token status")
-        cli::cli_ul()
-        cli::cli_li("Enter the variable name that matches the MotherDuck token variable assigned in your {.file ~/.Renviron}. or alternative environment file")
-        cli::cli_li("In {.url https://www.motherduck.com}, goto 'Settings' > 'Integrations' and click 'Access Tokens' to create a new token")
-        cli::cli_li("Use {.fn usethis::edit_r_environ} to open and edit your {.file ~/.Renviron} file.")
-        cli::cli_li("Enter {.code MOTHERDUCK_TOKEN = ...} in your {.file ~/.Renviron} file and save")
-        cli::cli_li("Pass {.envvar MOTHERDUCK_TOKEN} to {.fn connect_to_motherduck}")
-        cli::cli_end()
-        cli::cli_par()
-        cli::cli_end()
-    }
-
-   
-    ## allows for user to either directly input their token if not available
-
-    if(nchar(Sys.getenv(motherduck_token))>1){
-
-    motherduck_token_code <- Sys.getenv(motherduck_token)
-
-    }else if(nchar(motherduck_token)>20){
-        motherduck_token_code <- motherduck_token
-    }else{
-        cli_msg()
-    }
-
-
     # Use provided dbdir or fallback to temp file
-    db_path <- if (!is.null(db_path)) {
-        db_path <- db_path
-    } else {
-        db_path <-   tempfile(fileext = ".duckdb")
+    if (is.null(db_path)) {
+        db_path <- tempfile(fileext = ".duckdb")
     }
-
 
     .con <- DBI::dbConnect(duckdb::duckdb(dbdir = db_path))
 
-
-    if(!validate_extension_load_status(.con,"motherduck",return_type="arg")){
-        load_extensions(.con,"motherduck")
+    if (!validate_extension_load_status(.con, "motherduck", return_type = "arg")) {
+        load_extensions(.con, "motherduck")
     }
 
-    dbExectue_safe <- purrr::safely(DBI::dbExecute)
+    dbExecute_safe <- purrr::safely(DBI::dbExecute)
 
-    if(!missing(config)){
+    if (!missing(config)) {
+        sql_statements <- vapply(
+            names(config),
+            function(x) sprintf("SET %s='%s';", x, config[[x]]),
+            character(1)
+        )
 
-    sql_statements <- vapply(
-        names(config),
-        function(x) sprintf("SET %s='%s';", x, config[[x]]),
-        character(1)
-    )
-
-    for (stmt in sql_statements) {
-        dbExectue_safe(.con, stmt)
+        for (stmt in sql_statements) {
+            dbExecute_safe(.con, stmt)
+        }
     }
-    }
 
-    # connect to motherduck
+    # Connect to motherduck
+    dbExecute_safe(.con, "PRAGMA MD_CONNECT")
 
-    dbExectue_safe(.con, "PRAGMA MD_CONNECT")
-
-    validate_md_connection_status(.con,return_type = "msg")
+    validate_md_connection_status(.con, return_type = "msg")
 
     return(.con)
-
 }
 
 
 
-#' @title validate and Pprint your database location
-#' @name validate_and_print_database_loction
+#' @title Validate and print your database location
+#' @name validate_and_print_database_location
 #' @description
-#' Internal function to help validate your local database location
+#' Internal function to help validate your local database location.
 #'
 #' @inheritParams validate_con
 #'
-#' @returns print message
+#' @returns Prints a message with the database file location.
+#' @keywords internal
 #'
-validate_and_print_database_loction <- function(.con){
+validate_and_print_database_location <- function(.con){
 
     validate_con(.con)
 

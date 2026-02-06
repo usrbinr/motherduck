@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+  - '*.qmd'
+  - '*.md'
+  - '!inst/'
+  - '!renv/'
+  - '!packrat/'
+website:
+  title: motherduck
+  navbar:
+    title: motherduck 0.2.1
+    left:
+    - text: Get started
+      href: vignettes/articles/how-to-connect-to-motherduck.qmd
+    - text: Reference
+      href: reference.qmd
+    - text: Articles
+      href: articles.qmd
+    - text: Changelog
+      href: NEWS.md
+    right:
+    - icon: github
+      href: https://github.com/usrbinr/motherduck
+      aria-label: Source code
+  page-footer:
+    left: Built with [Quarto](https://quarto.org/) and [qrtdown](https://codeberg.org/usrbinr/qrtdown)
+    right: motherduck 0.2.1
+  repo-url: https://usrbinr.github.io/motherduck/
+format:
+  html:
+    theme:
+      light: cosmo
+    toc: true
+    code-overflow: wrap
+

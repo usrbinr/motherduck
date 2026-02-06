@@ -9,8 +9,7 @@ create_md_access_token(
   token_type,
   token_name,
   token_expiration_number,
-  token_expiration_unit,
-  motherduck_token = "MOTHERDUCK_TOKEN"
+  token_expiration_unit
 )
 }
 \arguments{
@@ -22,14 +21,11 @@ tokens should be listed.}
 
 \item{token_name}{Character. A descriptive name for the token.}
 
-\item{token_expiration_number}{Numeric. The duration of the token’s validity,
+\item{token_expiration_number}{Numeric. The duration of the token's validity,
 in the units specified by \code{token_expiration_unit}. Minimum value is 300 seconds.}
 
 \item{token_expiration_unit}{Character. The unit of time for the token expiration.
 One of \code{"seconds"}, \code{"minutes"}, \code{"days"}, \code{"weeks"}, \code{"months"}, \code{"years"}, or \code{"never"}.}
-
-\item{motherduck_token}{Character. Either the name of an environment variable containing your
-MotherDuck access token (default \code{"MOTHERDUCK_TOKEN"}) or the token itself.}
 }
 \value{
 A tibble containing the API response, including the username and the token
@@ -42,9 +38,11 @@ Tokens can be configured with a specific type, name, and expiration time.
 \details{
 This function calls the MotherDuck REST API endpoint
 \verb{https://api.motherduck.com/v1/users/\{user_name\}/tokens} to create a new token
-for the specified user. The token’s time-to-live (TTL) is calculated in seconds
+for the specified user. The token's time-to-live (TTL) is calculated in seconds
 from \code{token_expiration_number} and \code{token_expiration_unit}.
-The authenticated user must have administrative privileges to create tokens.
+
+Uses the token from the \code{MOTHERDUCK_TOKEN} environment variable for
+authorization. The authenticated user must have administrative privileges.
 }
 \examples{
 \dontrun{
@@ -54,8 +52,7 @@ create_md_access_token(
   token_type = "read_write",
   token_name = "temp_token",
   token_expiration_number = 1,
-  token_expiration_unit = "hours",
-  motherduck_token = "MOTHERDUCK_TOKEN"
+  token_expiration_unit = "hours"
 )
 }
 

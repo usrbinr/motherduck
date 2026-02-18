@@ -48,6 +48,7 @@ DBI::dbDisconnect(con_db, shutdown = TRUE)
 \seealso{
 Other db-meta: 
 \code{\link{cd}()},
-\code{\link{pwd}()}
+\code{\link{pwd}()},
+\code{\link{summary}()}
 }
 \concept{db-meta}

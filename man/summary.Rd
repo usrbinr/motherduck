@@ -46,5 +46,11 @@ summary(tbl_obj)
 dbDisconnect(con)
 }
 
-
 }
+\seealso{
+Other db-meta: 
+\code{\link{cd}()},
+\code{\link{launch_ui}()},
+\code{\link{pwd}()}
+}
+\concept{db-meta}

@@ -820,7 +820,7 @@ cd <- function(.con,database_name,schema_name,silent=FALSE){
 #' dbDisconnect(con)
 #' }
 #'
-#'
+#' @family db-meta
 #' @export
 summary.tbl_lazy <- function(object, ...){
 

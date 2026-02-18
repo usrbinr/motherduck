@@ -26,3 +26,4 @@ test.R
 ^llms\.txt$
 ^CLAUDE\.md$
 ^\.claude$
+^_brand\.yml$

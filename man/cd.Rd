@@ -55,6 +55,7 @@ DBI::dbDisconnect(con)
 \seealso{
 Other db-meta: 
 \code{\link{launch_ui}()},
-\code{\link{pwd}()}
+\code{\link{pwd}()},
+\code{\link{summary}()}
 }
 \concept{db-meta}

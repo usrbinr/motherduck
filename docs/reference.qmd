@@ -1,0 +1,2857 @@
+---
+title: "Function reference"
+---
+
+All functions and classes exported by motherduck.
+
+## Functions
+
+| Function | Description |
+|----------|-------------|
+| [`alter_table_schema()`](#alter_table_schema) | Move Tables from One Schema to Another |
+| [`cd()`](#cd) | Change Active Database and Schema |
+| [`cli_create_obj()`](#cli_create_obj) | Database, Schema, and Table Creator |
+| [`cli_delete_obj()`](#cli_delete_obj) | CLI print deleted objects |
+| [`cli_show_db()`](#cli_show_db) | Catalog Report Generator |
+| [`cli_show_user()`](#cli_show_user) | User Information Report |
+| [`config_csv()`](#config_csv) | DuckDB CSV read configuration (config_csv) |
+| [`config_db()`](#config_db) | DuckDB runtime database configuration (config_db) |
+| [`config_excel()`](#config_excel) | DuckDB Excel read configuration (config_excel) |
+| [`config_parquet()`](#config_parquet) | DuckDB Parquet read configuration (config_parquet) |
+| [`configure_md_user_settings()`](#configure_md_user_settings) | Configure a MotherDuck user's settings |
+| [`connect_to_motherduck()`](#connect_to_motherduck) | Create connection to motherduck |
+| [`convert_table_to_sql_id()`](#convert_table_to_sql_id) | Convert Table Metadata to SQL Identifiers |
+| [`copy_tables_to_new_location()`](#copy_tables_to_new_location) | Copy Tables to a New Database/Schema |
+| [`create_database()`](#create_database) | Create (If Not Exists) and Switch to a Database |
+| [`create_if_not_exists_share()`](#create_if_not_exists_share) | Create a MotherDuck database share if it does not exist |
+| [`create_md_access_token()`](#create_md_access_token) | Create a MotherDuck access token |
+| [`create_md_user()`](#create_md_user) | Create a new MotherDuck user |
+| [`create_or_replace_share()`](#create_or_replace_share) | Create or replace a MotherDuck database share |
+| [`create_schema()`](#create_schema) | Create a Schema in a Database if It Does Not Exist |
+| [`create_table()`](#create_table) | Create or Append a Table from a Tibble or DBI-Backed Table |
+| [`create_table_dbi()`](#create_table_dbi) | Create a Database Table from a DBI Object |
+| [`create_table_tbl()`](#create_table_tbl) | Overwrite or Append a Local Tibble to a Database Table |
+| [`delete_and_create_schema()`](#delete_and_create_schema) | Drop and Recreate a Schema in a MotherDuck / DuckDB Database |
+| [`delete_database()`](#delete_database) | Drop a Database |
+| [`delete_md_access_token()`](#delete_md_access_token) | Delete a MotherDuck user's access token |
+| [`delete_md_user()`](#delete_md_user) | Delete a MotherDuck user |
+| [`delete_schema()`](#delete_schema) | Drop a Schema from a Database |
+| [`delete_table()`](#delete_table) | Drop a Table |
+| [`describe_share()`](#describe_share) | Describe a MotherDuck share |
+| [`drop_share()`](#drop_share) | Drop a MotherDuck share |
+| [`install_extensions()`](#install_extensions) | Install DuckDB/MotherDuck Extensions |
+| [`launch_ui()`](#launch_ui) | Launch the DuckDB UI in your browser |
+| [`list_all_databases()`](#list_all_databases) | List Databases Visible to the Connection |
+| [`list_all_tables()`](#list_all_tables) | List All Tables Visible to the Connection |
+| [`list_current_schemas()`](#list_current_schemas) | List Schemas in the Current Database |
+| [`list_current_tables()`](#list_current_tables) | List Tables in the Current Database and Schema |
+| [`list_extensions()`](#list_extensions) | List MotherDuck/DuckDB Extensions |
+| [`list_fns()`](#list_fns) | List Database Functions (DuckDB/MotherDuck) |
+| [`list_md_active_accounts()`](#list_md_active_accounts) | List active MotherDuck accounts |
+| [`list_md_user_instance()`](#list_md_user_instance) | List a MotherDuck user's instance settings |
+| [`list_md_user_tokens()`](#list_md_user_tokens) | List a MotherDuck user's tokens |
+| [`list_owned_shares()`](#list_owned_shares) | List all shares owned by the current user |
+| [`list_setting()`](#list_setting) | List Database Settings |
+| [`list_shared_with_me_shares()`](#list_shared_with_me_shares) | List all shares shared with the current user |
+| [`list_shares()`](#list_shares) | List MotherDuck Shares |
+| [`load_extensions()`](#load_extensions) | Load and Install DuckDB/MotherDuck Extensions |
+| [`pwd()`](#pwd) | Print Current MotherDuck Database Context |
+| [`read_csv()`](#read_csv) | Read a CSV file into a DuckDB/MotherDuck table |
+| [`read_excel()`](#read_excel) | Read an Excel file into a DuckDB/MotherDuck table |
+| [`show_current_user()`](#show_current_user) | Show current database user |
+| [`show_information_schema()`](#show_information_schema) | Show Information Schema Schemas |
+| [`show_motherduck_token()`](#show_motherduck_token) | Show Your MotherDuck Token |
+| [`summary()`](#summary) | Summarize a Lazy DBI Table |
+| [`upload_database_to_md()`](#upload_database_to_md) | Upload a Local Database to MotherDuck |
+| [`validate_and_print_database_loction()`](#validate_and_print_database_loction) | validate and Pprint your database location |
+| [`validate_con()`](#validate_con) | Validate connection is DuckDB |
+| [`validate_database_exists()`](#validate_database_exists) | Check if a Database Exists |
+| [`validate_database_schema_exists()`](#validate_database_schema_exists) | Check if a Schema Exists in a Database |
+| [`validate_extension_install_status()`](#validate_extension_install_status) | Validate Installed MotherDuck/DuckDB Extensions |
+| [`validate_extension_load_status()`](#validate_extension_load_status) | Validate Loaded MotherDuck/DuckDB Extensions |
+| [`validate_md_connection_status()`](#validate_md_connection_status) | Validate Mother Duck Connection Status |
+
+***
+
+## Function Details
+
+### `alter_table_schema()` {#alter_table_schema}
+
+Move Tables from One Schema to Another
+
+#### Usage
+
+```r
+alter_table_schema(.con, from_table_names, new_schema)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `from_table_names` | Character vector of table names to move. |
+| `new_schema` | Target schema name (where the tables will be moved). |
+
+#### Value
+
+Invisibly returns a character vector of fully-qualified table names moved.
+Side effects: creates new_schema if needed and alters table schemas.
+
+#### Description
+
+Moves one or more tables from an existing schema to a new (target) schema
+using ALTER TABLE ... SET SCHEMA. If the target schema does not exist,
+it is created first.
+
+#### Details
+
+Ensures new_schema exists (CREATE SCHEMA IF NOT EXISTS).
+ For each table in table_names, runs:
+ALTER TABLE old_schema.table SET SCHEMA new_schema.
+ Table and schema identifiers are safely quoted with glue::glue_sql().
+
+***
+
+### `cd()` {#cd}
+
+Change Active Database and Schema
+
+#### Usage
+
+```r
+cd(.con, database_name, schema_name, silent = FALSE)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | A character string specifying the database to switch to. Must be one of the available databases returned by list_all_databases(). |
+| `schema_name` | (Optional) A character string specifying the schema to switch to within the given database. Must be one of the available schemas returned by list_current_schemas(). |
+| `silent` | to print message or not, default is FALSE |
+
+#### Value
+
+Invisibly returns a message summarizing the new connection context.
+Side effects include printing CLI headers showing the current user
+and database context.
+
+#### Description
+
+Switches the active database and (optionally) schema for a valid
+DuckDB or MotherDuck connection. The function validates the target
+database and schema before executing the USE command and provides
+user feedback via CLI messages.
+
+#### Details
+
+The cd() function is analogous to a "change directory" command in a
+file system, but for database contexts. It updates the currently active
+database (and optionally schema) for the given connection. If the target
+database or schema does not exist, the function aborts with a descriptive
+CLI error message.
+
+#### Examples
+
+```r
+# Connect to MotherDuck
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# List available databases
+list_databases(con)
+
+# Change to a specific database and schema
+cd(con, database_name = "analytics_db", schema_name = "public")
+
+# Disconnect
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `cli_create_obj()` {#cli_create_obj}
+
+Database, Schema, and Table Creator
+
+#### Usage
+
+```r
+cli_create_obj(.con, database_name, schema_name, table_name, write_type)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | The name of the database to create or insert into. If missing, the current database is used. |
+| `schema_name` | The name of the schema to create or insert into. If missing, the current schema is used. |
+| `table_name` | The name of the table to create or insert into. If missing, no table-specific action is taken. |
+| `write_type` | Specifies the type of write operation. Used to describe whether an existing table is updated (e.g., "insert" or "update"). |
+
+#### Value
+
+This function doesn't return any value. It generates a formatted report showing whether a new database, schema,
+or table was created or if existing ones were used.
+
+#### Description
+
+This function creates or inserts data into a specified database, schema, and table. If no database,
+schema, or table is provided, the function attempts to use the current database, schema, or table.
+It first checks if the provided database, schema, or table exists, and then either creates a new one
+or inserts into the existing one, based on the given parameters. It generates an action report
+indicating the status of the operation, whether a new database, schema, or table was created or
+whether existing ones were used.
+
+***
+
+### `cli_delete_obj()` {#cli_delete_obj}
+
+CLI print deleted objects
+
+#### Usage
+
+```r
+cli_delete_obj(.con, database_name, schema_name, table_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database to be deleted (optional). |
+| `schema_name` | Name of the schema to be deleted (optional). |
+| `table_name` | Name of the table to be deleted (optional). |
+
+#### Value
+
+This function does not return any values. It prints a message indicating
+the deleted objects (database, schema, or table) and the number of schemas/tables
+affected by the deletion.
+
+#### Description
+
+This function allows you to delete specified objects (database, schema, or table) from the connected
+database. The function will check if the provided database, schema, or table exists. If they do,
+it will proceed to delete them and print an action report detailing what was deleted and how many
+schemas or tables were affected. If the object does not exist, it will not delete anything.
+
+***
+
+### `cli_show_db()` {#cli_show_db}
+
+Catalog Report Generator
+
+#### Usage
+
+```r
+cli_show_db(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+This function doesn't return any value. It generates a formatted catalog report as output, including the
+current database, schema, and access counts for catalogs, tables, and shares.
+
+#### Description
+
+This function generates a report that provides details about the current database catalog, schema, and
+the number of resources (such as catalogs, tables, and shares) that the user has access to in the
+connected database. It also offers helpful functions for navigating the catalog, schema, and databases.
+The report includes:
+
+ Current database (catalog)
+ Current schema
+ Number of catalogs the user has access to
+ Number of tables the user has access to
+ Number of shares the user has access to
+
+that help manage and explore the database resources.
+
+***
+
+### `cli_show_user()` {#cli_show_user}
+
+User Information Report
+
+#### Usage
+
+```r
+cli_show_user(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+This function doesn't return any value. It generates a formatted user report with the current user's
+name and role as output.
+
+#### Description
+
+This function generates a report that shows the current user and their assigned role within the database.
+It queries the database to retrieve the current user using current_user() and the current role using
+current_role(). The output is displayed in a clear and formatted manner, with the user name and role
+listed in an unordered list.
+
+***
+
+### `config_csv()` {#config_csv}
+
+DuckDB CSV read configuration (config_csv)
+
+#### Usage
+
+```r
+config_csv
+```
+
+#### Description
+
+A named character list of DuckDB CSV reading configuration settings used
+by the package. This includes options such as type detection, delimiter,
+quote handling, sample size, and other parser flags. These reflect the
+values returned by config_csv.
+
+#### Examples
+
+```r
+config_csv$all_varchar
+```
+
+***
+
+### `config_db()` {#config_db}
+
+DuckDB runtime database configuration (config_db)
+
+#### Usage
+
+```r
+config_db
+```
+
+#### Description
+
+A named character list of DuckDB runtime configuration settings used by the package.
+This object includes allocator settings, thread counts, extension flags, storage and checkpoint options,
+security and secret settings, and other engine-level options. These settings reflect the values returned by
+config_db and are suitable as a template or reference for configuring DuckDB instances created via the package.
+
+#### Examples
+
+```r
+# inspect the config
+config_db
+# access individual settings
+config_db$threads
+```
+
+***
+
+### `config_excel()` {#config_excel}
+
+DuckDB Excel read configuration (config_excel)
+
+#### Usage
+
+```r
+config_excel
+```
+
+#### Description
+
+A named character list of DuckDB Excel reading configuration settings
+used by the package. Includes options such as reading binary as string,
+adding filename/row_number columns, Hive partitioning, and union by name.
+These reflect the values returned by config_excel.
+
+#### Examples
+
+```r
+config_excel$binary_as_string
+```
+
+***
+
+### `config_parquet()` {#config_parquet}
+
+DuckDB Parquet read configuration (config_parquet)
+
+#### Usage
+
+```r
+config_parquet
+```
+
+#### Description
+
+A named character list of DuckDB Parquet reading configuration settings
+used by the package. Includes options such as binary encoding, filename
+columns, row numbers, and union by name. Reflects config_parquet.
+
+#### Examples
+
+```r
+config_parquet$binary_as_string
+```
+
+***
+
+### `configure_md_user_settings()` {#configure_md_user_settings}
+
+Configure a MotherDuck user's settings
+
+#### Usage
+
+```r
+configure_md_user_settings(
+  user_name,
+  motherduck_token = "MOTHERDUCK_TOKEN",
+  token_type = "read_write",
+  instance_size = "pulse",
+  flock_size = 0
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | Character. The username of the MotherDuck user to configure. |
+| `motherduck_token` | Character. The admin user's MotherDuck token or environment variable name (default: "MOTHERDUCK_TOKEN"). |
+| `token_type` | Character. The type of access token for the user; must be "read_write" or "read_scaling" (default: "read_write"). |
+| `instance_size` | Character. The instance size for the user; must be one of "pulse", "standard", "jumbo", "mega", "giga" (default: "pulse"). |
+| `flock_size` | Numeric. The flock size for the user; must be a whole number between 0 and 60 (default: 0). |
+
+#### Value
+
+A tibble containing the API response, including the updated settings for the user.
+
+#### Description
+
+Updates a MotherDuck user's configuration settings, including token type,
+instance size, and flock size. This function uses the MotherDuck REST API
+to apply the changes for the specified user.
+
+#### Details
+
+This function validates each parameter before making a PUT request to the
+MotherDuck API. It ensures that:
+
+ token_type is valid using validate_token_type().
+ instance_size is valid using validate_instance_size().
+ flock_size is a valid integer using validate_flock_size().
+The API response is returned as a tibble for easy inspection.
+
+#### Examples
+
+```r
+configure_md_user_settings(
+  user_name = "alice",
+  motherduck_token = "MOTHERDUCK_TOKEN",
+  token_type = "read_write",
+  instance_size = "pulse",
+  flock_size = 10
+)
+```
+
+***
+
+### `connect_to_motherduck()` {#connect_to_motherduck}
+
+Create connection to motherduck
+
+#### Usage
+
+```r
+connect_to_motherduck(
+  motherduck_token = "MOTHERDUCK_TOKEN",
+  db_path = NULL,
+  config
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+| `db_path` | Character, optional. Path to a DuckDB database file or directory to use. If NULL, a temporary file is used. |
+| `config` | List, optional. A list of DuckDB configuration options to be passed to duckdb::duckdb(). |
+
+#### Value
+
+A DBIConnection object connected to your MotherDuck account.
+
+#### Description
+
+Establishes a connection to a MotherDuck account using DuckDB and the MotherDuck extension.
+The function handles token validation, database file creation, extension loading, and executes
+PRAGMA MD_CONNECT to authenticate the connection.
+
+#### Details
+
+This function provides a convenient interface for connecting to MotherDuck. It allows you to:
+
+ Use a token stored in an environment variable or supply the token directly.
+ Optionally specify a persistent DuckDB database file or directory via db_path.
+ Optionally Provide custom DuckDB configuration options via config.
+ Automatically load the MotherDuck extension if not already loaded.
+
+If db_path is not supplied, a temporary DuckDB database file will be created in the session's
+temporary directory. Use config to pass any DuckDB-specific options (e.g., memory limits or
+extensions).
+
+#### Examples
+
+```r
+# Connect using a token stored in your .Renviron
+con <- connect_to_motherduck()
+
+# Connect with a direct token
+con <- connect_to_motherduck(motherduck_token = "MY_DIRECT_TOKEN")
+
+# Connect and specify a persistent database file
+con <- connect_to_motherduck( )
+```
+
+***
+
+### `convert_table_to_sql_id()` {#convert_table_to_sql_id}
+
+Convert Table Metadata to SQL Identifiers
+
+#### Usage
+
+```r
+convert_table_to_sql_id(x)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `x` | A tibble or data frame containing the columns:   table_catalog — database/catalog name  table_schema — schema name  table_name — table name |
+
+#### Value
+
+A list of DBI::Id objects, each representing a fully-qualified table.
+
+#### Description
+
+Converts a tibble of table metadata (table_catalog, table_schema,
+table_name) into a list of DBI::Id SQL identifiers.
+Useful for safely quoting fully qualified table references in
+DBI/dbplyr workflows.
+
+***
+
+### `copy_tables_to_new_location()` {#copy_tables_to_new_location}
+
+Copy Tables to a New Database/Schema
+
+#### Usage
+
+```r
+copy_tables_to_new_location(
+  .con,
+  from_table_names,
+  to_database_name,
+  to_schema_name
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `from_table_names` | A tibble/data frame listing source tables, with columns database_name, schema_name, and table_name. |
+| `to_database_name` | Target database name. |
+| `to_schema_name` | Target schema name. |
+
+#### Value
+
+Invisibly returns a character vector of fully-qualified destination table
+names that were created. Side effect: creates target DB/schema if needed and
+writes new tables.
+
+#### Description
+
+Copies one or more tables to a new location (database/schema) by creating
+new tables via CREATE TABLE ... AS SELECT * FROM ....
+Requires motherduck connection
+
+#### Details
+
+Input from_table_names must contain columns:
+database_name, schema_name, and table_name.
+ For each source table, the function issues:
+CREATE TABLE <to_db>.<to_schema>.<table> AS SELECT * FROM <src_db>.<src_schema>.<table>.
+ On local DuckDB (non-MotherDuck), the target database name is ignored and
+defaults to the current database of the connection.
+
+***
+
+### `create_database()` {#create_database}
+
+Create (If Not Exists) and Switch to a Database
+
+#### Usage
+
+```r
+create_database(.con, database_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database to create/ensure and switch to |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: may create a database and switches to it; prints CLI status
+
+#### Description
+
+Ensures a database exists and sets it as the active database.
+If connected to MotherDuck, the function will run
+CREATE DATABASE IF NOT EXISTS followed by USE <database>.
+Prints CLI status information about the current user and database.
+
+#### Details
+
+Connection type is checked via validate_md_connection_status()
+(with return_type = "arg").
+ On MotherDuck, executes:
+
+ CREATE DATABASE IF NOT EXISTS <database>
+ USE <database>
+
+ Displays status and environment info with CLI messages.
+
+#### Examples
+
+```r
+con_md <- connect_to_motherduck()
+create_database(con_md, "analytics")
+```
+
+***
+
+### `create_if_not_exists_share()` {#create_if_not_exists_share}
+
+Create a MotherDuck database share if it does not exist
+
+#### Usage
+
+```r
+create_if_not_exists_share(
+  .con,
+  share_name,
+  database_name,
+  access = "PUBLIC",
+  visibility = "LISTED",
+  update = "AUTOMATIC"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `share_name` | Character. The name of the new share to create. |
+| `database_name` | Character. The name of the target database to share. |
+| `access` | Character. Access level for the share; either "RESTRICTED" or "PUBLIC" (default: "PUBLIC"). |
+| `visibility` | Character. Visibility of the share; either "HIDDEN" or "LISTED" (default: "LISTED"). |
+| `update` | Character. Update policy for the share; either "AUTOMATIC" or "MANUAL" (default: "AUTOMATIC"). |
+
+#### Value
+
+A message confirming that the share has been created, if it did not already exist.
+
+#### Description
+
+Creates a new share for a specified database in MotherDuck if it does not already exist.
+Allows you to configure access, visibility, and update settings for the share.
+
+#### Details
+
+This function executes a CREATE IF NOT EXISTS SQL statement on the connected
+MotherDuck database to create a share for the specified database.
+
+ access controls who can access the share.
+ visibility controls whether the share is listed publicly or hidden.
+ update controls whether changes to the source database are automatically reflected in the share.
+After creation, the current user is displayed for confirmation.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+create_if_not_exists_share(
+  .con = con,
+  share_name = "analytics_share",
+  database_name = "sales_db",
+  access = "PUBLIC",
+  visibility = "LISTED",
+  update = "AUTOMATIC"
+)
+```
+
+***
+
+### `create_md_access_token()` {#create_md_access_token}
+
+Create a MotherDuck access token
+
+#### Usage
+
+```r
+create_md_access_token(
+  user_name,
+  token_type,
+  token_name,
+  token_expiration_number,
+  token_expiration_unit,
+  motherduck_token = "MOTHERDUCK_TOKEN"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `token_type` | Character. The type of token to create. Must be one of: "read_write" or "read_scaling". |
+| `token_name` | Character. A descriptive name for the token. |
+| `token_expiration_number` | Numeric. The duration of the token’s validity, in the units specified by token_expiration_unit. Minimum value is 300 seconds. |
+| `token_expiration_unit` | Character. The unit of time for the token expiration. One of "seconds", "minutes", "days", "weeks", "months", "years", or "never". |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble containing the API response, including the username and the token
+attributes.
+
+#### Description
+
+Creates a new access token for a specified MotherDuck user using the REST API.
+Tokens can be configured with a specific type, name, and expiration time.
+
+#### Details
+
+This function calls the MotherDuck REST API endpoint
+https://api.motherduck.com/v1/users/{user_name/tokens to create a new token
+for the specified user. The token’s time-to-live (TTL) is calculated in seconds
+from token_expiration_number and token_expiration_unit.
+The authenticated user must have administrative privileges to create tokens.
+
+#### Examples
+
+```r
+# Create a temporary read/write token for user "alejandro_hagan" valid for 1 hour
+create_md_access_token(
+  user_name = "alejandro_hagan",
+  token_type = "read_write",
+  token_name = "temp_token",
+  token_expiration_number = 1,
+  token_expiration_unit = "hours",
+  motherduck_token = "MOTHERDUCK_TOKEN"
+)
+```
+
+***
+
+### `create_md_user()` {#create_md_user}
+
+Create a new MotherDuck user
+
+#### Usage
+
+```r
+create_md_user(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble summarizing the API response, typically containing the newly created
+username and associated metadata.
+
+#### Description
+
+Sends a POST request to the MotherDuck REST API to create a new user
+within your organization. This operation requires administrative privileges
+and a valid access token.
+
+#### Details
+
+This function calls the
+https://motherduck.com/docs/sql-reference/rest-api/users-create/MotherDuck Users API
+endpoint to create a new user under the authenticated account.
+The provided token must belong to a user with permissions to manage
+organization-level accounts.
+
+#### Examples
+
+```r
+# Create a new user in MotherDuck using an admin token stored in an environment variable
+create_md_user("test_20250913", "MOTHERDUCK_TOKEN")
+```
+
+***
+
+### `create_or_replace_share()` {#create_or_replace_share}
+
+Create or replace a MotherDuck database share
+
+#### Usage
+
+```r
+create_or_replace_share(
+  .con,
+  share_name,
+  database_name,
+  access = "PUBLIC",
+  visibility = "LISTED",
+  update = "AUTOMATIC"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `share_name` | Character. The name of the share to create or replace. |
+| `database_name` | Character. The name of the database to be shared. |
+| `access` | Character. Access level for the share; either "RESTRICTED" or "PUBLIC" (default: "PUBLIC"). |
+| `visibility` | Character. Visibility of the share; either "HIDDEN" or "LISTED" (default: "LISTED"). |
+| `update` | Character. Update policy for the share; either "AUTOMATIC" or "MANUAL" (default: "AUTOMATIC"). |
+
+#### Value
+
+A message indicating that the share has been created or replaced.
+
+#### Description
+
+Creates a new share or replaces an existing share for a specified database
+in MotherDuck. This allows you to update the configuration of an existing
+share or create a new one if it does not exist.
+
+#### Details
+
+This function executes a CREATE OR REPLACE SHARE SQL statement to create
+a new share or update an existing one.
+
+ access controls who can access the share.
+ visibility controls whether the share is listed publicly or hidden.
+ update controls whether changes to the source database are automatically reflected in the share.
+The current user is displayed for confirmation before execution.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+create_or_replace_share(
+  .con = con,
+  share_name = "analytics_share",
+  database_name = "sales_db",
+  access = "PUBLIC",
+  visibility = "LISTED",
+  update = "AUTOMATIC"
+)
+```
+
+***
+
+### `create_schema()` {#create_schema}
+
+Create a Schema in a Database if It Does Not Exist
+
+#### Usage
+
+```r
+create_schema(.con, database_name, schema_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database to create/use. |
+| `schema_name` | Name of the schema to create if it does not exist. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: creates the schema if necessary and prints CLI messages.
+
+#### Description
+
+Ensures that a specified schema exists in the given database.
+If the connection is to a MotherDuck instance, the function switches
+to the specified database before creating the schema.
+It also prints helpful connection and environment information via
+CLI messages for transparency.
+
+#### Details
+
+Uses DBI::dbExecute() with CREATE SCHEMA IF NOT EXISTS to create
+the schema only when needed.
+ If connected to MotherDuck (determined by
+validate_md_connection_status()), executes USE <database> before
+creating the schema.
+ Displays connection/user/database information via internal CLI helpers.
+
+***
+
+### `create_table()` {#create_table}
+
+Create or Append a Table from a Tibble or DBI-Backed Table
+
+#### Usage
+
+```r
+create_table(
+  .data,
+  .con,
+  database_name,
+  schema_name,
+  table_name,
+  write_type = "overwrite"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.data` | Tibble/data frame (in-memory) or a dbplyr/DBI-backed lazy table (class "tbl_dbi"). |
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Database name to create/use. |
+| `schema_name` | Schema name to create/use. |
+| `table_name` | Target table name to create or append to. |
+| `write_type` | Write strategy: "overwrite" (drop/create) or "append" (insert rows). Defaults to "overwrite". |
+
+#### Value
+
+Invisibly returns NULL. Side effect: writes a table to the database by
+delegating to the appropriate helper.
+
+#### Description
+
+A thin wrapper that routes to either create_table_dbi() (for
+dbplyr-backed lazy tables, class "tbl_dbi") or
+create_table_tbl() (for in-memory tibbles / data frames), creating
+a physical table in the target database/schema. Supports overwrite
+and append write strategies and defers all heavy lifting to the
+specific implementation.
+
+#### Details
+
+If .data is a dbplyr lazy table (class "tbl_dbi"), the call is
+delegated to create_table_dbi().
+ If .data is an in-memory tibble/data frame (class including
+"data.frame"), the call is delegated to create_table_tbl().
+ Any other input classes trigger an error.
+
+***
+
+### `create_table_dbi()` {#create_table_dbi}
+
+Create a Database Table from a DBI Object
+
+#### Usage
+
+```r
+create_table_dbi(
+  .data,
+  .con,
+  database_name,
+  schema_name,
+  table_name,
+  write_type = "overwrite"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.data` | A dbplyr lazy table or other DBI-compatible object to be materialized as a physical table. |
+| `.con` | A valid DBI connection. |
+| `database_name` | Name of the database to create/use. If missing, the current database of the connection will be used. |
+| `schema_name` | Name of the schema to create/use. If missing, the current schema of the connection will be used. |
+| `table_name` | Name of the table to create or append to. |
+| `write_type` | Write strategy: either "overwrite" (drop/create) or "append" (insert rows). Defaults to "overwrite". |
+
+#### Value
+
+A user-friendly message is returned invisibly (invisible NULL),
+indicating whether the table was created or appended to.
+Side effect: writes data to the database.
+
+#### Description
+
+Creates a physical table in a database from a dbplyr/DBI-backed
+lazy table or query. The function supports both overwrite and
+append write strategies, automatically creates the target
+database and schema if they do not exist, and adds audit fields
+(upload_date, upload_time) to the written table.
+
+#### Details
+
+If the connection is a MotherDuck connection (detected by
+validate_md_connection_status()), the function ensures the
+database is created and switches to it before creating the schema.
+ Adds two audit columns: upload_date (date of run) and
+upload_time (time and timezone of run).
+ Uses DBI::Id() to explicitly target the database/schema/table.
+ write_type = "overwrite" will drop and recreate the table.
+ write_type = "append" will insert rows into an existing table.
+
+***
+
+### `create_table_tbl()` {#create_table_tbl}
+
+Overwrite or Append a Local Tibble to a Database Table
+
+#### Usage
+
+```r
+create_table_tbl(
+  .data,
+  .con,
+  database_name,
+  schema_name,
+  table_name,
+  write_type = "overwrite"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.data` | A tibble or data frame to be written to the database. |
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database to create/use. If missing, the current database of the connection will be used. |
+| `schema_name` | Name of the schema to create/use. If missing, the current schema of the connection will be used. |
+| `table_name` | Name of the table to create or append to. |
+| `write_type` | Write strategy: either "overwrite" (drop/create) or "append" (insert rows). Defaults to "overwrite". |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: writes the tibble to the specified database table.
+
+#### Description
+
+Takes an in-memory tibble (or data frame) and writes it to a database table
+using a DBI connection. The function supports both overwrite and
+append modes, automatically creates the target database and schema if
+they do not exist, and adds audit fields (upload_date, upload_time) to
+the written table.
+
+#### Details
+
+If the connection is a MotherDuck connection (detected by
+validate_md_connection_status()), the function ensures the
+database is created and switches to it before creating the schema.
+ Two audit columns are added to the data before writing:
+upload_date (date of run) and upload_time (time and timezone of run).
+ Uses DBI::Id() to explicitly target the database/schema/table.
+ write_type = "overwrite" will drop and recreate the table.
+ write_type = "append" will insert rows into an existing table.
+
+***
+
+### `delete_and_create_schema()` {#delete_and_create_schema}
+
+Drop and Recreate a Schema in a MotherDuck / DuckDB Database
+
+#### Usage
+
+```r
+delete_and_create_schema(.con, database_name, schema_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | The name of the database where the schema should be dropped and recreated. |
+| `schema_name` | The name of the schema to drop and recreate. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: drops and recreates the schema and prints CLI status messages.
+
+#### Description
+
+Drops an existing schema (if it exists) in the specified database and then
+creates a new empty schema.
+If the connection is to a MotherDuck instance, the function switches to the
+given database first, then drops and recreates the schema.
+Displays helpful CLI output about the current connection, user, and database.
+
+#### Details
+
+Executes DROP SCHEMA IF EXISTS ... CASCADE to remove an existing schema
+and all contained objects.
+ Executes CREATE SCHEMA IF NOT EXISTS to recreate it.
+ If connected to MotherDuck (detected by
+validate_md_connection_status()), performs a USE <database> first.
+ Prints a summary of the current connection and schema creation status
+using internal CLI helpers.
+
+***
+
+### `delete_database()` {#delete_database}
+
+Drop a Database
+
+#### Usage
+
+```r
+delete_database(.con, database_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database to drop. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: drops the database and prints CLI status messages.
+
+#### Description
+
+Drops a database from the current DuckDB or MotherDuck connection if it exists.
+Prints a CLI status report after performing the operation.
+
+#### Details
+
+Executes DROP DATABASE IF EXISTS <database_name> to remove the database.
+ Intended for DuckDB or MotherDuck connections.
+ Prints user, database and action details using CLI helper functions.
+
+***
+
+### `delete_md_access_token()` {#delete_md_access_token}
+
+Delete a MotherDuck user's access token
+
+#### Usage
+
+```r
+delete_md_access_token(
+  user_name,
+  token_name,
+  motherduck_token = "MOTHERDUCK_TOKEN"
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `token_name` | Character. The name of the access token to delete. |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble summarizing the API response, typically including the username and
+deletion status of the token.
+
+#### Description
+
+Deletes a specific access token for a given MotherDuck user using the REST API.
+This operation requires administrative privileges and a valid API token.
+
+#### Details
+
+This function calls the MotherDuck REST API endpoint
+https://api.motherduck.com/v1/users/{user_name/tokens/{token_name
+using a DELETE request to remove the specified token.
+The authenticated user must have sufficient permissions to perform token management.
+
+#### Examples
+
+```r
+# Delete a token named "temp_token" for user "alejandro_hagan"
+delete_md_access_token(
+  user_name = "alejandro_hagan",
+  token_name = "temp_token",
+  motherduck_token = "MOTHERDUCK_TOKEN"
+)
+```
+
+***
+
+### `delete_md_user()` {#delete_md_user}
+
+Delete a MotherDuck user
+
+#### Usage
+
+```r
+delete_md_user(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble summarizing the API response, including the username and deletion status.
+
+#### Description
+
+Sends a DELETE request to the MotherDuck REST API to permanently remove a user
+from your organization. This operation requires administrative privileges and a
+valid MotherDuck access token.
+
+#### Details
+
+This function calls the
+https://motherduck.com/docs/sql-reference/rest-api/users-delete/MotherDuck Users API
+endpoint to delete the specified user. The authenticated user (associated with the
+provided token) must have sufficient permissions to perform user management actions.
+
+#### Examples
+
+```r
+# Delete a user named "bob_smith" using an admin token stored in an environment variable
+delete_md_user("bob_smith", "MOTHERDUCK_TOKEN")
+```
+
+***
+
+### `delete_schema()` {#delete_schema}
+
+Drop a Schema from a Database
+
+#### Usage
+
+```r
+delete_schema(.con, database_name, schema_name, cascade = FALSE)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database containing the schema. |
+| `schema_name` | Name of the schema to drop. |
+| `cascade` | Logical; if TRUE (default), use CASCADE to drop all dependent objects in the schema. If FALSE, drop only if empty. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: drops the schema (and contained objects if cascade = TRUE)
+and prints CLI status.
+
+#### Description
+
+Drops a schema from a specified database.
+Optionally cascades the deletion to all objects within the schema.
+Prints helpful CLI information about the current connection and action.
+
+#### Details
+
+Runs DROP SCHEMA IF EXISTS <db>.<schema> with optional CASCADE.
+ Intended for DuckDB or MotherDuck connections.
+ Uses CLI helpers to show current connection and report the deletion.
+
+***
+
+### `delete_table()` {#delete_table}
+
+Drop a Table
+
+#### Usage
+
+```r
+delete_table(.con, database_name, schema_name, table_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | Name of the database containing the table. |
+| `schema_name` | Name of the schema containing the table. |
+| `table_name` | Name of the table to drop. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: drops the table and prints CLI status messages.
+
+#### Description
+
+Drops a table from the specified database and schema if it exists.
+Uses DROP TABLE IF EXISTS for safety and prints a CLI status report.
+
+***
+
+### `describe_share()` {#describe_share}
+
+Describe a MotherDuck share
+
+#### Usage
+
+```r
+describe_share(.con, share_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `share_name` | Character. The name of the shared path to describe. |
+
+#### Value
+
+A tibble containing metadata about the share, including object names, types,
+and privileges associated with the share.
+
+#### Description
+
+Retrieves detailed metadata about a specific share in MotherDuck, including
+the objects it contains, their types, and privileges granted.
+
+#### Details
+
+This function executes the md_describe_database_share system function
+to obtain comprehensive information about the specified share.
+The result is returned as a tibble for easy inspection and manipulation in R.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+share_info <- describe_share(con, "analytics.sales_share")
+print(share_info)
+```
+
+***
+
+### `drop_share()` {#drop_share}
+
+Drop a MotherDuck share
+
+#### Usage
+
+```r
+drop_share(.con, share_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `share_name` | Character. The name of the share to be dropped. |
+
+#### Value
+
+Invisibly returns NULL. Side effect: the specified share is removed if it exists.
+
+#### Description
+
+Drops (deletes) a specified share from your MotherDuck account. If the share
+does not exist, a warning is displayed. This function safely validates the
+connection and share name before executing the operation.
+
+#### Details
+
+The function first validates that the connection is active. It then checks
+whether the specified share exists in the account. If it does, the share is
+dropped using a DROP SHARE IF EXISTS SQL command. If the share does not
+exist, a warning is shown. After the operation, the current user is displayed.
+
+#### Examples
+
+```r
+drop_share(con_md, "test_share")
+```
+
+***
+
+### `install_extensions()` {#install_extensions}
+
+Install DuckDB/MotherDuck Extensions
+
+#### Usage
+
+```r
+install_extensions(.con, extension_names)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `extension_names` | A character vector of DuckDB/MotherDuck extension names to install. |
+
+#### Value
+
+Invisibly returns NULL. A detailed CLI report of installation success/failure
+is printed.
+
+#### Description
+
+Installs valid DuckDB or MotherDuck extensions for the current connection.
+
+#### Details
+
+The install_extensions() function validates the provided DuckDB/MotherDuck connection,
+then checks which of the requested extensions are valid. Valid extensions that are not
+already installed are installed using the INSTALL SQL command. Invalid extensions are
+reported to the user via CLI messages. This function provides a summary report
+describing which extensions were successfully installed and which were invalid.
+
+Unlike load_extensions(), this function focuses purely on installation and does not
+automatically load extensions after installing.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# Install the 'motherduck' extension
+install_extensions(con, "motherduck")
+
+# Install multiple extensions
+install_extensions(con, c("fts", "httpfs"))
+
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `launch_ui()` {#launch_ui}
+
+Launch the DuckDB UI in your browser
+
+#### Usage
+
+```r
+launch_ui(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+The function is called for its side effects and does not return a value.
+It launches the DuckDB UI and opens it in your default web browser.
+
+#### Description
+
+The launch_ui() function installs and launches the DuckDB UI extension
+for an active DuckDB database connection. This allows users to interact
+with the database via a web-based graphical interface.
+
+The function will check that the connection is valid before proceeding.
+
+#### Details
+
+The function performs the following steps:
+
+ Checks that the provided DuckDB connection is valid.
+If the connection is invalid, it aborts with a descriptive error message.
+ Installs the ui extension into the connected DuckDB instance.
+ Calls the start_ui() procedure to launch the DuckDB UI in your browser.
+
+This provides a convenient way to explore and manage DuckDB databases
+interactively without needing to leave the R environment.
+
+#### Examples
+
+```r
+# Connect to DuckDB
+con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# Launch the DuckDB UI
+launch_ui(con_db)
+
+# Clean up
+DBI::dbDisconnect(con_db, shutdown = TRUE)
+```
+
+***
+
+### `list_all_databases()` {#list_all_databases}
+
+List Databases Visible to the Connection
+
+#### Usage
+
+```r
+list_all_databases(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A dbplyr lazy tibble with one column: table_catalog.
+
+#### Description
+
+Returns a lazy tibble of distinct database (catalog) names visible through
+the current connection, using information_schema.tables.
+
+#### Details
+
+The result is a dbplyr lazy table (tbl_dbi). Use dplyr::collect() to bring
+results into R as a local tibble.
+
+***
+
+### `list_all_tables()` {#list_all_tables}
+
+List All Tables Visible to the Connection
+
+#### Usage
+
+```r
+list_all_tables(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A dbplyr lazy tibble with columns:
+
+ table_catalog — database/catalog name
+ table_schema  — schema name
+ table_name    — table name
+
+#### Description
+
+Returns a lazy tibble of all tables visible to the current connection by
+querying information_schema.tables (across all catalogs/databases and
+schemas).
+
+#### Details
+
+The result is a dbplyr lazy table (tbl_dbi). Use collect() to bring
+results into R as a local tibble.
+
+***
+
+### `list_current_schemas()` {#list_current_schemas}
+
+List Schemas in the Current Database
+
+#### Usage
+
+```r
+list_current_schemas(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A dbplyr lazy tibble with columns:
+
+ catalog_name — the current database name.
+ schema_name — each schema within that database.
+
+#### Description
+
+Returns a lazy tibble of all schemas in the current database of the
+connection. Queries information_schema.schemata and filters to the
+current database (catalog_name = current_database()).
+
+#### Details
+
+This function assumes the connection is valid (checked with
+validate_con()).
+ Returns a dbplyr lazy table; use collect() to bring the result into R.
+
+***
+
+### `list_current_tables()` {#list_current_tables}
+
+List Tables in the Current Database and Schema
+
+#### Usage
+
+```r
+list_current_tables(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A dbplyr lazy tibble with columns:
+
+ table_catalog — the current database.
+ table_schema  — the current schema.
+ table_name    — each table name.
+
+#### Description
+
+Returns a lazy tibble of all tables that exist in the current database
+and current schema of the active connection.
+Queries the standard information_schema.tables view and filters to
+current_database() and current_schema().
+
+#### Details
+
+This function validates that the connection is valid with validate_con().
+ Result is a dbplyr lazy table (tbl_dbi); call collect() to bring it
+into R.
+
+***
+
+### `list_extensions()` {#list_extensions}
+
+List MotherDuck/DuckDB Extensions
+
+#### Usage
+
+```r
+list_extensions(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble with one row per extension and columns describing its metadata
+and current status.
+
+#### Description
+
+Retrieves all available DuckDB or MotherDuck extensions along with their descriptions,
+installation and load status.
+
+#### Details
+
+The list_extensions() function queries the database for all extensions that are
+available in the current DuckDB or MotherDuck connection. The returned tibble includes
+information such as:
+
+ extension_name: Name of the extension.
+ description: Short description of the extension.
+ installed: Logical indicating if the extension is installed.
+ loaded: Logical indicating if the extension is currently loaded.
+
+This is useful for determining which extensions can be installed or loaded using
+install_extensions() or load_extensions().
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# List all available extensions
+list_extensions(con)
+
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `list_fns()` {#list_fns}
+
+List Database Functions (DuckDB/MotherDuck)
+
+#### Usage
+
+```r
+list_fns(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A dbplyr lazy tibble (tbl_dbi) with function metadata (e.g.,
+function_name, schema, is_aggregate, is_alias, etc.).
+
+#### Description
+
+Returns a lazy table listing available SQL functions from the current
+DuckDB/MotherDuck connection using duckdb_functions().
+
+#### Details
+
+This wrapper validates the connection and then queries
+duckdb_functions() to enumerate function metadata. The result is a
+dbplyr lazy tibble (tbl_dbi); call collect() to materialize it in R.
+
+***
+
+### `list_md_active_accounts()` {#list_md_active_accounts}
+
+List active MotherDuck accounts
+
+#### Usage
+
+```r
+list_md_active_accounts(motherduck_token = "MOTHERDUCK_TOKEN")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble with two columns:
+
+ account_settings: configuration keys for the active accounts.
+ account_values: corresponding configuration values.
+
+#### Description
+
+Retrieves a list of active MotherDuck accounts available to the authenticated
+user, returning the results as a tidy tibble.
+
+#### Details
+
+This function queries the MotherDuck REST API endpoint
+(https://api.motherduck.com/v1/active_accounts) using the provided or
+environment-resolved authentication token.
+The current user name is also displayed via show_current_user().
+
+#### Examples
+
+```r
+# Retrieve active accounts for the authenticated user
+accounts_tbl <- list_md_active_accounts()
+print(accounts_tbl)
+```
+
+***
+
+### `list_md_user_instance()` {#list_md_user_instance}
+
+List a MotherDuck user's instance settings
+
+#### Usage
+
+```r
+list_md_user_instance(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble with two columns:
+
+ instance_desc: names or descriptions of instance configuration settings.
+ instance_values: corresponding values for each configuration field.
+
+#### Description
+
+Retrieves configuration and instance-level settings for a specified
+MotherDuck user, returning the results as a tidy tibble.
+
+#### Details
+
+This function calls the MotherDuck REST API endpoint
+https://api.motherduck.com/v1/users/{user_name/instances to fetch
+information about the user’s active DuckDB instances and their configuration
+parameters.
+
+The current authenticated user is displayed with show_current_user() for
+verification.
+
+#### Examples
+
+```r
+# List instance settings for a specific user
+instance_tbl <- list_md_user_instance(user_name ="Bob Smith")
+```
+
+***
+
+### `list_md_user_tokens()` {#list_md_user_tokens}
+
+List a MotherDuck user's tokens
+
+#### Usage
+
+```r
+list_md_user_tokens(user_name, motherduck_token = "MOTHERDUCK_TOKEN")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `user_name` | A character string specifying the MotherDuck user name whose tokens should be listed. |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+
+#### Value
+
+A tibble with two columns:
+
+ token_settings: metadata fields associated with each token.
+ token_values: corresponding values for those fields.
+
+#### Description
+
+Retrieves all active authentication tokens associated with a specific
+MotherDuck user account, returning them as a tidy tibble.
+
+#### Details
+
+This function queries the MotherDuck REST API endpoint
+https://api.motherduck.com/v1/users/{user_name/tokens to list the tokens
+available for the specified user.
+
+It uses the provided or environment-resolved motherduck_token for
+authorization. If motherduck_token is not explicitly provided, the function
+attempts to resolve it from the MOTHERDUCK_TOKEN environment variable
+The current authenticated user is displayed via show_current_user() for
+verification.
+
+#### Examples
+
+```r
+# List tokens for a specific user
+tokens_tbl <- list_md_user_tokens(user_name = "alejandro_hagan")
+print(tokens_tbl)
+```
+
+***
+
+### `list_owned_shares()` {#list_owned_shares}
+
+List all shares owned by the current user
+
+#### Usage
+
+```r
+list_owned_shares(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble with one row per share owned by the current user, including columns
+for share name, object type, and granted privileges.
+
+#### Description
+
+Retrieves all database objects that are owned by the current authenticated
+user in MotherDuck.
+
+#### Details
+
+This function executes the LIST SHARES; command to return metadata about
+all shares created by the current user. The returned tibble includes details
+such as the share name, type of object shared, and privileges granted.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+owned_tbl <- list_owned_shares(con)
+print(owned_tbl)
+```
+
+***
+
+### `list_setting()` {#list_setting}
+
+List Database Settings
+
+#### Usage
+
+```r
+list_setting(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble::tibble containing one row per setting with columns
+describing the setting name, current value, description, and default value.
+
+#### Description
+
+The list_setting() function provides a convenient way to inspect the
+active configuration of a DuckDB or MotherDuck connection. It executes
+the internal DuckDB function duckdb_settings() and returns the results
+as a tidy tibble for easy viewing or filtering.
+
+#### Details
+
+This function is particularly useful for debugging or auditing runtime
+environments. All settings are returned as character columns, including
+their names, current values, and default values.
+
+#### Examples
+
+```r
+# Connect to DuckDB
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# List all database settings
+list_setting(con)
+
+# Disconnect
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `list_shared_with_me_shares()` {#list_shared_with_me_shares}
+
+List all shares shared with the current user
+
+#### Usage
+
+```r
+list_shared_with_me_shares(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble containing one row per shared object, with columns describing
+the owner, object type, object name, and granted privileges.
+
+#### Description
+
+Retrieves all database objects that have been shared with the current
+authenticated user in MotherDuck.
+
+#### Details
+
+This function queries the MD_INFORMATION_SCHEMA.SHARED_WITH_ME view to
+return metadata about all shares granted to the current user, including
+the owner, object name, type, and privileges.
+The result is returned as a tidy tibble for easy manipulation in R.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+shared_tbl <- list_shared_with_me_shares(con)
+print(shared_tbl)
+```
+
+***
+
+### `list_shares()` {#list_shares}
+
+List MotherDuck Shares
+
+#### Usage
+
+```r
+list_shares(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble::tibble containing details of available shares if
+the connection is an MD connection or an empty tibble if not
+
+#### Description
+
+The list_shares() function provides a convenient wrapper around the
+MotherDuck SQL command LIST SHARES;. It validates that the supplied
+connection is an active MotherDuck connection before executing the query.
+If the connection is not valid, the function returns 0 instead of a table.
+
+#### Details
+
+MotherDuck supports object sharing, which allows users to list and access
+data shared between accounts. This function helps programmatically inspect
+available shares within an authenticated MotherDuck session.
+
+#### Examples
+
+```r
+# Connect to MotherDuck
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# List shares
+list_shares(con)
+
+# Disconnect
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `load_extensions()` {#load_extensions}
+
+Load and Install DuckDB/MotherDuck Extensions
+
+#### Usage
+
+```r
+load_extensions(.con, extension_names)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `extension_names` | A character vector of DuckDB/MotherDuck extension names to load/install. |
+
+#### Value
+
+Invisibly returns NULL. The function prints a CLI report of the extension status.
+
+#### Description
+
+Installs (if necessary) and loads valid DuckDB or MotherDuck extensions for the active connection.
+
+#### Details
+
+The load_extensions() function first validates the provided DuckDB/MotherDuck connection,
+then checks which of the requested extensions are valid and not already installed.
+Valid extensions are installed and loaded into the current session. Invalid extensions
+are reported to the user. The function provides a detailed CLI report summarizing which
+extensions were successfully installed and loaded, and which were invalid.
+
+It is especially useful for ensuring that required extensions, such as motherduck,
+are available in your database session. The CLI messages also provide guidance on
+listing all available extensions and installing additional DuckDB extensions.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# Install and load the 'motherduck' extension
+load_extensions(con, "motherduck")
+
+# Load multiple extensions
+load_extensions(con, c("motherduck", "httpfs"))
+
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `pwd()` {#pwd}
+
+Print Current MotherDuck Database Context
+
+#### Usage
+
+```r
+pwd(.con, silent = FALSE)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `silent` | to print message or not, default is FALSE |
+
+#### Value
+
+A tibble with columns:
+
+current_databaseThe active database name.
+current_schemaThe active schema name.
+
+The current role is printed to the console via cli.
+
+#### Description
+
+Displays the current database, schema, and role for the active DuckDB/MotherDuck connection.
+This mirrors the behavior of pwd in Linux by showing your current “working database.”
+
+#### Details
+
+The pwd() function is a helper for inspecting the current database context of a DuckDB
+or MotherDuck connection. It queries the database for the current database, schema, and role.
+The database and schema are returned as a tibble for easy programmatic access, while the
+role is displayed using a CLI alert. This is especially useful in multi-database environments
+or when working with different user roles, providing a quick way to verify where SQL queries
+will be executed.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+pwd(con)
+```
+
+***
+
+### `read_csv()` {#read_csv}
+
+Read a CSV file into a DuckDB/MotherDuck table
+
+#### Usage
+
+```r
+read_csv(
+  .con,
+  to_database_name,
+  to_schema_name,
+  to_table_name,
+  file_path,
+  header,
+  all_varchar,
+  sample_size,
+  names,
+  types,
+  skip,
+  union_by_name,
+  normalize_names,
+  allow_quoted_nulls,
+  ignore_errors,
+  write_type,
+  ...
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `to_database_name` | Target database name (new or existing) |
+| `to_schema_name` | Target schema name  (new or existing) |
+| `to_table_name` | Target table name to create  (new or existing) |
+| `file_path` | Path to the Excel file (.xlsx) |
+| `header` | Logical; if TRUE, first row is header |
+| `all_varchar` | Logical; coerce all columns to VARCHAR |
+| `sample_size` | Numeric; number of rows used for type inference |
+| `names` | Character vector; optional column names to assign instead of reading from the file |
+| `types` | Named or unnamed character vector; column types (named preferred, unnamed paired to names) |
+| `skip` | Integer; number of rows to skip at the beginning of the file |
+| `union_by_name` | Logical; union multiple CSVs by column name |
+| `normalize_names` | Logical; normalize column names (lowercase, replace spaces) |
+| `allow_quoted_nulls` | Logical; treat "NULL" in quotes as NULL |
+| `ignore_errors` | Logical; continue on row parse errors |
+| `write_type` | Character; either "overwrite" or "append", controls table creation behavior |
+| `...` | Additional arguments passed to read_csv_auto() in format listed in duckdb documentation (optional) |
+
+#### Value
+
+Invisibly returns NULL. Side effect: creates <database>.<schema>.<table> with the CSV data
+
+#### Description
+
+Loads the DuckDB excel extension and creates a table from a CSV file
+using the read_csv_auto() table function. The destination is fully qualified
+as <database>.<schema>.<table>. Only the options you supply are forwarded
+to read_csv_auto() (e.g., header, all_varchar, sample_size,
+names, types, skip, union_by_name, normalize_names,
+allow_quoted_nulls, ignore_errors). If names or types are not supplied,
+they are ignored. See the DuckDB https://duckdb.org/docs/stable/data/csv/overviewread_csv_auto() documentation for more information.
+
+***
+
+### `read_excel()` {#read_excel}
+
+Read an Excel file into a DuckDB/MotherDuck table
+
+#### Usage
+
+```r
+read_excel(
+  .con,
+  to_database_name,
+  to_schema_name,
+  to_table_name,
+  file_path,
+  header,
+  sheet,
+  all_varchar,
+  ignore_errors,
+  range,
+  stop_at_empty,
+  empty_as_varchar,
+  write_type
+)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `to_database_name` | Target database name (new or existing) |
+| `to_schema_name` | Target schema name  (new or existing) |
+| `to_table_name` | Target table name to create  (new or existing) |
+| `file_path` | Path to the Excel file (.xlsx) |
+| `header` | Logical; if TRUE, first row is header |
+| `sheet` | Character; sheet name to read (defaults to first sheet) |
+| `all_varchar` | Logical; coerce all columns to VARCHAR |
+| `ignore_errors` | Logical; continue on cell/row errors |
+| `range` | Character; Excel range like "A1" or "A1:C100" |
+| `stop_at_empty` | Logical; stop at first completely empty row |
+| `empty_as_varchar` | Logical; treat empty columns as VARCHAR |
+| `write_type` | Logical, will drop previous table and replace with new table |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: creates <database>.<schema>.<table> with the Excel data.
+
+#### Description
+
+Loads the DuckDB excel extension and creates a table from an Excel file
+using the read_xlsx() table function. The destination is fully qualified
+as <database>.<schema>.<table>. Only the options you supply are forwarded
+to read_xlsx() (e.g., sheet, header, all_varchar, ignore_errors,
+range, stop_at_empty, empty_as_varchar).
+See 'duckdb extension https://duckdb.org/docs/stable/core_extensions/excelread_excel for more information
+
+***
+
+### `show_current_user()` {#show_current_user}
+
+Show current database user
+
+#### Usage
+
+```r
+show_current_user(.con, motherduck_token, return = "msg")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `motherduck_token` | Character. Either the name of an environment variable containing your MotherDuck access token (default "MOTHERDUCK_TOKEN") or the token itself. |
+| `return` | Character scalar, one of "msg" or "arg". Default: "msg". |
+
+#### Value
+
+a tibble
+
+#### Description
+
+Return or print the current database user for a MotherDuck / DuckDB connection.
+
+#### Details
+
+This helper queries the active DB connection for the current user (via
+SELECT current_user). You may either provide an existing DBI connection
+via .con or provide a motherduck_token and let the function open a
+short-lived connection for you. When the function opens a connection it
+will close it before returning.
+
+The function supports two output modes:
+
+ "msg" — prints a small informative message and returns the result
+invisibly (useful for interactive use),
+ "arg" — returns a tibble containing the current_user column.
+
+#### Examples
+
+```r
+# Using an existing connection
+con <- connect_to_motherduck("my_token")
+show_current_user(.con = con, return = "msg")
+
+# Let the function open a connection from a token
+tbl <- show_current_user(motherduck_token = "my_token", return = "arg")
+```
+
+***
+
+### `show_information_schema()` {#show_information_schema}
+
+Show Information Schema Schemas
+
+#### Usage
+
+```r
+show_information_schema(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble with one row per schema. Columns typically include
+catalog name, schema name, schema owner, and other database-specific
+metadata as defined by the SQL information schema.
+
+#### Description
+
+List all schemas available in the connected database.
+
+This function queries the information_schema.schemata view to return
+metadata about schemas that exist in the database associated with the
+provided DBI connection. It is intended for inspection and debugging
+purposes and does not modify database state.
+
+#### Details
+
+The structure and contents of the returned tibble depend on the database
+backend. Databases may expose additional or fewer columns in
+information_schema.schemata.
+
+#### Examples
+
+```r
+library(DBI)
+con <- dbConnect(duckdb::duckdb())
+
+show_information_schema(con)
+
+dbDisconnect(con, shutdown = TRUE)
+```
+
+***
+
+### `show_motherduck_token()` {#show_motherduck_token}
+
+Show Your MotherDuck Token
+
+#### Usage
+
+```r
+show_motherduck_token(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+A tibble containing the current MotherDuck token.
+
+#### Description
+
+Displays the active MotherDuck authentication token associated with the current connection.
+Useful for debugging or verifying that your session is authenticated correctly.
+
+#### Details
+
+The show_motherduck_token() function executes the internal MotherDuck pragma
+print_md_token and returns the token information. This function should only be
+used in secure environments, as it exposes your authentication token in plain text.
+It requires a valid MotherDuck connection established with DBI::dbConnect().
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+show_motherduck_token(con)
+DBI::dbDisconnect(con)
+```
+
+***
+
+### `summary()` {#summary}
+
+Summarize a Lazy DBI Table
+
+#### Usage
+
+```r
+summarytbl_lazy(object, ...)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `object` | A tbl_lazy object representing a remote database table or query. |
+| `...` | Additional arguments (currently unused). Present for S3 method compatibility. |
+
+#### Value
+
+A tbl_lazy object containing the summarized results,
+still backed by the remote database connection.
+
+#### Description
+
+The summary.tbl_lazy() method provides a database-aware summary interface
+for lazy tables created via dbplyr. Instead of collecting data into R,
+it constructs a SQL SUMMARIZE query and executes it remotely, returning
+another lazy table reference.
+
+#### Details
+
+This method does not pull data into memory. Instead, it creates a new
+lazy query object representing the database-side summary. To retrieve the
+summarized data, use collect() on the returned object.
+
+#### Examples
+
+```r
+library(DBI)
+library(duckdb)
+library(dplyr)
+
+con <- dbConnect(duckdb::duckdb(dbdir = tempfile()))
+dbWriteTable(con, "mtcars", mtcars)
+
+tbl_obj <- tbl(con, "mtcars")
+
+# Returns a lazy summary table
+summary(tbl_obj)
+
+dbDisconnect(con)
+```
+
+***
+
+### `upload_database_to_md()` {#upload_database_to_md}
+
+Upload a Local Database to MotherDuck
+
+#### Usage
+
+```r
+upload_database_to_md(.con, from_db_name, to_db_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `from_db_name` | The local database name to copy from. |
+| `to_db_name` | The target MotherDuck database to create/overwrite. |
+
+#### Value
+
+Invisibly returns NULL.
+Side effect: creates the target database and copies all objects; prints a CLI
+action report.
+
+#### Description
+
+Creates a new database on MotherDuck (if it does not exist) and copies
+all objects from an existing local database into it using the
+COPY FROM DATABASE command.
+
+#### Details
+
+Runs CREATE DATABASE <to_db_name> if the target database does not exist.
+ Then runs COPY FROM DATABASE <from_db_name> TO <to_db_name> to copy all
+objects (tables, views, etc.) from the local database.
+ Prints a CLI status report (connection, user, current DB) after completion.
+
+#### Examples
+
+```r
+con_db <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+create_table(.con=con_db,.data=mtcars,database_name="memory",schema_name="main",table_name="mtcars")
+con_md <- connect_to_motherduck()
+
+upload_database_to_md(con_md, from_db_name = "memory", to_db_name = "analytics")
+```
+
+***
+
+### `validate_and_print_database_loction()` {#validate_and_print_database_loction}
+
+validate and Pprint your database location
+
+#### Usage
+
+```r
+validate_and_print_database_loction(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+print message
+
+#### Description
+
+Internal function to help validate your local database location
+
+***
+
+### `validate_con()` {#validate_con}
+
+Validate connection is DuckDB
+
+#### Usage
+
+```r
+validate_con(.con)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+
+#### Value
+
+logical value or error message
+
+#### Description
+
+Validates that your connection object is a DuckDB connection
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb())
+validate_duckdb_con(con)
+```
+
+***
+
+### `validate_database_exists()` {#validate_database_exists}
+
+Check if a Database Exists
+
+#### Usage
+
+```r
+validate_database_exists(.con, database_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | A string specifying the database name to check. |
+
+#### Value
+
+Logical TRUE if the database exists, FALSE otherwise.
+
+#### Description
+
+Checks whether a database with the specified name exists on the current connection.
+
+#### Details
+
+This function queries the available databases for the connection using
+motherduck::list_all_databases() and performs an exact match check.
+Returns TRUE if the database exists, FALSE otherwise.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb())
+validate_database_exists(con, "test_db")
+```
+
+***
+
+### `validate_database_schema_exists()` {#validate_database_schema_exists}
+
+Check if a Schema Exists in a Database
+
+#### Usage
+
+```r
+validate_database_schema_exists(.con, database_name, schema_name)
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `database_name` | The database name to check. |
+| `schema_name` | The schema name to check within the database. |
+
+#### Value
+
+Logical TRUE if the schema exists, FALSE otherwise.
+
+#### Description
+
+Checks whether a schema with the specified name exists within a given database.
+
+#### Details
+
+This function queries all tables in the connection using
+motherduck::list_all_tables(), filters by table_catalog (database),
+and performs an exact match on the schema name.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb())
+validate_database_schema_exists(con, "test_db", "main")
+```
+
+***
+
+### `validate_extension_install_status()` {#validate_extension_install_status}
+
+Validate Installed MotherDuck/DuckDB Extensions
+
+#### Usage
+
+```r
+validate_extension_install_status(.con, extension_names, return_type = "msg")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `extension_names` | A character vector of extensions to validate. |
+| `return_type` | One of "msg", "ext", or "arg". Determines the type of return value.   "msg" prints CLI messages.  "ext" returns a list of installed and failed extensions.  "arg" returns TRUE if all requested extensions are installed, FALSE otherwise. |
+
+#### Value
+
+Depending on return_type:
+
+ "msg": prints CLI messages (invisible NULL).
+ "ext": list with success_ext and fail_ext.
+ "arg": logical indicating if all requested extensions are installed.
+
+#### Description
+
+Checks whether specified DuckDB or MotherDuck extensions are installed and provides a detailed status report.
+
+#### Details
+
+The validate_extension_install_status() function validates the current connection and
+checks which of the requested extensions are installed. It produces a detailed CLI report
+showing which extensions are installed, not installed, or missing.
+
+The function can return different outputs based on the return_type argument:
+
+ "msg": prints a CLI report with extension statuses.
+ "ext": returns a list containing success_ext (installed) and fail_ext (not installed).
+ "arg": returns a logical value indicating whether all requested extensions are installed.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# Print CLI report
+validate_extension_install_status(con, extension_names = c("arrow", "excel"), return_type = "msg")
+
+# Return a list of installed and failed extensions
+validate_extension_install_status(con, extension_names = c("arrow", "excel"), return_type = "ext")
+
+# Return logical indicating if all requested extensions are installed
+validate_extension_install_status(con, extension_names = c("arrow", "excel"), return_type = "arg")
+```
+
+***
+
+### `validate_extension_load_status()` {#validate_extension_load_status}
+
+Validate Loaded MotherDuck/DuckDB Extensions
+
+#### Usage
+
+```r
+validate_extension_load_status(.con, extension_names, return_type = "msg")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `extension_names` | A character vector of extensions to validate. |
+| `return_type` | One of "msg", "ext", or "arg". Determines the type of return value:   "msg" prints CLI messages.  "ext" returns a list with success_ext, fail_ext, and missing_ext.  "arg" returns TRUE if all requested extensions are loaded, FALSE otherwise. |
+
+#### Value
+
+Depending on return_type:
+
+ "msg": prints CLI messages (invisible NULL).
+ "ext": list with success_ext, fail_ext, and missing_ext.
+ "arg": logical indicating if all requested extensions are loaded.
+
+#### Description
+
+Checks whether specified DuckDB or MotherDuck extensions are loaded in the current session and provides a detailed status report.
+
+#### Details
+
+The validate_extension_load_status() function validates the current connection, then
+checks which of the requested extensions are loaded. It produces a detailed CLI report
+showing which extensions are loaded, failed to load, or missing.
+
+Depending on the return_type argument, the function can either print messages, return
+a list of extension statuses, or return a logical value indicating whether all requested
+extensions are successfully loaded.
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = tempfile()))
+
+# Print CLI report
+validate_extension_load_status(con, extension_names = c("excel", "arrow"), return_type = "msg")
+
+# Return a list of loaded, failed, and missing extensions
+validate_extension_load_status(con, extension_names = c("excel", "arrow"), return_type = "ext")
+
+# Return logical indicating if all requested extensions are loaded
+validate_extension_load_status(con, extension_names = c("excel", "arrow"), return_type = "arg")
+```
+
+***
+
+### `validate_md_connection_status()` {#validate_md_connection_status}
+
+Validate Mother Duck Connection Status
+
+#### Usage
+
+```r
+validate_md_connection_status(.con, return_type = "msg")
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `.con` | A valid DBI connection (DuckDB / MotherDuck). |
+| `return_type` | return message or logical value of connection status |
+
+#### Value
+
+logical value or warning message
+
+#### Description
+
+Validates if you are successfully connected to motherduck database and will return either a logical value or print a message
+
+#### Examples
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb())
+validate_md_connection_status(con)
+```
+
+***
+

@@ -1,0 +1,167 @@
+---
+title: "How to connect to motherduck"
+subtitle: "Connect to your motherduck account from your local server" 
+author: "Alejandro Hagan"
+format: html
+eval: false
+---
+
+
+```{r}
+#| label: dynamic-yml
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| include: true
+
+quarto::write_yaml_metadata_block(
+    date=format(Sys.Date(),"%Y-%m-%d")
+)
+```
+
+
+
+
+```{r}
+#| label: load
+#| echo: false
+#| message: false
+#| warning: false
+#| error: false
+#| include: false
+
+
+hook <- fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "warning", "error", "message"))
+
+options(crayon.enabled = TRUE)
+
+
+```
+
+
+
+### Create a duckdb instance and connect to your motherduck account
+
+When creating a duckdb database, you have three options
+
+1. A in-memory based instance that exists in your local computer
+2. A file based instance that exists in your local computer
+3. A cloud-based instance through [motherduck](https://motherduck.com/)
+
+To create options 1 or 2 you can simply use either the [duckdb](https://duckdb.org/) or the [duckplyr](https://duckplyr.tidyverse.org/index.html) packages
+
+To use option 3, you will need to create a motherduck account and generate an access token. Once created, save your access token to an your R enviorment with `usethis::edit_r_environ()`. I recommend using  `MOTHERDUCK_TOKEN` as your variable name
+
+Once completed, you can simply use the `connect_to_motherduck()` function and pass through your token variable name and optional configuration options
+
+
+>### Whats the difference between Motherduck and Duckdb?
+>
+- Duckdb is a database that you can deploy and run either temporary or permanently in your computer. If you run it via your local computer, it is only available on your computer
+>
+- Motherduck is a cloud based deployment of duckdb which means you can save your data in the cloud and access your data from any computer
+>
+- Most core functions in this package work for both motherduck or duckdb database
+>
+- It is more of a question if you want you data to be access only locally on your computer or if you want to be able to access it remotely via the cloud and benefit from cloud based resources (eg. scale, computer, permissions, etc)
+
+```{r}
+#| label: connection-example
+#| echo: true
+#| warning: true
+#| message: true
+#| include: true
+
+
+
+con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN")
+
+```
+
+This will return a connection and print statement indicating if connection status.
+
+At any time you can validate your connection status with `validate_md_connection_status()`
+
+
+```{r}
+#| label: validate-examples
+#| echo: true
+#| warning: true
+#| message: true
+#| include: true
+
+validate_md_connection_status(con_md)
+
+```
+
+
+
+### How to create a motherduck account and access token?
+
+1. Go to [motherduck](https://motherduck.com/) and create an account, there are free options are available
+2. Go to your user name in the top right, click settings then click access tokens
+3. Click create token, then name your token and copy the token code
+4. You will need this token in your R environment to access your account
+5. To save this token in your R environment, simply leverage the [usethis](https://usethis.r-lib.org/) function `usethis::edit_r_environ()` to assign and save this (one time effort)
+6. To check if you have correctly saved your variable then you can use the `Sys.getenv()` and insert your variable name to print your token
+7. Going forward, if you want to access your token you don't need to re-type the access token, simply remember your variable name
+
+### How to configure our connection?
+
+When connecting to motherduck there are a number of configuration options available, you can reference them via the `motherduck::config_db` which will pull a list of options and their default values
+
+To change these, simply edit the configuration options you want and then pass the list as an argument `connect_to_motherduck()` or `duckdb::duckdb()` if connecting locally
+
+You can see the full list of duckdb configuration options [here](https://duckdb.org/docs/stable/configuration/overview.html) or alternatively you can use `list_setting()` to see your current configuration options.
+
+```{r}
+#| label: connection-config
+#| echo: true
+#| warning: true
+#| message: true
+#| include: true
+
+
+config <- motherduck::config_db 
+
+config$allow_community_extensions <- "true" 
+
+con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN",config = config) 
+
+```
+
+- Access the default configuration options via the built in list
+- Change the options you want, ensure you leverage duckdb syntax
+- Pass the modtified list to config option in the function
+- Ensure you use duckdb arguments not R (eg. "true" vs "TRUE")
+
+At any time you can see what your current configuration arguments are for your connection with `list_setting()`.
+
+```{r}
+#| label: list-settings
+#| echo: true
+#| warning: false
+#| message: true
+#| include: true
+
+
+list_setting(con_md)
+
+```
+
+
+
+```{r}
+#| label: list-settings-hidden
+#| echo: false
+#| warning: false
+#| message: true
+#| include: true
+
+
+list_setting(con_md) |> 
+    head(10) 
+
+```
+Congratulations, you've set connected to your motherduck database from R!

@@ -3,7 +3,7 @@ template:
   theme: cosmo
   code_overflow: wrap
 navbar:
-  title: motherduck 0.2.1
+  title: motherduck 0.2.3
   left:
   - text: Get started
     href: vignettes/articles/how-to-connect-to-motherduck.qmd

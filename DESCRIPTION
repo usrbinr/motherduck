@@ -1,7 +1,7 @@
 Package: motherduck
 Type: Package
 Title: Utilities for Managing a 'Motherduck' Database
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: 
     person(
       "Alejandro", "Hagan",
@@ -41,4 +41,5 @@ Config/testthat/edition: 3
 Depends:
     R (>= 4.1.0)
 URL: https://usrbinr.github.io/motherduck/
+BugReports: https://codeberg.org/usrbinr/motherduck/issues
 Config/Needs/website: rmarkdown

@@ -31,9 +31,7 @@
 #'
 delete_and_create_schema <- function(.con,database_name,schema_name){
 
-    # Validate write_type
-
-    # validate_con(.con)
+    validate_con(.con)
 
     md_con_indicator <- validate_md_connection_status(.con,return_type="arg")
 
@@ -87,9 +85,7 @@ delete_and_create_schema <- function(.con,database_name,schema_name){
 #' @family db-manage
 create_schema <- function(.con,database_name,schema_name){
 
-    # Validate write_type
-
-    # validate_con(.con)
+    validate_con(.con)
 
     md_con_indicator <- validate_md_connection_status(.con,return_type="arg")
 
@@ -181,7 +177,7 @@ create_table_tbl <- function(.data,.con,database_name,schema_name,table_name,wri
     
     if(!validate_database_exists(.con=.con,database_name = database_name)){
       
-      cli::cli_abort("Database {.val database_name} does not exists")
+      cli::cli_abort("Database {.val {database_name}} does not exist")
       
     }
     
@@ -323,6 +319,7 @@ create_table_dbi <- function(.data,.con,database_name,schema_name,table_name,wri
 
     DBI::dbExecute(.con, glue::glue_sql("DROP TABLE IF EXISTS {dbQuoteIdentifier(.con,table_id)};",.con = .con))
 
+    # Brief delay to allow MotherDuck to process the DROP before CREATE
     Sys.sleep(5)
 
     DBI::dbExecute(.con,glue::glue_sql("CREATE TABLE IF NOT EXISTS {dbQuoteIdentifier(.con,table_id)} AS ",query_plan,.con = .con))

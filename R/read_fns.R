@@ -332,11 +332,11 @@ read_csv <- function(
         if (is.null(names(types))) {
             if (!missing(names) && !is.null(names)) {
                 if (length(types) != length(names)) {
-                    stop("When `types` is unnamed it must have the same length as `names`.")
+                    cli::cli_abort("When {.arg types} is unnamed it must have the same length as {.arg names}.")
                 }
                 types_named <- stats::setNames(as.character(types), names)
             } else {
-                stop("`types` must be a named character vector, or an unnamed vector paired with `names`.")
+                cli::cli_abort("{.arg types} must be a named character vector, or an unnamed vector paired with {.arg names}.")
             }
         } else {
             types_named <- as.character(types)
@@ -453,7 +453,7 @@ read_csv <- function(
             DBI::dbExecute(
                 conn = .con
                 ,glue::glue(
-                    "CREATE TABLE IF NOT EXISTS {`to_table_name`} AS SELECT * FROM read_csv_auto({file_path}",header_vec,all_varchar_vec,sample_size,names_vec,types_vec,skip_vec,union_by_name_vec,normalize_names_vec,allow_quoted_nulls_vec,ignore_errors_vec,...,");"
+                    "CREATE TABLE IF NOT EXISTS {`to_table_name`} AS SELECT * FROM read_csv_auto({file_path}",header_vec,all_varchar_vec,sample_size_vec,names_vec,types_vec,skip_vec,union_by_name_vec,normalize_names_vec,allow_quoted_nulls_vec,ignore_errors_vec,...,");"
                 )
                 ,.con = .con
             )

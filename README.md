@@ -1,8 +1,7 @@
 
 
-<!-- badges: start --> <!-- badges: start --> [![CRAN
-status](https://www.r-pkg.org/badges/version/motherduck?svg=1.png)](https://CRAN.R-project.org/package=motherduck)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/usrbinr/motherduck/HEAD)
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/motherduck?svg=1.png)](https://CRAN.R-project.org/package=motherduck)
 [![](https://cranlogs.r-pkg.org/badges/motherduck.png)](https://cran.r-project.org/package=motherduck)
 <!-- badges: end -->
 
@@ -27,13 +26,27 @@ task with easy to understand syntax. {motherduck} is built upon
 that you can further fully integrate your data with
 [dbplyr](https://dbplyr.tidyverse.org/)
 
+## Installation
+
+Install from CRAN:
+
+``` r
+install.packages("motherduck")
+```
+
+Or install the development version from Codeberg:
+
+``` r
+pak::pak("git::https://codeberg.org/usrbinr/motherduck")
+```
+
 ## What do I need to use this?
 
 - [duckdb](https://duckdb.org/) R package installed on your computer
 - A [motherduck](https://motherduck.com/) account
-- A motherduck access token which you you can be saved to your R
+- A motherduck access token which you can save to your R
   environment file with `usethis::edit_r_environ()`
 
 ``` r
-con_md <- connect_to_motherduck("MOTHERDUCK_TOKEN")
+con_md <- connect_to_motherduck()
 ```

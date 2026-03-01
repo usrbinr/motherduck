@@ -51,7 +51,7 @@ describe("cd()", {
 
 describe("pwd()", {
 
-  it("should retun the right class, column names and row", {
+  it("should return the right class, column names and row", {
     con_db <- DBI::dbConnect(duckdb::duckdb())
 
     out <- pwd(con_db)

@@ -8,3 +8,9 @@ CLAUDE.md
 # qrtdown
 /.quarto/
 **/*.quarto_ipynb
+
+# qrtdown
+_quarto.yml
+_qrtdown-styles.css
+_qrtdown/
+index.qmd

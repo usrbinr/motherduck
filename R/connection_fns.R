@@ -61,9 +61,9 @@ validate_md_connection_status <- function(.con,return_type="msg"){
 
     validate_con(.con)
 
-    dbExectue_safe <- purrr::safely(DBI::dbExecute)
+    dbExecute_safe <- purrr::safely(DBI::dbExecute)
 
-    out <- dbExectue_safe(.con, "PRAGMA MD_CONNECT")
+    out <- dbExecute_safe(.con, "PRAGMA MD_CONNECT")
 
     status_lst <- list()
 

@@ -27,3 +27,7 @@ test.R
 ^CLAUDE\.md$
 ^\.claude$
 ^_brand\.yml$
+
+# qrtdown
+^_qrtdown-styles\.css$
+^_qrtdown$

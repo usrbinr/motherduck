@@ -5,9 +5,9 @@ template:
   
 navbar:
   right:
-    - text: "GitHub"
-      href: "https://github.com/usrbinr"
-      icon: "fab fa-github"
+    - text: "Codeberg"
+      href: "https://codeberg.org/usrbinr/motherduck"
+      icon: "fas fa-code-branch"
     - text: "Bluesky"
       href: "https://bsky.app/profile/usrbinr.bsky.social"
       icon: "fab fa-bluesky"
@@ -32,7 +32,7 @@ reference:
       - delete_database
       - list_all_databases
       - upload_database_to_md
-      - validate_and_print_database_loction
+      - validate_and_print_database_location
 
   - title: "Schema Management"
     contents:
@@ -100,7 +100,7 @@ reference:
 
   - title: "Utilities"
     contents:
-      - validate_and_print_database_loction
+      - validate_and_print_database_location
       - validate_database_exists
       - validate_database_schema_exists
       - show_information_schema

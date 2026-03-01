@@ -1,23 +1,39 @@
 project:
   type: website
   output-dir: docs
+  resources:
+  - man/figures/**
+  - vignettes/articles/**
   render:
-  - '*.qmd'
-  - '*.md'
+  - index.qmd
+  - _qrtdown/reference.qmd
+  - _qrtdown/reference/*.qmd
+  - _qrtdown/articles.qmd
+  - _qrtdown/citation.qmd
+  - vignettes/articles/*.qmd
+  - vignettes/articles/*.md
+  - NEWS.md
   - '!inst/'
   - '!renv/'
   - '!packrat/'
+  - '!README.qmd'
+  - '!README.Rmd'
+  - '!README.md'
+execute:
+  freeze: auto
 website:
   title: motherduck
   navbar:
-    title: motherduck 0.2.1
+    title: motherduck 0.2.3
     left:
     - text: Get started
       href: vignettes/articles/how-to-connect-to-motherduck.qmd
     - text: Reference
       href: reference.qmd
     - text: Articles
-      href: articles.qmd
+      menu:
+      - text: How to load data into motherduck
+        href: vignettes/articles/how-to-load-data-in-motherduck.qmd
     - text: Changelog
       href: NEWS.md
     right:
@@ -26,7 +42,7 @@ website:
       aria-label: Source code
   page-footer:
     left: Built with [Quarto](https://quarto.org/) and [qrtdown](https://codeberg.org/usrbinr/qrtdown)
-    right: motherduck 0.2.1
+    right: motherduck 0.2.3
   repo-url: https://usrbinr.github.io/motherduck/
 format:
   html:
@@ -34,4 +50,5 @@ format:
       light: cosmo
     toc: true
     code-overflow: wrap
+    css: _qrtdown-styles.css
 

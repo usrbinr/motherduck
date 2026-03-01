@@ -31,3 +31,5 @@ test.R
 # qrtdown
 ^_qrtdown-styles\.css$
 ^_qrtdown$
+^_freeze$
+^\.\.Rcheck$

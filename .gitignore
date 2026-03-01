@@ -14,3 +14,13 @@ _quarto.yml
 _qrtdown-styles.css
 _qrtdown/
 index.qmd
+
+# R CMD check
+*.Rcheck/
+..Rcheck/
+
+# Quarto
+_freeze/
+
+# Brand
+_brand.yml

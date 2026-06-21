@@ -1,4 +1,18 @@
 
+#' Detect a remote object-storage path
+#'
+#' @description
+#' Returns `TRUE` when `x` is a remote URL handled by the DuckDB `httpfs`
+#' extension (`s3://`, `r2://`, `gcs://`, `gs://`, `az://`/`azure://`, or
+#' `http(s)://`) rather than a local file path.
+#'
+#' @param x A character path.
+#' @returns Logical scalar.
+#' @keywords internal
+is_remote_path <- function(x) {
+    grepl("^(s3|r2|gcs|gs|az|azure|https?)://", x, ignore.case = TRUE)
+}
+
 #' @title Read an Excel file into a DuckDB/MotherDuck table
 #' @name read_excel
 #'
@@ -277,7 +291,12 @@ read_csv <- function(
     write_type <- rlang::arg_match(write_type,c("overwrite","append"))
     # file path check and quotation
 
-    assertthat::assert_that(is.character(file_path),file.exists(file_path))
+    # Local paths must exist on disk; remote URLs (s3://, r2://, https://, ...)
+    # are read in-engine via the httpfs extension, so skip the existence check.
+    assertthat::assert_that(is.character(file_path), length(file_path) == 1)
+    if (!is_remote_path(file_path)) {
+        assertthat::assert_that(file.exists(file_path))
+    }
 
     file_path <- DBI::dbQuoteIdentifier(conn = .con,x = file_path)
 

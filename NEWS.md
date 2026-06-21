@@ -1,3 +1,10 @@
+# motherduck 0.2.4
+
+* Added `create_r2_secret()` and `create_s3_secret()` to register Cloudflare R2 /
+  S3-compatible credentials on a connection for reading `r2://` / `s3://` paths.
+* `read_csv()` now accepts remote object-storage URLs (`s3://`, `r2://`, `https://`,
+  ...) read via the `httpfs` extension, not just local files.
+
 # motherduck 0.2.3
 
 * Re-enabled connection validation in `create_schema()` and `delete_and_create_schema()`

@@ -33,3 +33,9 @@ test.R
 ^_qrtdown$
 ^_freeze$
 ^\.\.Rcheck$
+
+# qrtdown
+^reference$
+^articles$
+^README\.qmd$
+^README\.Rmd$

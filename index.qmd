@@ -14,14 +14,10 @@ toc: false
 
 MIT + file LICENSE
 
-### Citation
-
-[Citing this package](_qrtdown/citation.qmd)
-
 ### Authors
 
 - Alejandro Hagan (author, maintainer)
 
 :::
 
-{{< include README.qmd >}}
+{{< include README.md >}}

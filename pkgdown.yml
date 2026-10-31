@@ -1,0 +1,8 @@
+pandoc: 3.1.3
+qrtdown: 1.3.0
+articles:
+  how-to-connect-to-motherduck: how-to-connect-to-motherduck.html
+  how-to-load-data-in-motherduck: how-to-load-data-in-motherduck.html
+urls:
+  reference: https://usrbinr.codeberg.page/motherduck/reference
+  article: https://usrbinr.codeberg.page/motherduck/articles

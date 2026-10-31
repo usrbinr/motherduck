@@ -7,7 +7,7 @@ toc: false
 
 ### Links
 
-- [Source Code](https://usrbinr.github.io/motherduck/)
+- [Source Code](https://usrbinr.codeberg.page/motherduck/)
 - [Report a Bug](https://codeberg.org/usrbinr/motherduck/issues)
 
 ### License

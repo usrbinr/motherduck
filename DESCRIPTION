@@ -39,7 +39,7 @@ Suggests:
 Config/testthat/edition: 3
 Depends:
     R (>= 4.1.0)
-URL: https://usrbinr.github.io/motherduck/
+URL: https://usrbinr.codeberg.page/motherduck/, https://codeberg.org/usrbinr/motherduck
 BugReports: https://codeberg.org/usrbinr/motherduck/issues
 Config/Needs/website: rmarkdown
 Config/roxygen2/version: 8.0.0

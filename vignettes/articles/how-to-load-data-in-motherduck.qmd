@@ -122,13 +122,13 @@ motherduck::cd(con_md,database = "contoso")
 
 ```
 
-We am now in motherduck database that hosts the data behind the [contoso](https://usrbinr.github.io/contoso/) package.
+We am now in motherduck database that hosts the data behind the [contoso](https://usrbinr.codeberg.page/contoso/) package.
 
 Any reference to a schema or table would be relative to this database
 
 We can see what schemas and tables we have access to with our current database `list_current_schemas()` or we can look across all databases with `list_all_tables()`
 
-You can see more with the [list\_\* family of functions](https://usrbinr.github.io/motherduck/reference/index.html)
+You can see more with the [list\_\* family of functions](https://usrbinr.codeberg.page/motherduck/reference/index.html)
 
 ```{r}
 #| label: list-all

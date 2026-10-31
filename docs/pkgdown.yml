@@ -4,5 +4,5 @@ articles:
   how-to-connect-to-motherduck: how-to-connect-to-motherduck.html
   how-to-load-data-in-motherduck: how-to-load-data-in-motherduck.html
 urls:
-  reference: https://usrbinr.github.io/motherduck/reference
-  article: https://usrbinr.github.io/motherduck/articles
+  reference: https://usrbinr.codeberg.page/motherduck/reference
+  article: https://usrbinr.codeberg.page/motherduck/articles
